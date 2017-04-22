@@ -1,6 +1,6 @@
 /**
  * @summary     Shopping web app
- * @description Functionalities for the user interface
+ * @description Functionalities for the user interface and management
  * @version     1.0.0
  * @file        global.js
  * @author      Omar Melendrez (www.escng.com)
