@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
+        <meta name="description" content="pjtracker - User support ticket management">
+        <meta name="author" content="www.escng.com">
+        <link rel="icon" href="/img/favicon.ico">
+        <title>escng - User support ticket management</title><!-- Bootstrap core CSS -->
+        <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/libs/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
+        <link href="/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="/css/global.min.css" rel="stylesheet">
+        <style>
+            .alert, .ticket-form, .table-responsive {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Loading spin image -->
+        <i class="fa fa-refresh fa-5x fa-spin"></i>
+
+        <div class="container">
+            <div class="row">
+                <div class="main">
+                    <div class="pull-right">
+                        <button class="btn btn-info" type="button">
+                            Tickets <span class="badge"></span>
+                        </button>
+                    </div>
+                    <h1>escng <span class="grey">user support</span></h1>
+                    <!-- Search box -->
+                    <div class="search-box">
+                        <input class="form-control" id="search_text" name="search_text" type="text" placeholder="Enter your search">
+                    </div>
+                    <!-- The table area -->
+                    <div class="table-responsive">
+                        <!-- Table -->
+                        <table class="table" id="dashboard-table">
+                            <thead></thead>
+                            <tbody></tbody>
+                            <tfoot></tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="msg"></span>
+            </div>
+        </div>
+
+        <footer class="navbar navbar-fixed-bottom">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="#"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top"  title="Refresh tickets list"></span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span class="glyphicon glyphicon-pencil is_disabled" data-toggle="tooltip" data-placement="top" title="Edit ticket"></span></a>
+                </li>
+            </ul>
+
+        </footer>
+        <!-- Bootstrap core JavaScript ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+
+        <script src="/libs/jquery/js/jquery.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap-switch.min.js"></script>
+        <script src="/js/global.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('[data-toggle="tooltip"]').tooltip();
+                $(".alert").hide();
+                load_tickets();
+            });
+
+            $(".glyphicon-refresh").bind("click", function() {
+                load_tickets();
+            });
+
+            $(".glyphicon-arrow-up").bind("click", function() {
+                if (!$(".glyphicon-arrow-up").hasClass("disabled"))
+                    change_priority(1);
+            });
+
+            $(".glyphicon-arrow-down").bind("click", function() {
+                if (!$(".glyphicon-arrow-down").hasClass("disabled"))
+                    change_priority(0);
+            });
+
+            $(".glyphicon-pencil").bind("click", function() {
+                $(".ticket-form").show();
+                $(".table-responsive").hide();
+                $(".search-box").hide();
+                $(".is_disabled").addClass("disabled");
+
+            });
+
+            $("#back").bind("click", function() {
+                $(".ticket-form").hide();
+                $(".table-responsive").show();
+                $(".search-box").show();
+            });
+
+            $("#search_text").bind("keypress", function(a) {
+                if (a.keyCode == 13)
+                    load_tickets();
+            });
+
+            $('.alert .close').on('click', function(e) {
+                e.preventDefault();
+                $(this).parent().hide();
+            });
+
+        </script>
+    </body>
+</html>

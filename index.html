@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
+        <meta name="description" content="Shopping cart">
+        <meta name="author" content="Omar Melendrez">
+        <link rel="icon" href="/img/favicon.ico">
+        <title>escng - User support ticket management</title><!-- Bootstrap core CSS -->
+        <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+        <link href="/libs/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
+        <link href="/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="/css/global.min.css" rel="stylesheet">
+        <style>
+            .alert, .ticket-form, .table-responsive {
+                display: none;
+            }
+            body, .main {
+                background-color: #fff;
+            }
+        </style>
+    </head>
+    <body>
+
+        <!-- Loading spin image -->
+        <i class="fa fa-refresh fa-5x fa-spin"></i>
+
+        <div class="container">
+            <div class="row">
+                <div class="main">
+                    <h1>shopping <span class="grey">choose</span></h1>
+                    <hr />
+                    <div class="home-text">
+                        <p>
+                            Here is where you can contact user support team to get answers about the applications installed in your company. You can ask about functionalities or to get solutions to issues that may arise during the utilization of the tool
+                        </p>
+                        <p>
+                            From the moment you launch a ticket the support team is notified and a reponsible will be assigned to your ticket.
+                        </p>
+                        <p>
+                            You will be notified by the system in an email about who is the person that will interact with you on the issue
+                        </p>
+                        <p>
+                            Answers to tickets are always as fast as we can considering complexity of the issue (if it is a technical issue) or the priority given to the issue
+                        </p>
+
+                        <button class="btn btn-success" id="btn_launch_ticket">
+                            Launch Ticket
+                        </button>
+
+                        <hr />
+                        <p>
+                            This website is mobile friendly. You can launch a ticket from your mobile phone or tablet
+                        </p>
+                    </div>
+                    <!-- The table area -->
+                    <div class="table-responsive" style="display: none;">
+
+                        <!-- Table -->
+                        <table class="table-condensed" id="dashboard-table">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="ticket-form" style="display: none;">
+                        <form class="form-horizontal" id="settings-form">
+
+                            <!-- Email -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="email_address">Email address:</label>
+                                <div class="col-xs-5">
+                                    <input class="form-control" id="email_address" name="email_address" type="email" placeholder="Enter your email address">
+                                    <span class="glyphicon form-control-feedback" id="email_address1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Application -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="airportID">Application:</label>
+                                <div class="col-xs-5">
+                                    <select class="form-control selectpicker" data-live-search="true" id="app_id" name="app_id" data-size="10" data-header="Type the application name">
+                                        <option value=""></option>
+                                        <option value="8">ISMS - Inventory & Sales Management System</option>
+                                        <option value="1">pjtracker &copy;</option>
+                                        <option value="2">pjtracker &copy; - Payroll forecast module</option>
+                                        <option value="3">pjtracker &copy; - WBS man-hours re-asignment tool</option>
+                                        <option value="4">PMS v2 - Protocol Management System</option>
+                                        <option value="5">PMS v2 - Version mobile for airports</option>
+                                        <option value="6">Axis &copy; - Trainning Management System</option>
+                                        <option value="7">Accpac Monitor - Sage 300 ERP Extended</option>
+                                    </select>
+                                    <span class="glyphicon form-control-feedback" id="app_id1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Type -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="type_id">I came here to:</label>
+                                <div class="col-xs-5">
+                                    <select class="form-control selectpicker" data-live-search="true" id="type_id" name="type_id" data-size="5" data-header="Chose the type of ticet">
+                                        <option value=""></option>
+                                        <option value="1">Report a software issue</option>
+                                        <option value="2">Request for clarification</option>
+                                        <option value="3">Make a recomendation for improvement</option>
+                                    </select>
+                                    <span class="glyphicon form-control-feedback" id="type_id1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Priority -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="priority_id">Priority:</label>
+                                <div class="col-xs-5">
+                                    <select class="form-control selectpicker" data-live-search="true" id="priority_id" name="priority_id" data-size="5"  data-header="Chose a priority">
+                                        <option value=""></option>
+                                        <option value="1">Priority 1 (Critical business impact)</option>
+                                        <option value="2">Priority 2 (Significant business impact)</option>
+                                        <option value="3">Priority 3 (Limited business impact)</option>
+                                        <option value="4">Priority 4 (Minimal business impact)</option>
+                                    </select>
+                                    <span class="glyphicon form-control-feedback" id="priority_id1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Title -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3"  for="title">Title:</label>
+                                <div class="col-xs-5">
+                                    <input class="form-control" id="title" name="title" placeholder="Enter title">
+                                    <span class="glyphicon form-control-feedback" id="title1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Comment -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3"  for="comment">Comment:</label>
+                                <div class="col-xs-5">
+                                    <textarea class="form-control" rows="5" id="comment" name="comment" placeholder="Enter comment"></textarea>
+                                    <span class="glyphicon form-control-feedback" id="comment1"></span>
+                                </div>
+                            </div>
+
+                            <!-- Notification -->
+                            <div class="form-group">
+                                <label class="control-label col-xs-3" for="notify">I want to be notifed by email:</label>
+                                <div class="col-xs-5">
+                                    <input type="checkbox" name="notify" id="notify">
+                                </div>
+                            </div>
+
+                            <br>
+                            <!-- Buttons -->
+                            <div class="form-group">
+                                <div class="col-xs-offset-3 col-xs-9">
+                                    <input type="reset" class="btn btn-danger" id="reset-form" value="Reset Form" >
+                                    <input type="submit" class="btn btn-success" id="submit-form" value="Submit Ticket">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+            <div class="alert alert-info alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="msg"></span>
+            </div>
+        </div>
+
+        <footer class="navbar navbar-fixed-bottom"></footer>
+        <!-- Bootstrap core JavaScript ================================================== -->
+        <!-- Placed at the end of the document so the pages load faster -->
+
+        <script src="/libs/jquery/js/jquery.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
+        <script src="/libs/bootstrap/js/bootstrap-switch.min.js"></script>
+        <script src="/js/global.min.js"></script>
+        <!--
+        <script src="/js/dashboard.js"></script>
+        -->
+        <script>
+            $(document).ready(function() {
+                $(".alert, .ticket-form").hide();
+                $("[name='notify']").bootstrapSwitch();
+            });
+
+            $('.alert .close').on('click', function(e) {
+                e.preventDefault();
+                $(this).parent().hide();
+            });
+
+            $("#btn_launch_ticket").on("click touchstart", function(e) {
+                e.preventDefault();
+                $("#reset-form").click();
+                $(".home-text").hide();
+                $(".ticket-form").show();
+            });
+
+            $("#settings-form").on("submit", function(e) {
+                e.preventDefault();
+                error = validate_form(this);
+            });
+
+            $("#reset-form").on("click", function(){
+                $('select').val('').selectpicker('refresh')
+            })
+
+        </script>
+    </body>
+</html>

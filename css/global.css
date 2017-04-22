@@ -1,0 +1,233 @@
+/** Fonts **/
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+[class^="glyphicon-"][disabled], [class*=" glyphicon-"][disabled], [class^="glyphicon-"].disabled, [class*=" glyphicon-"].disabled {
+    cursor: default;
+    opacity: 0.25;
+}
+
+/*
+ * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
+ *
+ */
+@-moz-document url-prefix() {
+fieldset { display: table-cell; }
+}
+
+/*
+ * Base structure
+ */
+
+.grey {
+    color: #99CC99;
+}
+
+.text-muted {
+    color: #dadada;
+}
+
+.light-blue {
+    color: #44BBEE;
+}
+
+.alert, .ticket-form, .table-responsive {
+    display: none;
+}
+
+.table-responsive {
+    z-index: 99996;
+}
+
+.ticket-form {
+    z-index: 99999;
+}
+
+h1, h2, h3, h4 {
+    color: #44BBEE;
+}
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+body {
+    color: #888;
+    padding-top: 0px;
+    font-family: 'Roboto', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
+    margin: 0;
+}
+
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.fa {
+    display: none;
+    font-size: 20pt;
+    color: #44BBEE;
+    z-index: 99999;
+}
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+.navbar-fixed-top {
+    border: 0;
+}
+
+/*
+ * Main content
+ */
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 40px;
+        padding-left: 40px;
+    }
+}
+.main .page-header {
+    margin-top: 0;
+    font-weight: bold;
+}
+
+#dashboard-table {
+    border-collapse: collapse;
+}
+
+#dashboard-table thead th {
+    text-transform: uppercase;
+    background-color: #44BBEE;
+    color: #fff;
+}
+
+#dashboard-table tbody tr td {
+    border: 0;
+}
+
+#dashboard-table tr td:first-child, tr th:first-child {
+    padding: 4px;
+}
+
+#dashboard-table tr td:last-child, tr th:last-child {
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.popover {
+    background-color: #e74c3c;
+    color: #ecf0f1;
+    width: 120px;
+}
+
+.popover.right .arrow:after {
+    border-right-color: #e74c3c;
+}
+
+.input-group[class*="col-"] {
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/**
+ *     Footer
+ *
+ */
+
+footer {
+    background-color: #44BBEE;
+    z-index: 99999;
+}
+
+footer .navbar-nav {
+    float: left;
+    margin: 0;
+}
+
+footer .navbar-nav > li {
+    float: left;
+}
+
+footer .navbar-nav > li > a {
+    color: #fff;
+}
+
+footer .navbar-nav > li > a:hover {
+    color: #44BBEE;
+    background-color: #fff;
+}
+
+footer .navbar-nav > li > a:focus {
+    color: #44BBEE;
+    background-color: #fff;
+}
+
+footer .glyphicon {
+    font-size: 18pt;
+}
+
+/****
+ * Tickets
+ */
+
+.main, body, #dashboard-table thead tr td, #dashboard-table tfoot tr td {
+    background-color: #f8f8f8;
+}
+
+.main{
+    margin-bottom: 40px;
+}
+
+.id::before {
+    content: "# ";
+}
+
+.title {
+    margin-left: 10px;
+    color: darkblue;
+}
+
+.created::before {
+    content: "on ";
+}
+.created {
+    margin-left: 10px
+}
+
+.email_address::before {
+    content: "by ";
+}
+.email_address {
+    color: #008000;
+}
+
+p.list-group-item-text button {
+    margin-left: 10px;
+}
+.comment {
+    color: #888;
+    padding-left: 6px;
+}
+.app{
+    margin-left: 10px;
+    border: 1px solid #44BBEE;
+    padding:4px;
+    font-size: .8em;
+   border-radius: 4px;
+}
+.type{
+   border: 1px solid #99CC99;
+   background-color:#99CC99;
+   color:#fff;
+}
+
+.logo{
+    width: 120px;
+}
