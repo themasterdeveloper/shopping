@@ -20,9 +20,6 @@ window.onerror = function(message, filename, linenumber) {
 
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
-    cur_page = 0,
-    page_size = 5,
-    total_rows = 0,
     msg,
     type,
     search,
@@ -157,31 +154,6 @@ function GetParameterValues(param) {
     }
 }
 
-String.prototype.trim = function() {
-    return this.replace(/^\s+|\s+$/g, '');
-};
-
-String.prototype.ltrim = function() {
-    return this.replace(/^\s+/, '');
-};
-
-String.prototype.rtrim = function() {
-    return this.replace(/\s+$/, '');
-};
-
-String.prototype.fulltrim = function() {
-    return this.replace(/(?:(?:^|\n)\s+|\s+(?:$|\n))/g, '').replace(/\s+/g, ' ');
-};
-
-String.prototype.left = function(n) {
-    return this.substring(0, n);
-};
-
-String.prototype.right = function(n) {
-    var iLen = this.length;
-    return this.substring(iLen, iLen - n);
-};
-
 function toggleFullScreen() {
     if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
 
@@ -270,7 +242,8 @@ $(document).ajaxError(function() {
 
 log_ajax_error = function(xhr, errorThrown) {
     console.log(xhr.responseText);
-    showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
+    showErr('We are sorry, but there was an error accessing the database');
+    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
 
 validate_form = function(form) {
@@ -304,30 +277,6 @@ validate_field = function(field) {
         $(obj).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
         $(obj1).removeClass('glyphicon-remove').addClass('glyphicon-ok');
     }
-
-};
-
-save_ticket = function() {
-
-    var data = $("#settings-form").serializeObject();
-
-    data.action = "save_ticket";
-
-    var string = JSON.stringify(data);
-
-    if (string.indexOf("notify") < 0)
-        data.notify = "";
-
-    //    console.log(JSON.stringify(data));
-    $.ajax({
-        data : data,
-        success : function(data) {
-            $(".home-text").show();
-            $(".ticket-form").hide();
-            showMsg("Ticket successfuly launched");
-            //   location.href = location.href;
-        }
-    });
 
 };
 
