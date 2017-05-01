@@ -85,13 +85,13 @@ deleteAllCookies = function() {
 };
 
 showMsg = function(text) {
-    $(".alert").removeClass("alert-warning").addClass("alert-info");
+    $(".alert").removeClass("alert-warning").removeClass("alert-info").addClass("alert-info");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
 
 showErr = function(text) {
-    $(".alert").removeClass("alert-info").addClass("alert-warning");
+    $(".alert").removeClass("alert-info").removeClass("alert-warning").addClass("alert-warning");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
@@ -331,15 +331,13 @@ save_ticket = function() {
 
 };
 
-load_tickets = function() {
+load_products = function() {
 
     var data = {};
     user_id = 0;
-    data.action = "tickets_list";
+    data.action = "products_list";
     data.search = $("#search_text").val();
     //data.user_id = user_id;
-    data.page = cur_page;
-    data.page_size = page_size;
     $(".alert").hide();
 
     console.log(JSON.stringify(data));
@@ -353,135 +351,35 @@ load_tickets = function() {
         success : function(data) {
 
             if (data == null) {
-                $("#dashboard-table tbody").empty();
+                $("#dashboard-table").empty();
                 return false;
             }
 
             var l = data.length;
 
-            total_rows = data[0].total_rows;
-            $(".badge").html(total_rows);
-
-            var pages = parseInt(total_rows) / parseInt(page_size);
-            pages = Math.ceil(pages);
-
-            var pagination = {
-                prevPage : null,
-                nextPage : null,
-                curPage : null,
-                pageSize : null,
-                totalRows : null,
-                generate : function() {
-                    var _page = parseInt(this.curPage) / this.pageSize + 1;
-
-                    pagination = "<tr><td><table class='table'><tr>";
-
-                    pagination += "<td width='33%'><div class='pull-left'>";
-
-                    if (this.prevPage > -1) {
-                        pagination += "<button class='btn btn-primary' onclick='go_page(" + this.prevPage.toString() + ")'>Previous</button>";
-                    }
-                    else {
-                        pagination += "&nbsp;";
-                    }
-
-                    pagination += "</div></td>";
-
-                    pagination += "<td width='33%' align='center'>Page " + _page + " or " + pages + "</td>";
-
-                    pagination += "<td width='33%'><div class='pull-right'>";
-
-                    if (parseInt(this.nextPage) < parseInt(this.totalRows)) {
-                        pagination += "<button class='btn btn-primary' onclick='go_page(" + this.nextPage.toString() + ")'>Next</button>";
-                    }
-                    else {
-                        pagination += "&nbsp;";
-                    }
-
-                    pagination += "</div></td>";
-
-                    pagination += "</tr></table></td></tr>";
-
-                    return pagination;
-                }
-            };
-
-            var prev_page = parseInt(cur_page) - page_size;
-            var next_page = parseInt(cur_page) + page_size;
-
-            pagination.prevPage = prev_page;
-            pagination.nextPage = next_page;
-            pagination.curPage = cur_page;
-            pagination.pageSize = page_size;
-
-            pagination.totalRows = total_rows;
-
-            var pagination = pagination.generate();
+            $(".badge").html(l);
 
             var tmp = [],
                 i = 0;
 
-            var skip_columns = "-priority_id-type_id-status_id-total_rows-";
+            var skip_columns = "-total_rows-";
 
-            tmp[i] = "<tr><td colspan=20>";
-            tmp[i]++;
 
             for ( r = 0; r < l; r++) {
                 $this = data[r];
 
                 tmp[i] = "<div class='list-group'>";
                 i++;
-                var _priorityClass = "";
-                var _statusClass = "";
-                switch($this["priority_id"]) {
-                    case "1":
-                        _priorityClass = "btn btn-danger btn-sm";
-                        break;
-                    case "2":
-                        _priorityClass = "btn btn-warning btn-sm";
-                        break;
-                    case "3":
-                        _priorityClass = "btn btn-info btn-sm";
-                        break;
-                    case "4":
-                        _priorityClass = "btn btn-default btn-sm";
-                        break;
-                };
-                switch($this["status_id"]) {
-                    case "0":
-                        _statusClass = "btn btn-default btn-sm";
-                        break;
-                    case "1":
-                        _statusClass = "btn btn-primary btn-sm";
-                        break;
-                    case "2":
-                        _statusClass = "btn btn-active btn-sm";
-                        break;
-                };
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
 
                         tmp[i] = "<a href='#' class='list-group-item'>";
-
-                        tmp[i] += "<h4 class='list-group-item-heading'>";
-                        tmp[i] += "<button class='btn btn-primary'>" + $this["id"] + "</button>";
-                        tmp[i] += "<span class='app'>" + $this["app"] + "</span>";
-                        tmp[i] += "<span class='title'>" + $this["title"] + "</span>";
-                        tmp[i] += "<small><span class='type btn btn-default pull-right'>" + $this["type"] + "</span></small>";
-                        tmp[i] += "</h4>";
-
-                        tmp[i] += "<p class='list-group-item-text'>";
-                        tmp[i] += "<span class='comment'>" + $this["comment"] + "</span>";
-                        tmp[i] += "</p>";
-
-                        tmp[i] += "<p class='list-group-item-text'>";
-                        tmp[i] += "<small><span class='email_address'>" + $this["email_address"] + "</span>";
-                        tmp[i] += "<span class='created'>" + $this["created"] + "</span></small>";
-                        tmp[i] += "<button onclick=change_priority(" + $this["id"] + ") class='" + _priorityClass + " pull-right'>" + $this["priority"] + "</button>";
-                        tmp[i] += "<button onclick=change_status(" + $this["id"] + ") class='" + _statusClass + "'>" + $this["status"] + "</button>";
-
-                        tmp[i] += "</p>";
-
+                        tmp[i] += "<img src='/img/" + $this["logo"] + "' class='shop-logo'>";
+                        tmp[i] += "<span class='area'>" + $this["area"] + "</span>";
+                        tmp[i] += "<span class='product'>" + $this["product"] + "</span><br/>";
+                        tmp[i] += "<img class='product-image' src='/img/" + $this["image"] + "'>";
+                        tmp[i] += "<span class='price'>" + $this["price"] + "</span>";
+                        tmp[i] += "<button class='buy-product-button btn btn-success btn-lg' onclick=buy_product(" + $this["id"] + ") >ORDER NOW</button>";
                         tmp[i] += "</a>";
                     }
                 }
@@ -490,13 +388,8 @@ load_tickets = function() {
                 i++;
             }
 
-            tmp[i] = "</td></tr>";
-
-            $("#dashboard-table tbody").empty().append(tmp.join('')).show();
-            $("#dashboard-table thead").empty().append(pagination);
-            $("#dashboard-table tfoot").empty().append(pagination);
-
-            $(".is_disabled").addClass("disabled");
+            
+            $("#dashboard-table").empty().append(tmp.join('')).show();
 
             $('input[name="selected_row"]').on('change', function() {
                 record_id = this.value;
@@ -507,88 +400,11 @@ load_tickets = function() {
             $(".table-responsive").show();
             $(".search-box").show();
 
-            // If we do focus on this filed it will open the keyboard on mobile
-            // phones
-
-            //$("#search_text").focus();
-
         }
     });
 
 };
 
-go_page = function(page) {
-    if (parseInt(page) < 0) {
-        showMsg("this is the first page");
-        return false;
-    }
-
-    if (parseInt(page) >= total_rows) {
-        showMsg("this is the last page");
-        return false;
-    }
-
-    cur_page = page;
-
-    load_tickets();
-
-};
-
-change_priority = function(record_id) {
-    event.preventDefault();
-    var data = {};
-    data.action = "change_priority";
-    data.ticket_id = record_id;
-    console.log(JSON.stringify(data));
-    $.ajax({
-        data : data,
-        success : function(data) {
-            refresh_changes(record_id);
-        }
-    });
-};
-
-change_status = function(record_id) {
-    event.preventDefault();
-    var data = {};
-    data.action = "change_status";
-    data.ticket_id = record_id;
-    $.ajax({
-        data : data,
-        success : function(data) {
-            refresh_changes(record_id);
-        }
-    });
-
-};
-
-change_responsible = function(record_id) {
-    event.preventDefault();
-    var data = {};
-    data.action = "change_responsible";
-    data.ticket_id = record_id;
-    $.ajax({
-        data : data,
-        success : function(data) {
-            refresh_changes(record_id);
-        }
-    });
-
-};
-
-refresh_changes = function(record_id) {
-    var data = {};
-    data.action = "get_title";
-    data.ticket_id = record_id;
-    console.log(JSON.stringify(data));
-    $.ajax({
-        data : data,
-        success : function(data) {
-            $this = data[0];
-            $("#search_text").val($this["title"]);
-            load_tickets();
-        }
-    });
-
-};
-
+buy_product = function(product_id){
+    showMsg('The order creation will be implemented Soon!');
+}

@@ -5,18 +5,26 @@
     src: url('../fonts/Roboto-Regular.ttf') format('truetype');
 }
 
-[class^="glyphicon-"][disabled], [class*=" glyphicon-"][disabled], [class^="glyphicon-"].disabled, [class*=" glyphicon-"].disabled {
+[class^="glyphicon-"][disabled],
+[class*=" glyphicon-"][disabled],
+[class^="glyphicon-"].disabled,
+[class*=" glyphicon-"].disabled {
     cursor: default;
     opacity: 0.25;
 }
+
 
 /*
  * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
  *
  */
+
 @-moz-document url-prefix() {
-fieldset { display: table-cell; }
+    fieldset {
+        display: table-cell;
+    }
 }
+
 
 /*
  * Base structure
@@ -34,7 +42,9 @@ fieldset { display: table-cell; }
     color: #44BBEE;
 }
 
-.alert, .ticket-form, .table-responsive {
+.alert,
+.ticket-form,
+.table-responsive {
     display: none;
 }
 
@@ -46,17 +56,23 @@ fieldset { display: table-cell; }
     z-index: 99999;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
     color: #44BBEE;
 }
 
+
 /* Move down content because we have a fixed navbar that is 50px tall */
+
 body {
     color: #888;
     padding-top: 0px;
     font-family: 'Roboto', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
     margin: 0;
 }
+
 
 /*
  * Global add-ons
@@ -69,17 +85,21 @@ body {
 
 .fa {
     display: none;
-    font-size: 20pt;
+    font-size: 48pt;
     color: #44BBEE;
     z-index: 99999;
 }
+
+
 /*
  * Top navigation
  * Hide default border to remove 1px line.
  */
+
 .navbar-fixed-top {
     border: 0;
 }
+
 
 /*
  * Main content
@@ -91,30 +111,10 @@ body {
         padding-left: 40px;
     }
 }
+
 .main .page-header {
     margin-top: 0;
     font-weight: bold;
-}
-
-#dashboard-table {
-    border-collapse: collapse;
-}
-
-#dashboard-table thead th {
-    text-transform: uppercase;
-    background-color: #44BBEE;
-    color: #fff;
-}
-
-#dashboard-table tbody tr td {
-    border: 0;
-}
-
-#dashboard-table tr td:first-child, tr th:first-child {
-    padding: 4px;
-}
-
-#dashboard-table tr td:last-child, tr th:last-child {
 }
 
 .pointer {
@@ -136,6 +136,7 @@ body {
     padding-left: 15px;
 }
 
+
 /**
  *     Footer
  *
@@ -151,20 +152,20 @@ footer .navbar-nav {
     margin: 0;
 }
 
-footer .navbar-nav > li {
+footer .navbar-nav>li {
     float: left;
 }
 
-footer .navbar-nav > li > a {
+footer .navbar-nav>li>a {
     color: #fff;
 }
 
-footer .navbar-nav > li > a:hover {
+footer .navbar-nav>li>a:hover {
     color: #44BBEE;
     background-color: #fff;
 }
 
-footer .navbar-nav > li > a:focus {
+footer .navbar-nav>li>a:focus {
     color: #44BBEE;
     background-color: #fff;
 }
@@ -173,61 +174,77 @@ footer .glyphicon {
     font-size: 18pt;
 }
 
+
 /****
  * Tickets
  */
 
-.main, body, #dashboard-table thead tr td, #dashboard-table tfoot tr td {
+.main,
+body,
+#dashboard-table {
     background-color: #f8f8f8;
 }
 
-.main{
+#dashboard-table {
+    background-color: #44BBEE;
+}
+
+.main {
     margin-bottom: 40px;
 }
 
-.id::before {
-    content: "# ";
+.list-group-item {
+    height: 260px;
 }
 
-.title {
-    margin-left: 10px;
-    color: darkblue;
+.shop-logo {
+    width: 90px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
 }
 
-.created::before {
-    content: "on ";
-}
-.created {
-    margin-left: 10px
-}
-
-.email_address::before {
-    content: "by ";
-}
-.email_address {
-    color: #008000;
+.area {
+    font-weight: bold;
+    color: #aaa;
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
 }
 
-p.list-group-item-text button {
-    margin-left: 10px;
+.product {
+    color: #000;
+    font-size: 26px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
-.comment {
-    color: #888;
+
+.price {
     padding-left: 6px;
-}
-.app{
-    margin-left: 10px;
-    border: 1px solid #44BBEE;
-    padding:4px;
-    font-size: .8em;
-   border-radius: 4px;
-}
-.type{
-   border: 1px solid #99CC99;
-   background-color:#99CC99;
-   color:#fff;
+    padding-right: 6px;
+    border-radius: 6px;
+    background-color: #fff;
+    color: darkgreen;
+    font-size: 32px;
+    font-weight: bold;
+    position: absolute;
+    top: 48px;
+    right: 5px;
 }
 
-.logo{
-    width: 120px;
+.price::before {
+    content: "\0020A6\020";
+}
+
+.product-image {
+    margin-top: 20px;
+    width: 256px;
+    vertical-align: top;
+}
+
+.buy-product-button {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
 }
