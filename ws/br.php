@@ -1,4 +1,6 @@
 <?php 
+set_error_handler("customError");
+date_default_timezone_set('Africa/Lagos');
 
 // Debug area
 //ini_set('display_errors', 1);
@@ -17,13 +19,16 @@ $_update = 2;
 require '../config.php';
 
 $conn = new mysqli($php_server, $php_user, $php_password, $php_schema);
+$conn->query("SET time_zone='+01:00';");
 
 // Gets the stored procedure name from the user interface
 
 $action = $_GET['action'];
 
+log_this($action);
+
 switch ($action) {
-    case "tickets_list":
+    case "login":
 
         // It's gonna be a query
 
@@ -31,26 +36,24 @@ switch ($action) {
 
         // Fill the variable with value from ui
 
-        $page = $_GET['page'];
-        $page_size = $_GET['page_size'];
+        $email = $_GET['email'];
+        $password = $_GET['password'];
+
+        // Fill the query parameters
+        $query = "login('" . $email . "','" . $password . "')";
+
+        break;
+
+    case "products_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
         $search = $_GET['search'];
 
         // Fill the query parameters
-        $query = "get_tickets_list(".$page.",".$page_size.",'".$search."')";
-        break;
+        $query = "products_list('" . $search . "')";
 
-    case "get_title":
-
-        // It's gonna be a query
-
-        $action_type = $_query;
-
-        // Fill the variable with value from ui
-
-        $ticket_id = $_GET['ticket_id'];
-
-        // Fill the query parameters
-        $query = "get_ticket_title(".$ticket_id.")";
         break;
 
     case "save_ticket":
@@ -243,4 +246,28 @@ $conn->close();
 
 if ($action_type == $_query) echo(json_encode($rows));
 else echo(json_encode("Ok"));
+
+// Debug area
+function customError($errno, $errstr) {
+  log_this("Error: [$errno] $errstr", "err");
+  die();
+}
+
+function log_this($content = '', $type = "log"){
+    $log  = date("d-m-y H:i:s") . PHP_EOL;
+    $log  .= "user: " . $_SERVER['REMOTE_ADDR'] . PHP_EOL;
+//  $log  .= "Browser: " . $_SERVER['HTTP_USER_AGENT'] . PHP_EOL;
+    foreach($_GET as $key => $value)
+    {
+        $log .= $key . ': ' . $value . PHP_EOL;
+    }
+     if(strlen($content) > 0)
+    $log .= $content . PHP_EOL;
+    $log .= "-------------------------" . PHP_EOL;
+    file_put_contents('../logs/usr_' . date("ymd") . '.txt', $_SERVER['REMOTE_ADDR'] .' ' . date("d-m-y H:i:s") . ' '.  $_GET['action'] . PHP_EOL, FILE_APPEND);
+    file_put_contents('../logs/' . $type . '_' . date("ymd") . '.txt', $log, FILE_APPEND);
+}
+
+session_write_close();
+
 ?>
