@@ -402,10 +402,12 @@ updateBasket = function(){
             var results = data[0];
             var total_basket =   results.total_basket;
             $(".basket").html(results.total_basket);
-            if(total_basket == 0){
-                $(".basket").hide();
+            if(parseFloat(total_basket) == 0){
+                $(".offers").parent().show();
+                $(".basket").parent().hide();
             } else {
-                $(".basket").show();
+                $(".offers").parent().hide();
+                $(".basket").parent().show();
             }
        }
     });      
