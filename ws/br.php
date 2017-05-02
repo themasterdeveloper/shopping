@@ -107,8 +107,6 @@ switch ($action_type) {
     
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
 
-        // $rows = [];
-
         $rows = array();
         while ($row = $result->fetch_array(MYSQLI_ASSOC))
             {

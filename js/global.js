@@ -233,7 +233,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    //console.log(xhr);
+    console.log(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -281,7 +281,7 @@ load_products = function() {
     user_id = 0;
     data.action = "products_list";
     data.search = $("#search_text").val();
-    //console.debug(data);
+    console.debug(data);
 
     $(".alert").hide();
 
@@ -356,7 +356,7 @@ get_token = function() {
     }
     var data = {};
     data.action = "get_token";
-    //console.debug(data);
+    console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
@@ -373,7 +373,7 @@ add_product = function(){
     data.token = token;
     data.product_id = $("#product_id").val();
     data.quantity = $("#quantity").val();
-    //console.debug(data);
+    console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
@@ -394,23 +394,23 @@ updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
     data.token = token;
-    //console.debug(data);
+    console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
-            //console.debug(data);
+            console.debug(data);
             var results = data[0];
             var total_basket =   results.total_basket;
             $(".basket").html(results.total_basket);
             if(parseFloat(total_basket) > 0){
                 $(".offers").parent().removeClass("hidden").addClass("hidden");
-                $(".basket").parent().removeClass("hidden");
+                $(".basket").parent().removeClass("hidden").show();
             } else {
-                $(".offers").removeClass("hidden");
+                $(".offers").removeClass("hidden").show();
                 $(".basket").removeClass("hidden").addClass("hidden");
             }
        }
-    });      
+    });
 }
 
 function listCookies() {
@@ -422,4 +422,4 @@ function listCookies() {
     return aString;
 }
 
-//console.log(listCookies());
+console.log(listCookies());
