@@ -223,6 +223,17 @@ body,
     background-color: #44BBEE;
 }
 
+.dashboard {
+    margin-top: 5px;
+    margin-right: 5px;
+}
+
+.app-title {
+    background-color: #fff;
+    padding: 10px;
+    font-weight: bold;
+}
+
 .main {
     margin-bottom: 40px;
 }
