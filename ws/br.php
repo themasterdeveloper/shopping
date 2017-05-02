@@ -6,7 +6,7 @@ date_default_timezone_set('Africa/Lagos');
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
 //error_reporting(-1);
-
+ini_set('html_errors', false);
 // Prepare the headers for JSON data
 
 header("Access-Control-Allow-Origin: *");
