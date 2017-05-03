@@ -35,19 +35,17 @@
                 <!-- The table area -->
                 <div class="alert alert-info alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                     <span id="msg"></span>
                 </div>
                 <div class="basket-container">
-                    <img id="shop_logo" class="shop-logo-big"><br>
-                    <span id="area"></span>
+                    <!-- List of products -->
                     <table id="basket-table" class="table-hover table-striped table-responsive">
                         <thead></thead>        
                         <tbody></tbody>
                         <tfoot></tfoot>
                     </table>
-                    <!-- List of products -->
                 </div>
                 <button type="button" class="btn btn-lg btn-danger dismiss">
                     Empty basket
@@ -64,7 +62,7 @@
     <footer class="navbar navbar-fixed-bottom">
         <ul class="nav navbar-nav">
             <li class="active">
-                <a href="#"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
+                <a href="javascript:void(0)"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
             </li>
             <li>
                 <a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top"  title="Refresh tickets list"></span></a>
@@ -101,7 +99,7 @@
 
         $(".glyphicon-home").bind("click", function(e) {
             e.preventDefault();
-            document.location.href="/";
+            $("body").load("/");
         });
 
         $(".glyphicon-fullscreen").bind("click", function() {
