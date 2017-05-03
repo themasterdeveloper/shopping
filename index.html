@@ -9,7 +9,7 @@
     <meta name="description" content="iyabasira - a new way to shop for Naija">
     <meta name="author" content="www.escng.com">
     <link rel="icon" href="/img/favicon.ico">
-    <title>escng - User support ticket management</title>
+    <title>iyabasira - delivery services</title>
     <!-- Bootstrap core CSS -->
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                 <div class="pull-right dashboard">
                     <button class="btn btn-primary hidden" type="button">Offers <span class="badge offers"></span>
                         </button>
-                    <button class="btn btn-danger hidden" type="button">Basket <span class="badge basket"></span>
+                    <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket"></span>
                         </button>
                 </div>
                 <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
@@ -141,6 +141,11 @@
         $("#add-product").bind("click", function(e) {
            e.preventDefault();
            add_product();
+        });
+
+        $("#basket_button").bind("click", function(e) {
+           e.preventDefault();
+           document.location.href = "/checkout";
         });
 
         $("#close").bind("click", function(e) {

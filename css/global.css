@@ -215,12 +215,31 @@ footer .glyphicon {
 
 .main,
 body,
-#dashboard-table {
+#dashboard-table{
     background-color: #f8f8f8;
 }
 
 #dashboard-table {
     background-color: #44BBEE;
+}
+
+#basket-table {
+  background-color: #fff;
+}
+
+#basket-table thead th {
+  text-transform: uppercase;  
+}
+
+#basket-table thead th, #basket-table tbody td {
+  padding: 6px;
+  font-size: 18px;
+}
+
+.basket-container #area{
+  font-size: 18px;
+  color: green;
+  font-weight: bold;
 }
 
 .dashboard {
@@ -246,6 +265,10 @@ body,
     position: absolute;
     top: 5px;
     left: 5px;
+}
+
+.shop-logo-big {
+    width: 120px;
 }
 
 .area {
@@ -283,6 +306,14 @@ body,
 
 .basket::before {
     content: "\0020A6\020";
+}
+
+._amount, ._total {
+  text-align: right;
+}
+
+._quantity {
+  text-align: center;
 }
 
 .product-image {

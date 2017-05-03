@@ -11,7 +11,7 @@
  */
 
 window.onerror = function(message, filename, linenumber) {
-    console.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
+    //console.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
 };
 
 /**
@@ -233,7 +233,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    console.log(xhr);
+    //console.log(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -278,7 +278,6 @@ load_products = function() {
     }
 
     var data = {};
-    user_id = 0;
     data.action = "products_list";
     data.search = $("#search_text").val();
     console.debug(data);
@@ -393,15 +392,14 @@ add_product = function(){
 updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
-    data.token = token;
+    data.token = getCookie("token");
     console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug(data);
+            //console.debug(data);
             var results = data[0];
-            var total_basket =   results.total_basket;
-            $(".basket").html(results.total_basket);
+            var total_basket = results.total_basket;
             if(parseFloat(total_basket) > 0){
                 $(".offers").parent().removeClass("hidden").addClass("hidden");
                 $(".basket").parent().removeClass("hidden").show();
@@ -409,6 +407,7 @@ updateBasket = function(){
                 $(".offers").removeClass("hidden").show();
                 $(".basket").removeClass("hidden").addClass("hidden");
             }
+            $(".basket").html(results.total_basket);
        }
     });
 }
@@ -423,3 +422,94 @@ function listCookies() {
 }
 
 console.log(listCookies());
+
+load_basket_products = function() {
+
+    var data = {};
+    user_id = 0;
+    data.action = "basket_list";
+    data.token = getCookie("token");
+    console.log(data);
+    $.ajax({
+
+        data : data,
+        success : function(data) {
+
+            var l = data.length;
+
+            if(l==0) {
+                document.location.href  = "/";
+            }
+
+            var tmp = [],
+                header = [],
+                i = 0;
+
+            var skip_columns = "-id-logo-area-";
+
+            var logo = data[0].logo;
+            var area = data[0].area;
+
+            $("#shop_logo").attr("src", "/img/" + logo);
+            $("#area").html(area);
+
+            header[i] = "<tr>";
+            $this = data[0];
+            i++;
+            for (var key in $this) {
+                if (skip_columns.indexOf("-" + key + "-") == -1) {
+                    header[i] = "<th class='" + "_" + key + "'>" + key + "</th>";
+                    i++;
+                }
+            }
+            header[i] = "</tr>";
+
+            i = 0;
+            for ( r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[i] = "<tr>";
+                i++;
+                for (var key in $this) {
+                    if (skip_columns.indexOf("-" + key + "-") == -1) {
+                        tmp[i] = "<td class='" + "_" + key + "'>" + $this[key] + "</td>";
+                        i++;
+                    }
+                }
+                tmp[i] = "<td><a href='#' onclick=removeItem(" + $this["id"] + ")><span class='glyphicon glyphicon-remove'></span></td></a></tr>";
+                i++;        
+            }
+            $("#basket-table thead").empty().append(header.join(''));
+            $("#basket-table tbody").empty().append(tmp.join(''));
+            $(".table-responsive").show();
+        }
+    });
+
+    updateBasket();
+
+};
+
+removeItem = function(item_id) {
+    var data = {};
+    data.action = "remove_item";
+    data.item_id = item_id;
+    $.ajax({
+        data : data,
+        success : function(data) {
+            load_basket_products();
+        }
+    });
+};
+
+
+removeAll = function() {
+    var data = {};
+    data.action = "remove_all";
+    data.token = getCookie("token");
+    console.log(data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            load_basket_products();
+        }
+    });
+};

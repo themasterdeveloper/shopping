@@ -80,6 +80,18 @@ switch ($action) {
 
         break;
 
+    case "basket_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $token = $_GET['token'];
+
+        // Fill the query parameters
+        $query = "basket_list('" . $token . "')";
+
+        break;
+
     case "save_item":
 
         // It's gonna be a database update
@@ -98,6 +110,44 @@ switch ($action) {
         $token = $_GET['token'];
         $product_id = $_GET['product_id'];
         $quantity = $_GET['quantity'];
+
+        break;
+
+    case "remove_item":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delete_item(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $item_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+
+        break;
+
+    case "remove_all":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delete_all(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("s", $token);
+
+        // Assign values
+        $token = $_GET['token'];
 
         break;
 }
