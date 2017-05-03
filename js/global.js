@@ -11,7 +11,7 @@
  */
 
 window.onerror = function(message, filename, linenumber) {
-    console.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
+    //console.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
 };
 
 /**
@@ -24,7 +24,7 @@ var webservice_path = "/ws/br.php",
     type,
     search,
     record_id,
-    save_login_name = false,
+    token = '',
     error = false;
 
 /**
@@ -219,21 +219,13 @@ $.ajaxSetup({
 
 $(document).ajaxStart(function() {
     $('.fa').show().center();
-    console.log("ajaxStart");
-});
-
-$(document).ajaxSend(function() {
-    $('.fa').show().center();
-    console.log("ajaxSend");
 });
 
 $(document).ajaxStop(function() {
-    console.log("ajaxStop");
     $('.fa').fadeOut('slow');
 });
 
 $(document).ajaxError(function() {
-    console.log("ajaxError");
     setTimeout(function() {
         $('.fa').fadeOut('slow');
         //        location.href = location.href;
@@ -241,7 +233,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    console.log(xhr.responseText);
+    //console.log(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -281,38 +273,37 @@ validate_field = function(field) {
 };
 
 load_products = function() {
+    if (token.length == 0) {
+        get_token();
+    }
 
     var data = {};
-    user_id = 0;
     data.action = "products_list";
     data.search = $("#search_text").val();
-    //data.user_id = user_id;
+    console.debug(data);
+
     $(".alert").hide();
-
-    console.log(JSON.stringify(data));
-
-    $(".is_disabled").removeClass("disabled");
-    $(".is_disabled").addClass("disabled");
 
     $.ajax({
 
         data : data,
         success : function(data) {
 
-            if (data == null) {
+            if (data[0].error == 0) {
                 $("#dashboard-table").empty();
+                showErr("No products found");
+                $(".offers").html(0);
                 return false;
             }
 
             var l = data.length;
 
-            $(".badge").html(l);
+            $(".offers").html(l);
 
             var tmp = [],
                 i = 0;
 
             var skip_columns = "-total_rows-";
-
 
             for ( r = 0; r < l; r++) {
                 $this = data[r];
@@ -321,39 +312,204 @@ load_products = function() {
                 i++;
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
-
-                        tmp[i] = "<a href='#' class='list-group-item'>";
+                        tmp[i] = "<div href='#' class='list-group-item it-" + $this["id"] + "'>";
                         tmp[i] += "<img src='/img/" + $this["logo"] + "' class='shop-logo'>";
                         tmp[i] += "<span class='area'>" + $this["area"] + "</span>";
                         tmp[i] += "<span class='product'>" + $this["product"] + "</span><br/>";
                         tmp[i] += "<img class='product-image' src='/img/" + $this["image"] + "'>";
                         tmp[i] += "<span class='price'>" + $this["price"] + "</span>";
                         tmp[i] += "<button class='buy-product-button btn btn-success btn-lg' onclick=buy_product(" + $this["id"] + ") >ORDER NOW</button>";
-                        tmp[i] += "</a>";
+                        tmp[i] += "</div>";
                     }
                 }
                 tmp[i] += "</div>";
                 // List-group
                 i++;
             }
-
             
             $("#dashboard-table").empty().append(tmp.join('')).show();
-
-            $('input[name="selected_row"]').on('change', function() {
-                record_id = this.value;
-                $(".is_disabled").removeClass("disabled");
-            });
-
-            $(".ticket-form").hide();
             $(".table-responsive").show();
             $(".search-box").show();
 
         }
     });
 
+    updateBasket();
+
 };
 
 buy_product = function(product_id){
-    showMsg('The order creation will be implemented Soon!');
+    var caller = "it-"+product_id;
+    var pos = $("." + caller).position();
+    $(".order-form").css("top", pos.top+32).show();
+    $(".order-form #product_id").val(product_id);
+    $(".shadow").show();
+    event.preventDefault();
 }
+
+get_token = function() {
+    if(getCookie("token")){
+        token = getCookie("token");
+        $("#token").val(token);
+        return;
+    }
+    var data = {};
+    data.action = "get_token";
+    console.debug(data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            token = data[0].token;
+            $("#token").val(token);
+            setCookie('token', token);
+        }
+    });
+}
+
+add_product = function(){
+    var data = {};
+    data.action = "save_item";
+    data.token = token;
+    data.product_id = $("#product_id").val();
+    data.quantity = $("#quantity").val();
+    console.debug(data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            var results = data[0];
+            if(results.error == 0) {
+                $(".order-form").hide();
+                $(".shadow").hide();
+            }else {
+                $(".error_message").html(results.message).show();
+            }
+            updateBasket();
+       }
+    });    
+    //event.preventDefault();
+}
+
+updateBasket = function(){
+    var data = {};
+    data.action = "get_total_basket";
+    data.token = getCookie("token");
+    console.debug(data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            //console.debug(data);
+            var results = data[0];
+            var total_basket = results.total_basket;
+            if(parseFloat(total_basket) > 0){
+                $(".offers").parent().removeClass("hidden").addClass("hidden");
+                $(".basket").parent().removeClass("hidden").show();
+            } else {
+                $(".offers").removeClass("hidden").show();
+                $(".basket").removeClass("hidden").addClass("hidden");
+            }
+            $(".basket").html(results.total_basket);
+       }
+    });
+}
+
+function listCookies() {
+    var theCookies = document.cookie.split(';');
+    var aString = '';
+    for (var i = 1; i <= theCookies.length; i++) {
+        aString += i + ' ' + theCookies[i - 1] + "\n";
+    }
+    return aString;
+}
+
+console.log(listCookies());
+
+load_basket_products = function() {
+
+    var data = {};
+    user_id = 0;
+    data.action = "basket_list";
+    data.token = getCookie("token");
+    console.log(data);
+    $.ajax({
+
+        data : data,
+        success : function(data) {
+
+            var l = data.length;
+
+            if(l==0) {
+                document.location.href  = "/";
+            }
+
+            var tmp = [],
+                header = [],
+                i = 0;
+
+            var skip_columns = "-id-logo-area-";
+
+            var logo = data[0].logo;
+            var area = data[0].area;
+
+            $("#shop_logo").attr("src", "/img/" + logo);
+            $("#area").html(area);
+
+            header[i] = "<tr>";
+            $this = data[0];
+            i++;
+            for (var key in $this) {
+                if (skip_columns.indexOf("-" + key + "-") == -1) {
+                    header[i] = "<th class='" + "_" + key + "'>" + key + "</th>";
+                    i++;
+                }
+            }
+            header[i] = "</tr>";
+
+            i = 0;
+            for ( r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[i] = "<tr>";
+                i++;
+                for (var key in $this) {
+                    if (skip_columns.indexOf("-" + key + "-") == -1) {
+                        tmp[i] = "<td class='" + "_" + key + "'>" + $this[key] + "</td>";
+                        i++;
+                    }
+                }
+                tmp[i] = "<td><a href='#' onclick=removeItem(" + $this["id"] + ")><span class='glyphicon glyphicon-remove'></span></td></a></tr>";
+                i++;        
+            }
+            $("#basket-table thead").empty().append(header.join(''));
+            $("#basket-table tbody").empty().append(tmp.join(''));
+            $(".table-responsive").show();
+        }
+    });
+
+    updateBasket();
+
+};
+
+removeItem = function(item_id) {
+    var data = {};
+    data.action = "remove_item";
+    data.item_id = item_id;
+    $.ajax({
+        data : data,
+        success : function(data) {
+            load_basket_products();
+        }
+    });
+};
+
+
+removeAll = function() {
+    var data = {};
+    data.action = "remove_all";
+    data.token = getCookie("token");
+    console.log(data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            load_basket_products();
+        }
+    });
+};
