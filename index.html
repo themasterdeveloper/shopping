@@ -12,7 +12,6 @@
     <title>iyabasira - delivery services</title>
     <!-- Bootstrap core CSS -->
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <!-- Full screen for Safari under iOS --> 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -91,7 +90,7 @@
     <footer class="navbar navbar-fixed-bottom">
         <ul class="nav navbar-nav">
             <li class="active">
-                <a href="#"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
+                <a href="javascript:void(0)"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
             </li>
             <li>
                 <a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top"  title="Refresh tickets list"></span></a>
@@ -145,7 +144,7 @@
 
         $("#basket_button").bind("click", function(e) {
            e.preventDefault();
-           document.location.href = "/checkout";
+           $("body").load("/checkout")
         });
 
         $("#close").bind("click", function(e) {

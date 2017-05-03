@@ -228,19 +228,28 @@ body,
 }
 
 #basket-table thead th {
-  text-transform: uppercase;  
+  text-transform: capitalize;  
+  font-size: 12px;
 }
 
 #basket-table thead th, #basket-table tbody td {
-  padding: 6px;
-  font-size: 18px;
+  padding: 4px;
+  font-size: 14px;
 }
 
-.basket-container #area{
-  font-size: 18px;
-  color: green;
+#basket-table tbody td.__shop {
+  font-size: 12px;
+}
+
+.__qty
+,.__total {
+  text-align: right;
+}
+
+.__total {
   font-weight: bold;
 }
+
 
 .dashboard {
     margin-top: 5px;
@@ -265,10 +274,6 @@ body,
     position: absolute;
     top: 5px;
     left: 5px;
-}
-
-.shop-logo-big {
-    width: 120px;
 }
 
 .area {
@@ -300,11 +305,7 @@ body,
     right: 5px;
 }
 
-.price::before {
-    content: "\0020A6\020";
-}
-
-.basket::before {
+.price::before, .basket::before {
     content: "\0020A6\020";
 }
 
