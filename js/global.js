@@ -281,7 +281,7 @@ load_products = function() {
     data.action = "products_list";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
-    console.debug(data);
+    console.log("load_products", data);
 
     $(".alert").hide();
 
@@ -289,6 +289,8 @@ load_products = function() {
 
         data : data,
         success : function(data) {
+
+            console.log("load_products", data[0]);
 
             if (data[0].error == 1) {
                 $("#dashboard-table").empty();
@@ -336,15 +338,6 @@ load_products = function() {
 
 };
 
-buy_product = function(product_id){
-    var caller = "it-"+product_id;
-    var pos = $("." + caller).position();
-    $(".order-form").css("top", pos.top+32).show();
-    $(".order-form #product_id").val(product_id);
-    $(".shadow").show();
-    event.preventDefault();
-}
-
 get_token = function() {
     if(getCookie("token")){
         token = getCookie("token");
@@ -353,15 +346,26 @@ get_token = function() {
     }
     var data = {};
     data.action = "get_token";
-    console.debug(data);
+    console.log("get_token", data);
     $.ajax({
         data : data,
         success : function(data) {
+            console.log("get_token", data[0]);
             token = data[0].token;
             $("#token").val(token);
             setCookie('token', token);
         }
     });
+}
+
+buy_product = function(product_id){
+    var caller = "it-"+product_id;
+    var pos = $("." + caller).position();
+    $("#quantity").val(1);
+    $(".order-form").css("top", pos.top+32).show();
+    $(".order-form #product_id").val(product_id);
+    $(".shadow").show();
+    event.preventDefault();
 }
 
 add_product = function(){
@@ -370,15 +374,19 @@ add_product = function(){
     data.token = token;
     data.product_id = $("#product_id").val();
     data.quantity = $("#quantity").val();
-    console.debug(data);
+    console.log("add_product", data);
     $.ajax({
         data : data,
         success : function(data) {
+            console.log("add_product", data[0]);
             var results = data[0];
             if(results.error == 0) {
                 $(".order-form").hide();
                 $(".shadow").hide();
             }else {
+                if(results.error == 2){
+                    resetToken();
+                };
                 $(".error_message").html(results.message).show();
             }
             updateBasket();
@@ -392,11 +400,11 @@ updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
     data.token = getCookie("token");
-    console.debug(data);
+    console.log("updateBasket", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug(data);
+            console.log("updateBasket", data[0]);
             var results = data[0];
             var total_basket = results.total_basket;
             $(".basket").html(total_basket);
@@ -426,11 +434,12 @@ load_basket_products = function() {
     user_id = 0;
     data.action = "basket_list";
     data.token = getCookie("token");
-    console.log(data);
+    console.log("load_basket_products", data);
     $.ajax({
 
         data : data,
         success : function(data) {
+            console.log("load_basket_products", data[0]);
             if(data[0].error == 1) {
                 document.location.href  = "/";
                 return;
@@ -485,9 +494,11 @@ removeItem = function(item_id) {
     var data = {};
     data.action = "remove_item";
     data.item_id = item_id;
+    console.log("removeItem", data);
     $.ajax({
         data : data,
         success : function(data) {
+            console.log("removeItem", data[0]);
             load_basket_products();
         }
     });
@@ -498,11 +509,19 @@ removeAll = function() {
     var data = {};
     data.action = "remove_all";
     data.token = getCookie("token");
-    console.log(data);
+    console.log("removeAll", data);
     $.ajax({
         data : data,
         success : function(data) {
+            console.log("removeAll", data[0]);
             load_basket_products();
         }
     });
 };
+
+resetToken = function(){
+    token = "";
+    $("#token").val(token);
+    deleteAllCookies();
+    get_token();
+}
