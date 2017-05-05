@@ -62,9 +62,10 @@ switch ($action) {
 
         $action_type = $_query;
         $search = $_GET['search'];
+        $token = $_GET['token'];
 
         // Fill the query parameters
-        $query = "products_list('" . $search . "')";
+        $query = "products_list('" . $search . "','" . $token . "')";
 
         break;
 
@@ -156,13 +157,17 @@ switch ($action_type) {
     case $_query:
     
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
-
+        $rowcount=mysqli_num_rows($result);
         $rows = array();
-        while ($row = $result->fetch_array(MYSQLI_ASSOC))
-            {
-            $rows[] = $row;
-            }
-
+        if($rowcount==0){
+            $rows[] = array("error"=>1, 
+                            "message"=>"Sorry, there are no products available");
+        }else{
+            while ($row = $result->fetch_array(MYSQLI_ASSOC))
+                {
+                $rows[] = $row;
+                }
+        }
         $result->free();
 
         break;

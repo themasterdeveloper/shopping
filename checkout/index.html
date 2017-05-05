@@ -92,17 +92,17 @@
             removeAll();
         });
 
-        $(".glyphicon-refresh").bind("click", function(e) {
+        $(".glyphicon-refresh").parent().bind("click", function(e) {
             e.preventDefault();
             load_basket_products();
         });
 
-        $(".glyphicon-home").bind("click", function(e) {
+        $(".glyphicon-home").parent().bind("click", function(e) {
             e.preventDefault();
             $("body").load("/");
         });
 
-        $(".glyphicon-fullscreen").bind("click", function() {
+        $(".glyphicon-fullscreen").parent().bind("click", function() {
             toggleFullScreen();
         });
 
