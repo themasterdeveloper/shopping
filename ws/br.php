@@ -62,9 +62,10 @@ switch ($action) {
 
         $action_type = $_query;
         $search = $_GET['search'];
+        $token = $_GET['token'];
 
         // Fill the query parameters
-        $query = "products_list('" . $search . "')";
+        $query = "products_list('" . $search . "','" . $token . "')";
 
         break;
 
@@ -77,6 +78,18 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "get_total_basket('" . $token . "')";
+
+        break;
+
+    case "basket_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $token = $_GET['token'];
+
+        // Fill the query parameters
+        $query = "basket_list('" . $token . "')";
 
         break;
 
@@ -100,21 +113,61 @@ switch ($action) {
         $quantity = $_GET['quantity'];
 
         break;
+
+    case "remove_item":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delete_item(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $item_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+
+        break;
+
+    case "remove_all":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delete_all(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("s", $token);
+
+        // Assign values
+        $token = $_GET['token'];
+
+        break;
 }
 
 switch ($action_type) {
     case $_query:
     
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
-
-        // $rows = [];
-
+        $rowcount=mysqli_num_rows($result);
         $rows = array();
-        while ($row = $result->fetch_array(MYSQLI_ASSOC))
-            {
-            $rows[] = $row;
-            }
-
+        if($rowcount==0){
+            $rows[] = array("error"=>1, 
+                            "message"=>"Sorry, there are no products available");
+        }else{
+            while ($row = $result->fetch_array(MYSQLI_ASSOC))
+                {
+                $rows[] = $row;
+                }
+        }
         $result->free();
 
         break;

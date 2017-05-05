@@ -233,7 +233,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    //console.log(xhr);
+    console.log(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -278,10 +278,10 @@ load_products = function() {
     }
 
     var data = {};
-    user_id = 0;
     data.action = "products_list";
     data.search = $("#search_text").val();
-    //console.debug(data);
+    data.token = getCookie("token");
+    console.debug(data);
 
     $(".alert").hide();
 
@@ -290,16 +290,13 @@ load_products = function() {
         data : data,
         success : function(data) {
 
-            if (data[0].error == 0) {
+            if (data[0].error == 1) {
                 $("#dashboard-table").empty();
-                showErr("No products found");
-                $(".offers").html(0);
+                showErr(data[0].message);
                 return false;
             }
 
             var l = data.length;
-
-            $(".offers").html(l);
 
             var tmp = [],
                 i = 0;
@@ -356,7 +353,7 @@ get_token = function() {
     }
     var data = {};
     data.action = "get_token";
-    //console.debug(data);
+    console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
@@ -373,7 +370,7 @@ add_product = function(){
     data.token = token;
     data.product_id = $("#product_id").val();
     data.quantity = $("#quantity").val();
-    //console.debug(data);
+    console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
@@ -385,6 +382,7 @@ add_product = function(){
                 $(".error_message").html(results.message).show();
             }
             updateBasket();
+            load_products();
        }
     });    
     //event.preventDefault();
@@ -393,24 +391,22 @@ add_product = function(){
 updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
-    data.token = token;
-    //console.debug(data);
+    data.token = getCookie("token");
+    console.debug(data);
     $.ajax({
         data : data,
         success : function(data) {
-            //console.debug(data);
+            console.debug(data);
             var results = data[0];
-            var total_basket =   results.total_basket;
-            $(".basket").html(results.total_basket);
+            var total_basket = results.total_basket;
+            $(".basket").html(total_basket);
             if(parseFloat(total_basket) > 0){
-                $(".offers").parent().removeClass("hidden").addClass("hidden");
                 $(".basket").parent().removeClass("hidden");
             } else {
-                $(".offers").removeClass("hidden");
-                $(".basket").removeClass("hidden").addClass("hidden");
+                $(".basket").parent().addClass("hidden");
             }
        }
-    });      
+    });
 }
 
 function listCookies() {
@@ -422,4 +418,91 @@ function listCookies() {
     return aString;
 }
 
-//console.log(listCookies());
+console.log(listCookies());
+
+load_basket_products = function() {
+
+    var data = {};
+    user_id = 0;
+    data.action = "basket_list";
+    data.token = getCookie("token");
+    console.log(data);
+    $.ajax({
+
+        data : data,
+        success : function(data) {
+            if(data[0].error == 1) {
+                document.location.href  = "/";
+                return;
+            }
+
+            var tmp = [],
+                header = [],
+                i = 0;
+
+            var skip_columns = "-id-area-";
+
+            header[i] = "<tr>";
+            $this = data[0];
+            for (var key in $this) {
+                if (skip_columns.indexOf("-" + key + "-") == -1) {
+                    header[i] = "<th class='" + "__" + key + "'>" + key + "</th>";
+                    i++;
+                }
+            }
+            header[i] = "</tr>";
+
+            i = 0;
+            var l = data.length;
+            for ( r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[i] = "<tr>";
+                i++;
+                for (var key in $this) {
+                    if (skip_columns.indexOf("-" + key + "-") == -1) {
+                        if(key == 'shop'){
+                            tmp[i] = "<td class='" + "__" + key + "'>" + $this[key] + "<br>" + $this["area"] + "</td>";
+                        }else{
+                            tmp[i] = "<td class='" + "__" + key + "'>" + $this[key] + "</td>";
+                        }
+                        i++;
+                    }
+                }
+                tmp[i] = "<td><a href='#' onclick=removeItem(" + $this["id"] + ")><span class='glyphicon glyphicon-remove'></span></td></a></tr>";
+                i++;        
+            }
+            $("#basket-table thead").empty().append(header.join(''));
+            $("#basket-table tbody").empty().append(tmp.join(''));
+            $(".table-responsive").show();
+        }
+    });
+
+    updateBasket();
+
+};
+
+removeItem = function(item_id) {
+    var data = {};
+    data.action = "remove_item";
+    data.item_id = item_id;
+    $.ajax({
+        data : data,
+        success : function(data) {
+            load_basket_products();
+        }
+    });
+};
+
+
+removeAll = function() {
+    var data = {};
+    data.action = "remove_all";
+    data.token = getCookie("token");
+    console.log(data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            load_basket_products();
+        }
+    });
+};
