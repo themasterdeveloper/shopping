@@ -262,7 +262,7 @@ body,
     font-weight: bold;
 }
 
-.main {
+.main, .intro {
     margin-bottom: 40px;
 }
 
@@ -308,6 +308,13 @@ body,
 
 .price::before, .basket::before {
     content: "\0020A6\020";
+}
+
+#basket_button {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 99998;
 }
 
 ._amount, ._total {
@@ -417,4 +424,31 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
   background: #367ebd;
+}
+
+.intro {
+  padding: 20px;
+  background-color: #fff;
+  font-size: 16px;
+}
+
+.bottom-message {
+  font-size: 12px;
+}
+
+.intro p, .intro ul li {
+  padding-bottom: 10px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: #888;
+  }
+
+.copyright span.iyabasira {
+      color: #44BBEE;
+} 
+
+.bold {
+  font-weight: bold;
 }

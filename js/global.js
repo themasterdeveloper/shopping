@@ -11,7 +11,7 @@
  */
 
 window.onerror = function(message, filename, linenumber) {
-    console.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
+    console.debug("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
 };
 
 /**
@@ -20,14 +20,11 @@ window.onerror = function(message, filename, linenumber) {
 
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
-    msg,
-    type,
-    search,
     record_id,
     token = '',
-    error = false;
-
-const HOME = "/home.html";
+    error = false,
+    intro = false,
+    HOME = "/home.html";
 
 /**
  * Save cookie on users' computer
@@ -235,7 +232,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    console.log(xhr);
+    console.debug(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -283,7 +280,7 @@ load_products = function() {
     data.action = "products_list";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
-    console.log("load_products", data);
+    console.debug("load_products", data);
 
     $(".alert").hide();
 
@@ -292,11 +289,12 @@ load_products = function() {
         data : data,
         success : function(data) {
 
-            console.log("load_products", data[0]);
+            console.debug("load_products", data[0]);
 
             if (data[0].error == 1) {
                 $("#dashboard-table").empty();
                 showErr(data[0].message);
+
                 return false;
             }
 
@@ -349,12 +347,12 @@ get_token = function() {
     var data = {};
     data.action = "get_token";
 
-    console.log("get_token", data);
+    console.debug("get_token", data);
 
     $.ajax({
         data : data,
         success : function(data) {
-            console.log("get_token", data[0]);
+            console.debug("get_token", data[0]);
             token = data[0].token;
             $("#token").val(token);
             setCookie('token', token);
@@ -378,11 +376,11 @@ add_product = function(){
     data.token = token;
     data.product_id = $("#product_id").val();
     data.quantity = $("#quantity").val();
-    console.log("add_product", data);
+    console.debug("add_product", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.log("add_product", data[0]);
+            console.debug("add_product", data[0]);
             var results = data[0];
             if(results.error == 0) {
                 $(".order-form").hide();
@@ -404,11 +402,11 @@ updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
     data.token = getCookie("token");
-    console.log("updateBasket", data);
+    console.debug("updateBasket", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.log("updateBasket", data[0]);
+            console.debug("updateBasket", data[0]);
 
             var results = data[0];
             var total_basket = results.total_basket;
@@ -431,7 +429,7 @@ function listCookies() {
     return aString;
 }
 
-console.log(listCookies());
+console.debug(listCookies());
 
 load_basket_products = function() {
 
@@ -440,14 +438,14 @@ load_basket_products = function() {
     data.action = "basket_list";
     data.token = getCookie("token");
 
-    console.log("load_basket_products", data);
+    console.debug("load_basket_products", data);
 
     $.ajax({
 
         data : data,
         success : function(data) {
 
-            console.log("load_basket_products", data[0]);
+            console.debug("load_basket_products", data[0]);
 
             if(data[0].error == 1) {
                 $(".content").load(HOME);
@@ -503,11 +501,11 @@ removeItem = function(item_id) {
     var data = {};
     data.action = "remove_item";
     data.item_id = item_id;
-    console.log("removeItem", data);
+    console.debug("removeItem", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.log("removeItem", data[0]);
+            console.debug("removeItem", data[0]);
             load_basket_products();
         }
     });
@@ -519,12 +517,12 @@ removeAll = function() {
     data.action = "remove_all";
     data.token = getCookie("token");
 
-    console.log("removeAll", data);
+    console.debug("removeAll", data);
 
     $.ajax({
         data : data,
         success : function(data) {
-            console.log("removeAll", data[0]);
+            console.debug("removeAll", data[0]);
             load_basket_products();
         }
     });
@@ -535,4 +533,46 @@ resetToken = function(){
     $("#token").val(token);
     deleteAllCookies();
     get_token();
+}
+
+get_areas = function(){
+    var data = {};
+    data.action = "get_areas";
+
+    console.debug("get_areas", data);
+
+    $.ajax({
+        data : data,
+        success : function(data) {
+            console.debug("get_areas", data[0]);
+            $(".areas").html(data[0].areas);
+        }
+    });
+}
+
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        save_location(pos);
+    });
+}
+
+save_location = function(pos){
+    var data = {};
+    data.action = "save_location";
+    data.lat = pos.lat;
+    data.lng = pos.lng;
+    console.debug("save_location", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            console.debug("save_location", data[0]);
+        },
+        error : function(data) {
+            console.debug("save_location.error", data[0]);
+        }
+    });
 }
