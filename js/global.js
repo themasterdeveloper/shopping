@@ -27,6 +27,8 @@ var webservice_path = "/ws/br.php",
     token = '',
     error = false;
 
+const HOME = "/home.html";
+
 /**
  * Save cookie on users' computer
  *
@@ -448,7 +450,7 @@ load_basket_products = function() {
             console.log("load_basket_products", data[0]);
 
             if(data[0].error == 1) {
-                document.location.href  = "/";
+                $(".content").load(HOME);
                 return;
             }
 
