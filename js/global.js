@@ -11,7 +11,7 @@
  */
 
 window.onerror = function(message, filename, linenumber) {
-    console.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
+    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
 };
 
 /**
@@ -20,12 +20,20 @@ window.onerror = function(message, filename, linenumber) {
 
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
-    msg,
-    type,
-    search,
     record_id,
     token = '',
-    error = false;
+    error = false,
+    intro = false,
+    HOME = "/home.html";
+
+/**
+ * Logs javascript trace
+ */
+
+var log = function(name, value) {
+    if(getCookie("Debug")=="True")
+        console.debug(name, value);
+}
 
 /**
  * Save cookie on users' computer
@@ -82,13 +90,13 @@ deleteAllCookies = function() {
 };
 
 showMsg = function(text) {
-    $(".alert").removeClass("alert-warning").removeClass("alert-info").addClass("alert-info");
+    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
 
 showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-warning").addClass("alert-warning");
+    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
@@ -101,6 +109,7 @@ pad = function(val, len) {
     return val;
 };
 
+/*
 $(function() {
     var nua = navigator.userAgent;
     var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1);
@@ -108,6 +117,7 @@ $(function() {
         $('select.form-control').removeClass('form-control').css('width', '100%');
     }
 });
+*/
 
 /**
  * Centers divs on screen
@@ -119,9 +129,6 @@ jQuery.fn.center = function() {
     this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
     return this;
 };
-/**
- * Delays execution of code (like wait...)
- */
 
 /**
  * Converts any form into a JSON object
@@ -233,7 +240,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    console.log(xhr);
+    log(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -281,7 +288,7 @@ load_products = function() {
     data.action = "products_list";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
-    console.debug(data);
+    log("load_products", data);
 
     $(".alert").hide();
 
@@ -290,9 +297,12 @@ load_products = function() {
         data : data,
         success : function(data) {
 
+            log("load_products", data);
+
             if (data[0].error == 1) {
                 $("#dashboard-table").empty();
                 showErr(data[0].message);
+
                 return false;
             }
 
@@ -329,21 +339,21 @@ load_products = function() {
             $(".table-responsive").show();
             $(".search-box").show();
 
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                    };
+                    save_location(pos);
+                });
+            }
+
         }
     });
-
     updateBasket();
-
+    log(listCookies());
 };
-
-buy_product = function(product_id){
-    var caller = "it-"+product_id;
-    var pos = $("." + caller).position();
-    $(".order-form").css("top", pos.top+32).show();
-    $(".order-form #product_id").val(product_id);
-    $(".shadow").show();
-    event.preventDefault();
-}
 
 get_token = function() {
     if(getCookie("token")){
@@ -353,15 +363,28 @@ get_token = function() {
     }
     var data = {};
     data.action = "get_token";
-    console.debug(data);
+
+    log("get_token", data);
+
     $.ajax({
         data : data,
         success : function(data) {
+            log("get_token", data);
             token = data[0].token;
             $("#token").val(token);
             setCookie('token', token);
         }
     });
+}
+
+buy_product = function(product_id){
+    var caller = "it-"+product_id;
+    var pos = $("." + caller).position();
+    $("#quantity").val(1);
+    $(".order-form").css("top", pos.top+32).show();
+    $(".order-form #product_id").val(product_id);
+    $(".shadow").show();
+    event.preventDefault();
 }
 
 add_product = function(){
@@ -370,15 +393,19 @@ add_product = function(){
     data.token = token;
     data.product_id = $("#product_id").val();
     data.quantity = $("#quantity").val();
-    console.debug(data);
+    log("add_product", data);
     $.ajax({
         data : data,
         success : function(data) {
+            log("add_product", data);
             var results = data[0];
             if(results.error == 0) {
                 $(".order-form").hide();
                 $(".shadow").hide();
             }else {
+                if(results.error == 2){
+                    resetToken();
+                };
                 $(".error_message").html(results.message).show();
             }
             updateBasket();
@@ -392,11 +419,12 @@ updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
     data.token = getCookie("token");
-    console.debug(data);
+    log("updateBasket", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug(data);
+            log("updateBasket", data);
+
             var results = data[0];
             var total_basket = results.total_basket;
             $(".basket").html(total_basket);
@@ -418,21 +446,24 @@ function listCookies() {
     return aString;
 }
 
-console.log(listCookies());
-
 load_basket_products = function() {
 
     var data = {};
     user_id = 0;
     data.action = "basket_list";
     data.token = getCookie("token");
-    console.log(data);
+
+    log("load_basket_products", data);
+
     $.ajax({
 
         data : data,
         success : function(data) {
+
+            log("load_basket_products", data);
+
             if(data[0].error == 1) {
-                document.location.href  = "/";
+                $("#content").load(HOME);
                 return;
             }
 
@@ -485,9 +516,11 @@ removeItem = function(item_id) {
     var data = {};
     data.action = "remove_item";
     data.item_id = item_id;
+    log("removeItem", data);
     $.ajax({
         data : data,
         success : function(data) {
+            log("removeItem", data);
             load_basket_products();
         }
     });
@@ -498,11 +531,122 @@ removeAll = function() {
     var data = {};
     data.action = "remove_all";
     data.token = getCookie("token");
-    console.log(data);
+
+    log("removeAll", data);
+
     $.ajax({
         data : data,
         success : function(data) {
+            log("removeAll", data);
             load_basket_products();
         }
     });
 };
+
+resetToken = function(){
+    token = "";
+    $("#token").val(token);
+    deleteAllCookies();
+    get_token();
+}
+
+get_areas = function(){
+    var data = {};
+    data.action = "get_areas";
+
+    log("get_areas", data);
+
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("get_areas", data);
+            $(".areas").html(data[0].areas);
+        }
+    });
+}
+
+save_location = function(pos){
+    var data = {};
+    data.action = "save_location";
+    data.token = getCookie("token");
+    data.lat = pos.lat;
+    data.lng = pos.lng;
+    log("save_location", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("save_location", data);
+        },
+        error : function(data) {
+            log("save_location.error", data);
+        }
+    });
+}
+
+load_dropdown = function(object) {
+    var data = {};
+    data.action = object + "_list";
+    log("load_" + object, data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("load_" + object, data);
+            var tmp = [];
+            var l = data.length;
+            for ( r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[r] = "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+            }
+            $("." + object).empty().append(tmp.join('')).selectpicker('refresh');
+        }
+    });
+
+};
+
+var submitForm = function(object) {
+    var action = object + "_save";
+    var form = object + "-form";
+    var data = {};
+
+    data.action = action;
+    data.token = getCookie("token");
+	
+	//Generate data items from form fields
+
+	$('#' + form).find(':input:not(button):not(reset)').each(function() {
+        var $this = $(this);
+        if($this.attr("id"))
+            data[$this.attr("id")] = $this.val().trim();
+    });
+
+    log("submitForm", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("submitForm", data);
+            if(data[0].error != 0) {
+                showErr(data[0].message);
+            } else {
+                showMsg(data[0].message);
+                setTimeout(function(){
+                    $("#content").load(HOME);
+                }, 5000);
+            }
+        }
+    });
+};
+
+get_config_value = function(name){
+    var data = {};
+    data.action = "get_config_value";
+    data.name = name;
+    log("get_config_value", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("get_config_value", data);
+            setCookie(name, data[0].value);
+        }
+    });
+}
+

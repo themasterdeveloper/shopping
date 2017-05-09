@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="main">
+        <div class="pull-right dashboard">
+            <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket">0.00</span>
+                </button>
+        </div>
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <!-- Search box -->
+        <div class="search-box input-group input-group-lg">
+            <input class="form-control" id="search_text" name="search_text" type="text" placeholder="Enter your search" aria-describedby="sizing-addon1">
+            <span class="input-group-addon" id="sizing-addon1"><a href="JavaScript:void(0)" onclick="load_products()"><span class='glyphicon glyphicon-search'></span></a>
+            </span>
+        </div>
+        <!-- The table area -->
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            <span id="msg"></span>
+        </div>
+        <div class="table-responsive" id="dashboard-table">
+            <!-- List of products -->
+        </div>
+        <div class="order-form">
+            <form class="form-horizontal" id="order-form">
+                <input type="hidden" id="token">
+                <input type="hidden" id="product_id">
+
+                <!-- Quantity -->
+                <div class="form-group">
+                    <label class="control-label col-xs-5" for="quantity">Quantity:</label>
+                    <div class="col-xs-5">
+                        <input class="form-control quantity" id="quantity" name="quantity" type="number" min="1" max="99" value="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <input type="button" class="btn btn-success btn-lg" id="add-product" value="Order">
+                    </div>
+                    <div class="col-xs-6">
+                        <input type="button" class="btn btn-default btn-lg" id="close" value="Exit">
+                    </div>
+                </div>
+            </form>
+            <div class="error_message "></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+        $(document).ready(function() {
+            $(".alert").hide();
+            load_products();
+        });
+
+        $("#search_text").on("keypress", function(a) {
+            if (a.keyCode == 13)
+                load_products();
+        });
+
+        $('.alert .close').on('click', function(e) {
+            e.preventDefault();
+            $(this).parent().hide();
+        });
+
+        updateRangeValue = function(value) {
+            $("#quantityValue").html(value);
+        };
+
+        $("#add-product").on("click", function(e) {
+           e.preventDefault();
+           add_product();
+        });
+
+        $("#basket_button").on("click", function(e) {
+           e.preventDefault();
+           $("#content").load("/basket")
+        });
+
+        $("#close").on("click", function(e) {
+            e.preventDefault();
+           $(".error_message").html('').hide();
+           $(".order-form").hide();
+           $(".shadow").hide();
+        })
+
+</script>

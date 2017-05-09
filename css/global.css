@@ -66,6 +66,7 @@
     position: absolute;
     background-color: #fff;
     border: 5px solid #4cae4c;
+
 }
 
 .shadow {
@@ -84,10 +85,8 @@
     opacity: .5;
 }
 
-.form-group, .quantity {
+.quantity {
   font-size: 18px;
-  padding: 3px;
-  text-align: center;
 }
 
 h1,
@@ -143,6 +142,7 @@ body {
     .main {
         padding-right: 40px;
         padding-left: 40px;
+        padding-bottom: 60px;
     }
 }
 
@@ -261,8 +261,13 @@ body,
     font-weight: bold;
 }
 
-.main {
-    margin-bottom: 40px;
+#content, #intro {
+    margin-bottom: 60px;
+}
+
+.order-form {
+  margin-left: 22px;
+  margin-right: 22px;
 }
 
 .list-group-item {
@@ -307,6 +312,13 @@ body,
 
 .price::before, .basket::before {
     content: "\0020A6\020";
+}
+
+#basket_button {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 99998;
 }
 
 ._amount, ._total {
@@ -416,4 +428,31 @@ input[type=range]:focus::-ms-fill-lower {
 }
 input[type=range]:focus::-ms-fill-upper {
   background: #367ebd;
+}
+
+.intro {
+  padding: 20px;
+  background-color: #fff;
+  font-size: 16px;
+}
+
+.bottom-message {
+  font-size: 12px;
+}
+
+.intro p, .intro ul li {
+  padding-bottom: 10px;
+}
+
+.copyright {
+  font-size: 12px;
+  color: #888;
+  }
+
+.copyright span.iyabasira {
+      color: #44BBEE;
+} 
+
+.bold {
+  font-weight: bold;
 }

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Geolocation</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/global.min.css" rel="stylesheet">
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+
+        #map {
+            height: 400px;
+            margin-top: 18px;
+        }
+        /* Optional: Makes the sample page fill the window. */
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div id="map"></div>
+        </div>
+    </div>
+    <script>
+        // Note: This example requires that you consent to location sharing when
+        // prompted by your browser. If you see the error "The Geolocation service
+        // failed.", it means you probably did not give permission for the browser to
+        // locate you.
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {
+                    lat: -38.709,
+                    lng: -62.259
+                },
+                zoom: 16
+            });
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    var my_location = {
+                        lat: -38.711559,
+                        lng: -62.260488
+                    };
+
+                    var contentString = '<div id="content">' +
+                        '<div id="bodyContent">' +
+                        '<p><b>Mike</b><br/>070394837</p>' +
+                        '</div>' +
+                        '</div>';
+
+                    var infowindow = new google.maps.InfoWindow({
+                        map: map,
+                        content: contentString
+                    });
+                        var image = {
+                        url: '/img/Map-Marker-Marker-Outside-Pink-icon.png',
+                            // This marker is 20 pixels wide by 32 pixels high.
+                            size: new google.maps.Size(48, 48),
+                            // The origin for this image is (0, 0).
+                            origin: new google.maps.Point(0, 0),
+                            // The anchor for this image is the base of the flagpole at (0, 32).
+                            anchor: new google.maps.Point(24, 48)
+                        };
+
+                    var marker = new google.maps.Marker({
+                        position: my_location,
+                        label: '',
+                        animation: google.maps.Animation.DROP,
+                        map: map,
+                        icon: image
+                    });
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
+                    map.setCenter(pos);
+
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+        }
+    </script>
+    <script src="/libs/jquery/js/jquery.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initMap">
+    </script>
+
+</body>
+
+</html>

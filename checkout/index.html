@@ -1,112 +1,91 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="row">
+    <div class="main">
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <!-- The table area -->
+        <hr>     
+        <div class="profile-form">
+            <form id="profile-form" class="form-horizontal">
 
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
-    <meta name="description" content="iyabasira - a new way to shop for Naija">
-    <meta name="author" content="www.escng.com">
-    <link rel="icon" href="/img/favicon.ico">
-    <title>iyabasira - delivery services</title>
-    <!-- Bootstrap core CSS -->
-    <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Full screen for Safari under iOS --> 
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <!-- Custom styles for this template -->
-    <link href="/css/global.min.css" rel="stylesheet">
-</head>
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="name" type="text" placeholder="Enter your name">
+                </div>
 
-<body>
+                <!-- Mobile -->
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input class="form-control" id="mobile" type="text" placeholder="Enter your mobile number">
+                </div>
 
-    <!-- Loading spin image -->
-    <i class="fa fa-refresh fa-5x fa-spin"></i>
-    <div class="shadow"></div>
-    <div class="container">
-        <div class="row">
-            <div class="main">
-             <div class="pull-right dashboard">
-                    <button class="btn btn-danger hidden" type="button">Basket <span class="badge basket"></span>
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input class="form-control" id="email" type="email" placeholder="Enter your email address">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input class="form-control" id="password" type="password" placeholder="Enter your password">
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <textarea class="form-control" rows="5" id="address" placeholder="Enter address for delivery"></textarea>
+                </div>
+
+                <!-- Area -->
+                <div class="form-group">
+                    <label for="area_id">Area:</label>
+                    <select class="form-control selectpicker areas" data-live-search="true" id="area_id" data-size="5" data-header="Choose your area">
+                    </select>
+                </div>
+
+                <!-- City -->
+                <div class="form-group">
+                    <label for="city_id">City:</label>
+                    <select class="form-control selectpicker cities" data-live-search="true" id="city_id" data-size="5" data-header="Choose your city">
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
                         </button>
+                        <span id="msg"></span>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel Order</button>
+                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Submit Info</button>
+                    </div>
                 </div>
-                <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
-                <!-- The table area -->
-                <div class="alert alert-info alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <span id="msg"></span>
-                </div>
-                <div class="basket-container">
-                    <!-- List of products -->
-                    <table id="basket-table" class="table-hover table-striped table-responsive">
-                        <thead></thead>        
-                        <tbody></tbody>
-                        <tfoot></tfoot>
-                    </table>
-                </div>
-                <button type="button" class="btn btn-lg btn-danger dismiss">
-                    Empty basket
-                </button>
-                <button type="button" class="btn btn-lg btn-success checkout pull-right">
-                    Checkout
-                </button>
-            </div>
 
+            </form>
         </div>
-
     </div>
+</div>
 
-    <footer class="navbar navbar-fixed-bottom">
-        <ul class="nav navbar-nav">
-            <li class="active">
-                <a href="javascript:void(0)"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
-            </li>
-            <li>
-                <a href="javascript:void(0)"><span class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top"  title="Refresh tickets list"></span></a>
-            </li>
-            <li>
-                <a href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Toggle full screen"></span></a>
-            </li>
-        </ul>
+<script type="text/javascript">
 
-    </footer>
-    <!-- Bootstrap core JavaScript ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
+    $(document).ready(function() {
+        $(".alert").hide();
+        load_dropdown("areas");
+        load_dropdown("cities");
+    });
 
-    <script src="/libs/jquery/js/jquery.min.js"></script>
-    <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/js/global.min.js"></script>
+    $("#cancel-action").on("click", function(d){
+        d.preventDefault();
+        $("#content").load("/basket");
+    });
 
-    <script>
-        $(document).ready(function() {
-            //$('[data-toggle="tooltip"]').tooltip();
-            $(".alert").hide();
-            load_basket_products();
-        });
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        submitForm("profile");
+    });
 
-        $(".dismiss").bind("click", function(e) {
-            e.preventDefault();
-            removeAll();
-        });
-
-        $(".glyphicon-refresh").parent().bind("click", function(e) {
-            e.preventDefault();
-            load_basket_products();
-        });
-
-        $(".glyphicon-home").parent().bind("click", function(e) {
-            e.preventDefault();
-            $("body").load("/");
-        });
-
-        $(".glyphicon-fullscreen").parent().bind("click", function() {
-            toggleFullScreen();
-        });
-
-    </script>
-</body>
-
-</html>
+</script>
