@@ -142,6 +142,7 @@ body {
     .main {
         padding-right: 40px;
         padding-left: 40px;
+        padding-bottom: 60px;
     }
 }
 
@@ -260,11 +261,11 @@ body,
     font-weight: bold;
 }
 
-.main, .intro, .profile-form {
-    margin-bottom: 40px;
+#content, #intro {
+    margin-bottom: 60px;
 }
 
-.profile-form {
+.order-form {
   margin-left: 22px;
   margin-right: 22px;
 }

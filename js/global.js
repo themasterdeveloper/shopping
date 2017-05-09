@@ -11,7 +11,7 @@
  */
 
 window.onerror = function(message, filename, linenumber) {
-    console.debug("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
+    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
 };
 
 /**
@@ -25,6 +25,15 @@ var webservice_path = "/ws/br.php",
     error = false,
     intro = false,
     HOME = "/home.html";
+
+/**
+ * Logs javascript trace
+ */
+
+var log = function(name, value) {
+    if(getCookie("Debug")=="True")
+        console.debug(name, value);
+}
 
 /**
  * Save cookie on users' computer
@@ -100,6 +109,7 @@ pad = function(val, len) {
     return val;
 };
 
+/*
 $(function() {
     var nua = navigator.userAgent;
     var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1);
@@ -107,6 +117,7 @@ $(function() {
         $('select.form-control').removeClass('form-control').css('width', '100%');
     }
 });
+*/
 
 /**
  * Centers divs on screen
@@ -118,9 +129,6 @@ jQuery.fn.center = function() {
     this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
     return this;
 };
-/**
- * Delays execution of code (like wait...)
- */
 
 /**
  * Converts any form into a JSON object
@@ -232,7 +240,7 @@ $(document).ajaxError(function() {
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    console.debug(xhr);
+    log(xhr);
     showErr('We are sorry, but there was an error accessing the database');
     //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
@@ -280,7 +288,7 @@ load_products = function() {
     data.action = "products_list";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
-    console.debug("load_products", data);
+    log("load_products", data);
 
     $(".alert").hide();
 
@@ -289,7 +297,7 @@ load_products = function() {
         data : data,
         success : function(data) {
 
-            console.debug("load_products", data);
+            log("load_products", data);
 
             if (data[0].error == 1) {
                 $("#dashboard-table").empty();
@@ -343,9 +351,8 @@ load_products = function() {
 
         }
     });
-
     updateBasket();
-
+    log(listCookies());
 };
 
 get_token = function() {
@@ -357,12 +364,12 @@ get_token = function() {
     var data = {};
     data.action = "get_token";
 
-    console.debug("get_token", data);
+    log("get_token", data);
 
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("get_token", data);
+            log("get_token", data);
             token = data[0].token;
             $("#token").val(token);
             setCookie('token', token);
@@ -386,11 +393,11 @@ add_product = function(){
     data.token = token;
     data.product_id = $("#product_id").val();
     data.quantity = $("#quantity").val();
-    console.debug("add_product", data);
+    log("add_product", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("add_product", data);
+            log("add_product", data);
             var results = data[0];
             if(results.error == 0) {
                 $(".order-form").hide();
@@ -412,11 +419,11 @@ updateBasket = function(){
     var data = {};
     data.action = "get_total_basket";
     data.token = getCookie("token");
-    console.debug("updateBasket", data);
+    log("updateBasket", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("updateBasket", data);
+            log("updateBasket", data);
 
             var results = data[0];
             var total_basket = results.total_basket;
@@ -439,8 +446,6 @@ function listCookies() {
     return aString;
 }
 
-console.debug(listCookies());
-
 load_basket_products = function() {
 
     var data = {};
@@ -448,14 +453,14 @@ load_basket_products = function() {
     data.action = "basket_list";
     data.token = getCookie("token");
 
-    console.debug("load_basket_products", data);
+    log("load_basket_products", data);
 
     $.ajax({
 
         data : data,
         success : function(data) {
 
-            console.debug("load_basket_products", data);
+            log("load_basket_products", data);
 
             if(data[0].error == 1) {
                 $("#content").load(HOME);
@@ -511,11 +516,11 @@ removeItem = function(item_id) {
     var data = {};
     data.action = "remove_item";
     data.item_id = item_id;
-    console.debug("removeItem", data);
+    log("removeItem", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("removeItem", data);
+            log("removeItem", data);
             load_basket_products();
         }
     });
@@ -527,12 +532,12 @@ removeAll = function() {
     data.action = "remove_all";
     data.token = getCookie("token");
 
-    console.debug("removeAll", data);
+    log("removeAll", data);
 
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("removeAll", data);
+            log("removeAll", data);
             load_basket_products();
         }
     });
@@ -549,12 +554,12 @@ get_areas = function(){
     var data = {};
     data.action = "get_areas";
 
-    console.debug("get_areas", data);
+    log("get_areas", data);
 
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("get_areas", data);
+            log("get_areas", data);
             $(".areas").html(data[0].areas);
         }
     });
@@ -566,14 +571,14 @@ save_location = function(pos){
     data.token = getCookie("token");
     data.lat = pos.lat;
     data.lng = pos.lng;
-    console.debug("save_location", data);
+    log("save_location", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("save_location", data);
+            log("save_location", data);
         },
         error : function(data) {
-            console.debug("save_location.error", data);
+            log("save_location.error", data);
         }
     });
 }
@@ -581,11 +586,11 @@ save_location = function(pos){
 load_dropdown = function(object) {
     var data = {};
     data.action = object + "_list";
-    console.debug("load_" + object, data);
+    log("load_" + object, data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("load_" + object, data);
+            log("load_" + object, data);
             var tmp = [];
             var l = data.length;
             for ( r = 0; r < l; r++) {
@@ -614,11 +619,34 @@ var submitForm = function(object) {
             data[$this.attr("id")] = $this.val().trim();
     });
 
-    console.debug("submitForm", data);
+    log("submitForm", data);
     $.ajax({
         data: data,
         success: function(data) {
-            console.debug("ando!");
+            log("submitForm", data);
+            if(data[0].error != 0) {
+                showErr(data[0].message);
+            } else {
+                showMsg(data[0].message);
+                setTimeout(function(){
+                    $("#content").load(HOME);
+                }, 5000);
+            }
         }
     });
 };
+
+get_config_value = function(name){
+    var data = {};
+    data.action = "get_config_value";
+    data.name = name;
+    log("get_config_value", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("get_config_value", data);
+            setCookie(name, data[0].value);
+        }
+    });
+}
+

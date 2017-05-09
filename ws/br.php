@@ -126,6 +126,18 @@ switch ($action) {
 
         break;
 
+    case "get_config_value":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $name = $_GET['name'];
+
+        // Fill the query parameters
+        $query = "get_config_value('" . $name . "')";
+
+        break;
+
     case "save_item":
 
         // It's gonna be a database update
@@ -204,6 +216,33 @@ switch ($action) {
         $token = $_GET['token'];
 
         break;
+
+    case "profile_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL order_save(?, ?, ?, ?, ?, ?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("siisssss", $address, $area_id, $city_id, $email, $mobile, $name, $password, $token);
+
+        // Assign values
+        $address = $_GET['address'];
+        $area_id = $_GET['area_id'];
+        $city_id = $_GET['city_id'];
+        $email = $_GET['email'];
+        $mobile = $_GET['mobile'];
+        $name = $_GET['name'];
+        $password = $_GET['password'];
+        $token = $_GET['token'];
+
+        break;
+
 }
 
 switch ($action_type) {

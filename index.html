@@ -20,7 +20,6 @@
     <link href="/css/global.min.css" rel="stylesheet">
     <style>
         .alert,
-        .order-form,
         .error_message,
         .table-responsive {
             display: none;
@@ -36,7 +35,7 @@
     <div class="container">
         <div id="content" class="content-fluid hidden">
         </div>
-        <div class="intro">
+        <div class="intro" id="intro">
             <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
             <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
             <hr>
@@ -89,6 +88,8 @@
                 $("#content").removeClass("hidden");
             } else {
                 get_areas();
+                get_config_value("Online");
+                get_config_value("Debug");
             }
         });
 
