@@ -12,6 +12,7 @@ header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 $_query = 1;
 $_update = 2;
+$_email = 3;
 
 // Connect to server and select database
 
@@ -196,6 +197,7 @@ switch ($action) {
         $token = $_GET['token'];
 
         break;
+
     case "save_location":
 
         // It's gonna be a database update
@@ -243,6 +245,21 @@ switch ($action) {
 
         break;
 
+    case "order_notify":
+
+        // It's gonna be a database update
+
+        $action_type = $_email;
+
+        // Set the procedure we are going to use
+
+        $to = $_GET['to'];
+
+        $message = "Report generated automatically by <strong>iyabasira.online</strong>.<br/>This is a test. ";
+        $subject = $_GET['subject'];;
+
+        break;
+
 }
 
 switch ($action_type) {
@@ -275,13 +292,32 @@ switch ($action_type) {
             }
 
         break;
+
+    case $_email:
+
+        $headers = "MIME-Version: 1.0";
+        $headers.= "\r\nContent-type:text/html;charset=iso-8859-1";
+        // More headers and the BCC to me
+
+        $headers .= "\r\nFrom: <noreply@iysabasira.online>";
+        $headers .= "\r\nBcc: <omar.melendrez@gmail.com>";
+
+        // Create the message with html style
+        $body = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><title>iyabasira</title></head>" . $email_style . "<body>" . $message . "</body></html>";
+        
+        if($php_server != "localhost")
+            mail($to, $subject, $body, $headers);
+        else
+            log_this($body);
+
+        break;
 }
 
 $conn->close();
 
 // Send data in JSON format back to the user interface
 
-if ($action_type != "") echo (json_encode($rows));
+if ($action_type != $_email) echo (json_encode($rows));
 
 //if ($action_type != "") echo (json_encode(array("data"=>array_values($rows), "records"=>$rowcount)) );
 
