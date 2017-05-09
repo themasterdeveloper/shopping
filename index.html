@@ -12,6 +12,7 @@
     <title>iyabasira - delivery services</title>
     <!-- Bootstrap core CSS -->
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <!-- Full screen for Safari under iOS --> 
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -33,7 +34,7 @@
     <i class="fa fa-refresh fa-5x fa-spin"></i>
     <div class="shadow"></div>
     <div class="container">
-        <div class="content hidden">
+        <div id="content" class="content-fluid hidden">
         </div>
         <div class="intro">
             <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
@@ -77,14 +78,15 @@
 
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <script src="/js/global.min.js"></script>
 
     <script>
         $(document).ready(function() {
             if(intro) {
-                $(".content").load(HOME);
+                $("#content").load(HOME);
                 $(".intro").addClass("hidden");
-                $(".content").removeClass("hidden");
+                $("#content").removeClass("hidden");
             } else {
                 get_areas();
             }
@@ -93,16 +95,16 @@
         $(".start").on("click", function(e){
             e.preventDefault();
             intro = true;
-            $(".content").load(HOME);
+            $("#content").load(HOME);
             $(".intro").addClass("hidden");
-            $(".content").removeClass("hidden");
+            $("#content").removeClass("hidden");
         });
 
-        $(".glyphicon-home").parent().bind("click", function() {
-            $(".content").load(HOME);
+        $(".glyphicon-home").parent().on("click", function() {
+            $("#content").load(HOME);
         });
 
-        $(".glyphicon-fullscreen").parent().bind("click", function() {
+        $(".glyphicon-fullscreen").parent().on("click", function() {
             toggleFullScreen();
         });
 

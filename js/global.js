@@ -289,7 +289,7 @@ load_products = function() {
         data : data,
         success : function(data) {
 
-            console.debug("load_products", data[0]);
+            console.debug("load_products", data);
 
             if (data[0].error == 1) {
                 $("#dashboard-table").empty();
@@ -331,6 +331,16 @@ load_products = function() {
             $(".table-responsive").show();
             $(".search-box").show();
 
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                    };
+                    save_location(pos);
+                });
+            }
+
         }
     });
 
@@ -352,7 +362,7 @@ get_token = function() {
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("get_token", data[0]);
+            console.debug("get_token", data);
             token = data[0].token;
             $("#token").val(token);
             setCookie('token', token);
@@ -380,7 +390,7 @@ add_product = function(){
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("add_product", data[0]);
+            console.debug("add_product", data);
             var results = data[0];
             if(results.error == 0) {
                 $(".order-form").hide();
@@ -406,7 +416,7 @@ updateBasket = function(){
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("updateBasket", data[0]);
+            console.debug("updateBasket", data);
 
             var results = data[0];
             var total_basket = results.total_basket;
@@ -445,10 +455,10 @@ load_basket_products = function() {
         data : data,
         success : function(data) {
 
-            console.debug("load_basket_products", data[0]);
+            console.debug("load_basket_products", data);
 
             if(data[0].error == 1) {
-                $(".content").load(HOME);
+                $("#content").load(HOME);
                 return;
             }
 
@@ -505,7 +515,7 @@ removeItem = function(item_id) {
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("removeItem", data[0]);
+            console.debug("removeItem", data);
             load_basket_products();
         }
     });
@@ -522,7 +532,7 @@ removeAll = function() {
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("removeAll", data[0]);
+            console.debug("removeAll", data);
             load_basket_products();
         }
     });
@@ -544,35 +554,46 @@ get_areas = function(){
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("get_areas", data[0]);
+            console.debug("get_areas", data);
             $(".areas").html(data[0].areas);
         }
-    });
-}
-
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        var pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        save_location(pos);
     });
 }
 
 save_location = function(pos){
     var data = {};
     data.action = "save_location";
+    data.token = getCookie("token");
     data.lat = pos.lat;
     data.lng = pos.lng;
     console.debug("save_location", data);
     $.ajax({
         data : data,
         success : function(data) {
-            console.debug("save_location", data[0]);
+            console.debug("save_location", data);
         },
         error : function(data) {
-            console.debug("save_location.error", data[0]);
+            console.debug("save_location.error", data);
         }
     });
 }
+
+load_dropdown = function(object) {
+    var data = {};
+    data.action = object + "_list";
+    console.debug("load_" + object, data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            console.debug("load_" + object, data);
+            var tmp = [];
+            var l = data.length;
+            for ( r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[r] = "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+            }
+            $("." + object).empty().append(tmp.join('')).selectpicker('refresh');
+        }
+    });
+
+};

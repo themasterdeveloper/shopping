@@ -67,6 +67,28 @@ switch ($action) {
 
         break;
 
+    case "areas_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "areas_list()";
+
+        break;
+
+    case "cities_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "cities_list()";
+
+        break;
+
     case "products_list":
 
         // It's gonna be a query
@@ -170,15 +192,16 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL save_location(?, ?)");
+        $stmt = $conn->prepare("CALL save_location(?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("dd", $lat, $lng);
+        $stmt->bind_param("dds", $lat, $lng, $token);
 
         // Assign values
         $lat = $_GET['lat'];
         $lng = $_GET['lng'];
+        $token = $_GET['token'];
 
         break;
 }

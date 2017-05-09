@@ -1,7 +1,9 @@
 <div class="row">
     <div class="main">
+        <div class="pull-right dashboard">
             <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket">0.00</span>
-            </button>
+                </button>
+        </div>
         <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
         <!-- Search box -->
         <div class="search-box input-group input-group-lg">
@@ -44,7 +46,6 @@
             <div class="error_message "></div>
         </div>
     </div>
-
 </div>
 <script type="text/javascript">
         $(document).ready(function() {
@@ -52,7 +53,7 @@
             load_products();
         });
 
-        $("#search_text").bind("keypress", function(a) {
+        $("#search_text").on("keypress", function(a) {
             if (a.keyCode == 13)
                 load_products();
         });
@@ -66,17 +67,17 @@
             $("#quantityValue").html(value);
         };
 
-        $("#add-product").bind("click", function(e) {
+        $("#add-product").on("click", function(e) {
            e.preventDefault();
            add_product();
         });
 
-        $("#basket_button").bind("click", function(e) {
+        $("#basket_button").on("click", function(e) {
            e.preventDefault();
-           $(".content").load("/basket")
+           $("#content").load("/basket")
         });
 
-        $("#close").bind("click", function(e) {
+        $("#close").on("click", function(e) {
             e.preventDefault();
            $(".error_message").html('').hide();
            $(".order-form").hide();

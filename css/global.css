@@ -85,10 +85,8 @@
     opacity: .5;
 }
 
-.form-group, .quantity {
+.quantity {
   font-size: 18px;
-  padding: 3px;
-  text-align: center;
 }
 
 h1,
@@ -262,8 +260,13 @@ body,
     font-weight: bold;
 }
 
-.main, .intro {
+.main, .intro, .profile-form {
     margin-bottom: 40px;
+}
+
+.profile-form {
+  margin-left: 22px;
+  margin-right: 22px;
 }
 
 .list-group-item {
