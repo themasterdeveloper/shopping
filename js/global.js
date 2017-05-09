@@ -81,13 +81,13 @@ deleteAllCookies = function() {
 };
 
 showMsg = function(text) {
-    $(".alert").removeClass("alert-warning").removeClass("alert-info").addClass("alert-info");
+    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
 
 showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-warning").addClass("alert-warning");
+    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
@@ -596,4 +596,29 @@ load_dropdown = function(object) {
         }
     });
 
+};
+
+var submitForm = function(object) {
+    var action = object + "_save";
+    var form = object + "-form";
+    var data = {};
+
+    data.action = action;
+    data.token = getCookie("token");
+	
+	//Generate data items from form fields
+
+	$('#' + form).find(':input:not(button):not(reset)').each(function() {
+        var $this = $(this);
+        if($this.attr("id"))
+            data[$this.attr("id")] = $this.val().trim();
+    });
+
+    console.debug("submitForm", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            console.debug("ando!");
+        }
+    });
 };

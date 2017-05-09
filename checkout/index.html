@@ -2,12 +2,6 @@
     <div class="main">
         <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
         <!-- The table area -->
-        <div class="alert alert-info alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <span id="msg"></span>
-        </div>
         <hr>     
         <div class="profile-form">
             <form id="profile-form" class="form-horizontal">
@@ -26,8 +20,8 @@
 
                 <!-- Email -->
                 <div class="form-group">
-                    <label for="email_address">Email:</label>
-                    <input class="form-control" id="email_address" name="email_address" type="email" placeholder="Enter your email address">
+                    <label for="email">Email:</label>
+                    <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email address">
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
 
@@ -51,12 +45,17 @@
                     </select>
                 </div>
 
-                <br>
                 <!-- Buttons -->
                 <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span id="msg"></span>
+                    </div>
                     <div>
-                        <input type="reset" class="btn btn-danger btn-lg" id="cancel-action" value="Cancel Order" >
-                        <input type="button" class="btn btn-success btn-lg pull-right" id="submit-form" value="Submit Info">
+                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel Order</button>
+                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Submit Info</button>
                     </div>
                 </div>
             </form>
@@ -72,13 +71,13 @@
         load_dropdown("cities");
     });
 
-    $("#submit-form").on("click", function(d){
-        d.preventDefault();
-
-    });
-
     $("#cancel-action").on("click", function(d){
         d.preventDefault();
         $("#content").load("/basket");
+    });
+
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        submitForm("profile");
     });
 </script>
