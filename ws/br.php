@@ -254,9 +254,12 @@ switch ($action) {
         // Set the procedure we are going to use
 
         $to = $_GET['to'];
+        $mobile = $_GET['mobile'];
 
         $message = "Report generated automatically by <strong>iyabasira.online</strong>.<br/>This is a test. ";
-        $subject = $_GET['subject'];;
+        $subject = $_GET['subject'];
+
+        $URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($subject);
 
         break;
 
@@ -299,7 +302,7 @@ switch ($action_type) {
         $headers.= "\r\nContent-type:text/html;charset=iso-8859-1";
         // More headers and the BCC to me
 
-        $headers .= "\r\nFrom: <noreply@iysabasira.online>";
+        $headers .= "\r\nFrom: <noreply@iyabasira.online>";
         $headers .= "\r\nBcc: <omar.melendrez@gmail.com>";
 
         // Create the message with html style
@@ -308,8 +311,18 @@ switch ($action_type) {
         if($php_server != "localhost")
             mail($to, $subject, $body, $headers);
         else
-            log_this($body);
+            log_this($to . ": " . $subject);
+        
+        //$sms_resutls = file_get_contents($URL);
+        $ch = curl_init($URL);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
 
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $rows = array();
+        $rows[] = array("error"=>0, "message"=>"Success");
         break;
 }
 

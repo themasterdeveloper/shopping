@@ -24,7 +24,12 @@ var webservice_path = "/ws/br.php",
     token = '',
     error = false,
     intro = false,
-    HOME = "/home.html";
+    HOME = "/home.html",
+    sms_url = "https://www.bulksmsnigeria.net/components/com_spc/smsapi.php",
+    sms_user ="nwabuezestephen27@gmail.com",
+    sms_password = "Foot27ball",
+    sms_sender = "iyabasira";
+
 
 /**
  * Logs javascript trace
@@ -630,10 +635,8 @@ var submitForm = function(object) {
    
                 showMsg(data[0].message);
    
-                data.action = "order_notify";
-                data.to = $("#email").val();
-                data.subject = data[0].message;
-   
+                notify(data[0].message);   
+
                 setTimeout(function(){
                     $("#content").load(HOME);
                 }, 5000);
@@ -642,6 +645,23 @@ var submitForm = function(object) {
     });
 };
 
+notify = function(message) {
+
+    // Email & SMS notification
+    var data = {};
+    data.action = "order_notify";
+    data.to = $("#email").val();
+    data.mobile = $("#mobile").val();
+    data.subject = message;
+    log("notify", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("notify", data);
+        }
+    });
+}
+
 get_config_value = function(name){
     var data = {};
     data.action = "get_config_value";
@@ -649,6 +669,9 @@ get_config_value = function(name){
     log("get_config_value", data);
     $.ajax({
         data : data,
+        method: 'POST',
+        crossDomain: true,
+        dataType: 'jsonp',
         success : function(data) {
             log("get_config_value", data);
             setCookie(name, data[0].value);
