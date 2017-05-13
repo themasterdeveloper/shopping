@@ -256,15 +256,7 @@ switch ($action) {
         $query = 'get_order_details(' . $order_id . ')';
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]"); 
         $template = file_get_contents('../templates/order_confirmation.html');       
-        $sms_template = "
-                    Hello {customer-name}
-                    
-                    Thank you for making the purchase of N {grand-total}. 
-                    Your order {order-number} shall be processed shortly.
-                    
-                    Regards
-                    iyabasira.online
-                    ";
+        $sms_template = file_get_contents('../templates/order_confirmation.txt');       
         $data = '';
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {

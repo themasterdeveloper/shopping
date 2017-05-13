@@ -1,0 +1,7 @@
+Hello {customer-name}
+
+Thank you for making the purchase of N {grand-total}. 
+Your order {order-number} shall be processed shortly.
+
+Kind regards
+iyabasira.online
