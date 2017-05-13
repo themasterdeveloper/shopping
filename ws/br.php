@@ -251,15 +251,52 @@ switch ($action) {
 
         $action_type = $_email;
 
+        $order_id = $_GET['order_id'];
         // Set the procedure we are going to use
+        $query = 'get_order_details(' . $order_id . ')';
+        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]"); 
+        $template = file_get_contents('../templates/order_confirmation.html');       
+        $sms_template = "
+                    Hello {customer-name}
+                    
+                    Thank you for making the purchase of N {grand-total}. 
+                    Your order {order-number} shall be processed shortly.
+                    
+                    Regards
+                    iyabasira.online
+                    ";
+        $data = '';
+        $pass = 0;
+        while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
+            if($pass == 0){
+                $email = $row['email'];
+                $mobile = $row['mobile'];
+                $subject = 'iyabasira - Order Confirmation # ' . $row['order-number'];
+                $sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
+                $sms_template = str_replace('{order-total}', $row['order-total'], $sms_template);
+                $sms_template = str_replace('{order-number}', $row['order-number'], $sms_template);
+                $template = str_replace('{customer-name}', $row['customer-name'], $template);
+                $template = str_replace('{address}', $row['address'], $template);
+                $template = str_replace('{order-number}', $row['order-number'], $template);
+                $template = str_replace('{date}', $row['date'], $template);
+                $template = str_replace('{order-total}', $row['order-total'], $template);
+                $template = str_replace('{service-charge}', $row['service-charge'], $template);
+                $template = str_replace('{delivery-fee}', $row['delivery-fee'], $template);
+                $template = str_replace('{grand-total}', $row['grand-total'], $template);
+                $pass=1;
+            }
+            $data .= "<tr>";
+            $data .= "<td>".$row["shop"]."</td>";
+            $data .= "<td>".$row["item"]."</td>";
+            $data .= "<td class='_qty'>".$row["qty"]."</td>";
+            $data .= "<td class='_amount'>".$row["unit price"]."</td>";
+            $data .= "<td class='_amount'>".$row["total price"]."</td>";
+            $data .= "</tr>";
+           }
+        $template = str_replace('{data}', $data, $template);
+        $result->free();    
 
-        $to = $_GET['to'];
-        $mobile = $_GET['mobile'];
-
-        $message = "Report generated automatically by <strong>iyabasira.online</strong>.<br/>This is a test. ";
-        $subject = $_GET['subject'];
-
-        $URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($subject);
+        $URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
 
         break;
 
@@ -306,23 +343,25 @@ switch ($action_type) {
         $headers .= "\r\nBcc: <omar.melendrez@gmail.com>";
 
         // Create the message with html style
-        $body = "<!DOCTYPE html><html lang='en'><head><meta charset='utf-8'><title>iyabasira</title></head>" . $email_style . "<body>" . $message . "</body></html>";
-        
+
+        $body = $template;
+
         if($php_server != "localhost")
-            mail($to, $subject, $body, $headers);
+            mail($email, $subject, $body, $headers);
         else
-            log_this($to . ": " . $subject);
+            log_this($email . ": " . $subject);
         
-        //$sms_resutls = file_get_contents($URL);
-        $ch = curl_init($URL);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_HEADER, 0);
+        if($mobile != '') {
+            $ch = curl_init($URL);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
 
-        $result = curl_exec($ch);
-        curl_close($ch);
+            $return_value = curl_exec($ch);
+            log_this($return_value);
+            curl_close($ch);
+        }
 
-        $rows = array();
-        $rows[] = array("error"=>0, "message"=>"Success");
+        $rows = array("error"=>0, "message"=>"Order Completed");
         break;
 }
 
@@ -330,7 +369,7 @@ $conn->close();
 
 // Send data in JSON format back to the user interface
 
-if ($action_type != $_email) echo (json_encode($rows));
+if ($action_type != '') echo (json_encode($rows));
 
 //if ($action_type != "") echo (json_encode(array("data"=>array_values($rows), "records"=>$rowcount)) );
 

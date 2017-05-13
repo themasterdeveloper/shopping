@@ -632,27 +632,22 @@ var submitForm = function(object) {
             if(data[0].error != 0) {
                 showErr(data[0].message);
             } else {
-   
                 showMsg(data[0].message);
-   
-                notify(data[0].message);   
-
+                notify(data[0].order_id);   
                 setTimeout(function(){
                     $("#content").load(HOME);
-                }, 5000);
+                }, 3000);
             }
         }
     });
 };
 
-notify = function(message) {
+notify = function(order_id) {
 
     // Email & SMS notification
     var data = {};
     data.action = "order_notify";
-    data.to = $("#email").val();
-    data.mobile = $("#mobile").val();
-    data.subject = message;
+    data.order_id = order_id;
     log("notify", data);
     $.ajax({
         data: data,
@@ -669,9 +664,7 @@ get_config_value = function(name){
     log("get_config_value", data);
     $.ajax({
         data : data,
-        method: 'POST',
-        crossDomain: true,
-        dataType: 'jsonp',
+        dataType: 'json',
         success : function(data) {
             log("get_config_value", data);
             setCookie(name, data[0].value);

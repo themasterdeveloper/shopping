@@ -106,7 +106,6 @@ body {
     margin: 0;
 }
 
-
 /*
  * Global add-ons
  */
@@ -146,7 +145,7 @@ body {
     }
 }
 
-.main .page-header {
+.main, .page-header {
     margin-top: 0;
     font-weight: bold;
 }
@@ -215,6 +214,7 @@ footer .glyphicon {
 
 .main,
 body,
+.intro,
 #dashboard-table{
     background-color: #f8f8f8;
 }
@@ -261,17 +261,19 @@ body,
     font-weight: bold;
 }
 
-#content, #intro {
-    margin-bottom: 60px;
-}
+.main, #profile-form {
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-bottom: 60px;
 
-.order-form {
-  margin-left: 22px;
-  margin-right: 22px;
 }
 
 .list-group-item {
     height: 260px;
+}
+
+#basket-table {
+  width: 100%;
 }
 
 .shop-logo {
@@ -431,8 +433,6 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .intro {
-  padding: 20px;
-  background-color: #fff;
   font-size: 16px;
 }
 
