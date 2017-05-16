@@ -1,6 +1,6 @@
 Hello {customer-name}
 
-Thank you for making the purchase of N {grand-total}. 
+Thank you for making the purchase of N {order-total}. 
 Your order {order-number} shall be processed shortly.
 
 Kind regards

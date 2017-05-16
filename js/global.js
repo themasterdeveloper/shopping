@@ -289,10 +289,13 @@ load_products = function() {
         get_token();
     }
 
+    $(".area-message").addClass("hidden");
+
     var data = {};
     data.action = "products_list";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
+    data.area_id = getCookie("chosen-area");
     log("load_products", data);
 
     $(".alert").hide();
@@ -368,6 +371,7 @@ get_token = function() {
     }
     var data = {};
     data.action = "get_token";
+    data.area_id = getCookie("chosen-area");
 
     log("get_token", data);
 
@@ -429,10 +433,13 @@ updateBasket = function(){
         data : data,
         success : function(data) {
             log("updateBasket", data);
-
             var results = data[0];
-            var total_basket = results.total_basket;
+            var total_basket = results.grand_total;
             $(".basket").html(total_basket);
+            setCookie("total_basket", results.total_basket);
+            setCookie("total_fees", results.total_fees);
+            setCookie("delivery_fees", results.delivery_fees);
+            setCookie("grand_total", results.grand_total);
             if(parseFloat(total_basket) > 0){
                 $(".basket").parent().removeClass("hidden");
             } else {
@@ -459,6 +466,7 @@ load_basket_products = function() {
     data.token = getCookie("token");
 
     log("load_basket_products", data);
+    updateBasket();
 
     $.ajax({
 
@@ -509,11 +517,21 @@ load_basket_products = function() {
             }
             $("#basket-table thead").empty().append(header.join(''));
             $("#basket-table tbody").empty().append(tmp.join(''));
+            i = 0;
+            tmp.length = 0;
+            tmp[i] = "<tr><td colspan=3  class='_amount _top_line'>TOTAL BASKET</td><td class='_amount _top_line'>" + getCookie("total_basket") + "</td><td  class='_top_line'></td></tr>";
+            i++;
+            //tmp[i] = "<tr><td colspan=3  class='_amount'>10% FEES</td><td class='_amount'>" + getCookie("total_fees") + "</td><td></td></tr>";
+            //i++;
+            tmp[i] = "<tr><td colspan=3  class='_amount'>DELIVERY</td><td class='_amount'>" + getCookie("delivery_fees") + "</td><td></td></tr>";
+            i++;
+            tmp[i] = "<tr><td colspan=3  class='_amount _grand_total'>TOTAL ORDER</td><td class='_amount  _grand_total'>" + getCookie("grand_total") + "</td><td class='_amount  _grand_total'></td></tr>";
+
+            $("#basket-table tfoot").empty().append(tmp.join(''));
+
             $(".table-responsive").show();
         }
     });
-
-    updateBasket();
 
 };
 
@@ -565,7 +583,7 @@ get_areas = function(){
         data : data,
         success : function(data) {
             log("get_areas", data);
-            $(".areas").html(data[0].areas);
+            $(".areas-list").html(data[0].areas);
         }
     });
 }
@@ -588,24 +606,32 @@ save_location = function(pos){
     });
 }
 
-load_dropdown = function(object) {
+load_dropdown = function(object, empty) {
+    empty = (typeof empty === 'undefined') ? false : empty;
     var data = {};
     data.action = object + "_list";
     log("load_" + object, data);
+    var msg = 'Nothing selected';
+    if(object == 'areas') {
+        msg = 'Select an area';
+    }
     $.ajax({
         data : data,
         success : function(data) {
             log("load_" + object, data);
             var tmp = [];
             var l = data.length;
+            if(empty == 1){
+                var tmpEmpty = "<option></option>";
+            }
             for ( r = 0; r < l; r++) {
                 $this = data[r];
-                tmp[r] = "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+                tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+                tmpEmpty = "";
             }
-            $("." + object).empty().append(tmp.join('')).selectpicker('refresh');
+            $("." + object).empty().append(tmp.join('')).selectpicker({noneSelectedText: msg}).selectpicker('refresh');
         }
     });
-
 };
 
 var submitForm = function(object) {
@@ -615,6 +641,7 @@ var submitForm = function(object) {
 
     data.action = action;
     data.token = getCookie("token");
+    data.area_id = getCookie("chosen-area");
 	
 	//Generate data items from form fields
 

@@ -225,6 +225,7 @@ body,
 
 #basket-table {
   background-color: #fff;
+  margin-bottom: 20px;
 }
 
 #basket-table thead th {
@@ -266,6 +267,10 @@ body,
   padding-left: 20px;
   margin-bottom: 60px;
 
+}
+
+.area-message{
+  margin-top: 20px;
 }
 
 .list-group-item {
@@ -325,6 +330,16 @@ body,
 
 ._amount, ._total {
   text-align: right;
+  padding: 6px;
+}
+
+._grand_total {
+  border-top: 1px solid #aaa;
+  border-bottom: 2px solid #aaa;
+}
+
+._top_line {
+  border-top: 1px solid #aaa;
 }
 
 ._quantity {

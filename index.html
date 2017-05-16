@@ -46,11 +46,17 @@
                 <li>Choose one of the delivery guys available in the same app</li>
                 <li>Rub your belly, the food is coming</li>
             </ul>
-            <br/>
+            <div class="form-group">
+                <label for="areas">Select the area you want the orders to be delivered</label>
+                <select class="form-control areas">
+                </select>
+            </div>
+            <!--
             <p>
             Now click <button type="button" class="btn btn-success btn-lg start" >Start</button>
             </p>
             <span class="bottom-message">Delivery service available in <span class="areas"></span> in Port Harcourt Only. Coming soon to other areas.</span>
+            -->
 
             <hr>
             <p class="copyright">
@@ -87,15 +93,17 @@
                 $(".intro").addClass("hidden");
                 $("#content").removeClass("hidden");
             } else {
+                load_dropdown("areas", true);
                 get_areas();
                 get_config_value("Online");
                 get_config_value("Debug");
             }
         });
 
-        $(".start").on("click", function(e){
+        $(".areas").on("change", function(e){
             e.preventDefault();
             intro = true;
+            setCookie("chosen-area", $(this).val());
             $("#content").load(HOME);
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
@@ -108,7 +116,6 @@
         $(".glyphicon-fullscreen").parent().on("click", function() {
             toggleFullScreen();
         });
-
     </script>
 </body>
 

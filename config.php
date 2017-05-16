@@ -10,8 +10,6 @@ $sms_user ="nwabuezestephen27@gmail.com";
 $sms_password = "Foot27ball";
 $sms_sender = "iyabasira";
 
-$email_style = "<!--[if gte mso 9]><style type='text/css'>* {letter-spacing: .4px;}body {font-family: Geneva, Arial, Helvetica, sans-serif;font-size: 9pt;color: #666;margin:0;padding:0;}.ar{text-align:right}.ct{text-align:center}table {width: 100%;border-collapse: collapse;}th {border-bottom: #aaa 1px solid;padding: 6px;color: #666;text-align: left;text-transform: uppercase;}td {padding: 6px;border-bottom: #ddd 1px solid;text-transform: uppercase;}tt{font-size: 14pt;font-weight: bold;color: #006699;}table thead tr th, table tbody tr td {white-space: nowrap;max-width: 130px;overflow-x: hidden;text-overflow: ellipsis;}</style><![endif]--><style type='text/css'>* {letter-spacing: .4px;}body {font-family: Geneva, Arial, Helvetica, sans-serif;font-size: 9pt;color: #666;}.ar{text-align:right}.ct{text-align:center}table {border-collapse: collapse;}th {border-bottom: #aaa 1px solid;padding: 6px;color: #666;text-align: left;text-transform: uppercase;background-color: #fff;}td {padding: 6px;border-bottom: #ddd 1px solid;text-transform: uppercase;}tt{font-size: 14pt;font-weight: bold;color: #006699;}table thead tr th, table tbody tr td {white-space: nowrap;max-width: 130px;overflow-x: hidden;text-overflow: ellipsis;}</style>";
-
 //GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON `escng_shopping`.* TO 'shopping_webuser'@'localhost';
 
 function stmt_bind_assoc(&$stmt, &$bound_assoc)

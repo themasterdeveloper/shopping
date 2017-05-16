@@ -52,8 +52,10 @@ switch ($action) {
 
         $action_type = $_query;
 
+        $area_id = $_GET['area_id'];
+
         // Fill the query parameters
-        $query = "get_token()";
+        $query = "get_token('" . $area_id . "')";
 
         break;
 
@@ -97,9 +99,10 @@ switch ($action) {
         $action_type = $_query;
         $search = $_GET['search'];
         $token = $_GET['token'];
+        $area_id = $_GET['area_id'];
 
         // Fill the query parameters
-        $query = "products_list('" . $search . "','" . $token . "')";
+        $query = "products_list('" . $search . "','" . $area_id . "','" . $token . "')";
 
         break;
 
@@ -247,7 +250,7 @@ switch ($action) {
 
     case "order_notify":
 
-        // It's gonna be a database update
+        // It's gonna be an email
 
         $action_type = $_email;
 
@@ -269,6 +272,9 @@ switch ($action) {
                 $sms_template = str_replace('{order-number}', $row['order-number'], $sms_template);
                 $template = str_replace('{customer-name}', $row['customer-name'], $template);
                 $template = str_replace('{address}', $row['address'], $template);
+                $template = str_replace('{customer-area}', $row['customer-area'], $template);
+                $template = str_replace('{customer-city}', $row['customer-city'], $template);
+                $template = str_replace('{customer-mobile}', $row['mobile'], $template);
                 $template = str_replace('{order-number}', $row['order-number'], $template);
                 $template = str_replace('{date}', $row['date'], $template);
                 $template = str_replace('{order-total}', $row['order-total'], $template);
@@ -332,7 +338,9 @@ switch ($action_type) {
         // More headers and the BCC to me
 
         $headers .= "\r\nFrom: <noreply@iyabasira.online>";
+        $headers .= "\r\nCc: <admin@iyabasira.online>";
         $headers .= "\r\nBcc: <omar.melendrez@gmail.com>";
+
 
         // Create the message with html style
 
@@ -342,6 +350,7 @@ switch ($action_type) {
             mail($email, $subject, $body, $headers);
         else
             log_this($email . ": " . $subject);
+            log_this($body);
         
         if($mobile != '') {
             $ch = curl_init($URL);
