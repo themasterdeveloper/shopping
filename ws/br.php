@@ -278,7 +278,7 @@ switch ($action) {
                 $template = str_replace('{order-number}', $row['order-number'], $template);
                 $template = str_replace('{date}', $row['date'], $template);
                 $template = str_replace('{order-total}', $row['order-total'], $template);
-                $template = str_replace('{service-charge}', $row['service-charge'], $template);
+                //$template = str_replace('{service-charge}', $row['service-charge'], $template);
                 $template = str_replace('{delivery-fee}', $row['delivery-fee'], $template);
                 $template = str_replace('{grand-total}', $row['grand-total'], $template);
                 $pass=1;
