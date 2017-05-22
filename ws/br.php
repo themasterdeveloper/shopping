@@ -81,6 +81,27 @@ switch ($action) {
 
         break;
 
+    case "shops_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "shops_list()";
+
+        break;
+    case "deliverers_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "deliverers_list()";
+
+        break;
+
     case "cities_list":
 
         // It's gonna be a query
@@ -89,6 +110,19 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "cities_list()";
+
+        break;
+
+    case "shops_locations_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $area_id = $_GET['area_id'];
+
+        // Fill the query parameters
+        $query = "shops_locations_list('" . $area_id . "')";
 
         break;
 
@@ -222,6 +256,49 @@ switch ($action) {
 
         break;
 
+    case "save_area_location":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL save_area_location(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("idd", $area_id, $lat, $lng);
+
+        // Assign values
+        $_area_id = $_GET['area_id'];
+        $lat = $_GET['lat'];
+        $lng = $_GET['lng'];
+
+        break;
+
+    case "save_shop_location":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL save_shop_location(?, ?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("iidd", $area_id, $shop_id, $lat, $lng);
+
+        // Assign values
+        $area_id = $_GET['area_id'];
+        $shop_id = $_GET['shop_id'];
+        $lat = $_GET['lat'];
+        $lng = $_GET['lng'];
+
+        break;
+
     case "profile_save":
 
         // It's gonna be a database update
@@ -347,7 +424,8 @@ switch ($action_type) {
         $body = $template;
 
         if($php_server != "localhost")
-            mail($email, $subject, $body, $headers);
+            if($email!="")
+                mail($email, $subject, $body, $headers);
         else
             log_this($email . ": " . $subject);
             log_this($body);

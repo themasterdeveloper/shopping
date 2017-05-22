@@ -9,8 +9,8 @@
     <title>iyabasira.online</title>
 
     <!-- Bootstrap -->
-    <link href="https://iyabasira.online/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link hr class='_divider'ef="https://iyabasira.online/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link hr class='_divider'ef="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -22,7 +22,6 @@
             margin: 18px;
             font-family: 'Open Sans', sans-serif;
         }
-
         h4 {
             margin-top: 25px;
         }
@@ -31,7 +30,7 @@
             margin-bottom: 20px;
         }
 
-        .row .row {
+        .row{
             margin-top: 10px;
             margin-bottom: 0;
         }
@@ -60,6 +59,16 @@
         ._light-blue {
             color: #44BBEE;
         }
+        ._delivery_gruy {
+            vertical-align: top;
+
+        }
+        ._photo_frame {
+            width: 144px;
+        }
+        ._photo {
+            height: 144px;
+        }
 
         .table-borderless>tbody>tr>td,
         .table-borderless>tbody>tr>th,
@@ -72,10 +81,14 @@
             padding-right: 10px;
         }
 
-        hr {
-            margin-top: 20px;
-            margin-bottom: 20px;
+        hr._divider {
+            border: none;
+            border-top: 1px solid #44BBEE;
+            text-align: center;
+            opacity: .2;
         }
+
+
     </style>
     <!--[if gte mso 9]><style type='text/css'>* {letter-spacing: .4px;}body {font-family: Geneva, Arial, Helvetica, sans-serif;font-size: 9pt;color: #666;margin:0;padding:0;}.ar{text-align:right}.ct{text-align:center}table {width: 100%;border-collapse: collapse;}th {border-bottom: #aaa 1px solid;padding: 6px;color: #666;text-align: left;text-transform: uppercase;}td {padding: 6px;border-bottom: #ddd 1px solid;text-transform: uppercase;}tt{font-size: 14pt;font-weight: bold;color: #006699;}table thead tr th, table tbody tr td {white-space: nowrap;max-width: 130px;overflow-x: hidden;text-overflow: ellipsis;}</style><![endif]-->
 </head>
@@ -88,12 +101,23 @@
         </div>
         <p>Dear <strong>{customer-name}</strong>,</p>
         <p>We are pleased to confirm your order number <strong>{order-number}</strong>, processed on <strong>{date}</strong></p>
+        <hr class='_divider'>
         <p>The order will be delivered at the following location:</p>
-        <p><strong>{address}</strong></p>
-        <p><strong>{customer-area}</strong></p>
-        <p><strong>{customer-city}</strong></p>
+        <p><strong>{address}</strong>, <strong>{customer-area}</strong>, <strong>{customer-city}</strong></p>
         <p>Mobile: <strong>{customer-mobile}</strong></p>
-        <br>
+        <hr class='_divider'>
+        <p>The order will be received by:</p>
+        <p><strong>{receiver-name}</strong>, Mobile: <strong>{receiver-mobile}</strong></p>
+        <hr class='_divider'>
+        Your order will be delivered by:
+        <div class="_delivery_gruy">
+            <div class="_photo_frame">
+                <img class="_photo" src="{photo-file}">
+            </div>
+            <span><strong>{{delivery_guy_name}}</strong></span> <br/>
+            <span>{{delivery_guy_mobile}}</span>
+        </div>
+        <hr class="_divider">
         <p>Below are the details of your purchase:</p>
         <div class="table-responsive">
             <table class="table table-borderless table-condensed">
@@ -132,8 +156,8 @@
             </table>
         </div>
         <p>We thank you for your patronage.</p>
-        <hr>
-        <a href="http://iyabasira.online" target="_blank">iyabasira.online</a> (&copy;) 2017 - All rights reserved.
+        <hr class='_divider'>
+        <a hr class='_divider'ef="http://iyabasira.online" target="_blank">iyabasira.online</a> (&copy;) 2017 - All rights reserved.
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

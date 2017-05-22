@@ -13,7 +13,32 @@
     opacity: 0.25;
 }
 
+#map {
+  height: 400px;
+  margin-top: 18px;
+  margin-bottom:  18px;
+}
+.app-title {
+    font-size: 24px;
+    padding-top: 18px;
+    color: #44BBEE;
+}
 
+.header {
+    padding-left: 10px;
+}
+.button-area {
+    margin-bottom: 60px;
+}
+
+.delivery-guy {
+    font-size: 18px;
+    color: #000;
+}
+.photo {
+    height: 144px;
+    margin-bottom: 10px;
+}
 /*
  * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
  *

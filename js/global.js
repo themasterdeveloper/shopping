@@ -360,7 +360,7 @@ load_products = function() {
         }
     });
     updateBasket();
-    log(listCookies());
+    log("listCookies", listCookies());
 };
 
 get_token = function() {
@@ -451,11 +451,22 @@ updateBasket = function(){
 
 function listCookies() {
     var theCookies = document.cookie.split(';');
-    var aString = '';
-    for (var i = 1; i <= theCookies.length; i++) {
-        aString += i + ' ' + theCookies[i - 1] + "\n";
+    var o = {};
+    for (var i = 0; i < theCookies.length; i++) {
+        var name_value = theCookies[i].split("=");
+        var name = name_value[0].replace(/^ /, '');
+        var value = name_value[1];
+        if (o[name] !== undefined) {
+            if (!o[name].push) {
+                o[name] = [o[name]];
+            }
+            o[name].push(value || '');
+        }
+        else {
+            o[name] = value || '';
+        }
     }
-    return aString;
+    return o;
 }
 
 load_basket_products = function() {
@@ -612,8 +623,10 @@ load_dropdown = function(object, empty) {
     data.action = object + "_list";
     log("load_" + object, data);
     var msg = 'Nothing selected';
-    if(object == 'areas') {
+    switch(object){
+    case "areas":
         msg = 'Select an area';
+        break;
     }
     $.ajax({
         data : data,
@@ -660,10 +673,9 @@ var submitForm = function(object) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);
-                notify(data[0].order_id);   
-                setTimeout(function(){
-                    $("#content").load(HOME);
-                }, 3000);
+                setCookie("order_id", data[0].order_id);
+                //notify(data[0].order_id);   
+                $("#content").load("/geolocation");
             }
         }
     });
@@ -699,3 +711,86 @@ get_config_value = function(name){
     });
 }
 
+save_area_location = function(area_id, lat, lng){
+    var data = {};
+    data.action = "save_area_location";
+    data.area_id = area_id;
+    data.lat = lat;
+    data.lng = lng;    
+    log("save_area_location", data);
+    $.ajax({
+        data : data,
+        dataType: 'json',
+        success : function(data) {
+            log("save_area_location", data);
+            if(data[0].error != 0) {
+                showErr(data[0].message);
+            } else {
+                showMsg(data[0].message);
+            }
+        }
+    });
+}
+
+save_shop_location = function(area_id, shop_id, lat, lng){
+    var data = {};
+    data.action = "save_shop_location";
+    data.area_id = area_id;
+    data.shop_id = shop_id;
+    data.lat = lat;
+    data.lng = lng;
+    log("save_shop_location", data);
+    $.ajax({
+        data : data,
+        dataType: 'json',
+        success : function(data) {
+            log("save_shop_location", data);
+            if(data[0].error != 0) {
+                showErr(data[0].message);
+            } else {
+                showMsg(data[0].message);
+                update_markers();
+            }
+        }
+    });
+}
+
+load_shops_locations = function(area_id){
+    var data = {};
+    data.action = "shops_locations_list";
+    data.area_id = 0;
+    log("load_shops_locations", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("load_shops_locations", data);
+            shops = data;
+            setShopMarkers()
+        }
+    });
+}
+
+setShopMarkers = function () {
+    for (var i = 0; i < shops.length; i++) {
+        var shop = shops[i];
+        var image = '/img/rsz_1fastfood-pin.png';
+        var siteLatLng = new google.maps.LatLng(shop["lat"], shop["lng"]);
+        var html = '<div><strong>' + shop["shop"] + '</strong><br/>' + shop["area"] + '</div>';
+        var marker = new google.maps.Marker({
+            position: siteLatLng,
+            map: map,
+            title: shop["name"],
+            icon: image
+        });
+
+        var infowindow = new google.maps.InfoWindow({
+              content: html
+        });  
+
+        marker.addListener('click', function() {
+            infowindow.open(map, marker);
+        });       
+
+        markers.push(marker); 
+    }   
+}      
