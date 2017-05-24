@@ -773,23 +773,23 @@ load_shops_locations = function(area_id){
 setShopMarkers = function () {
     for (var i = 0; i < shops.length; i++) {
         var shop = shops[i];
-        var image = '/img/rsz_1fastfood-pin.png';
         var siteLatLng = new google.maps.LatLng(shop["lat"], shop["lng"]);
-        var html = '<div><strong>' + shop["shop"] + '</strong><br/>' + shop["area"] + '</div>';
         var marker = new google.maps.Marker({
             position: siteLatLng,
             map: map,
-            title: shop["name"],
-            icon: image
+            title: shop["shop"],
+            icon: '/img/rsz_1fastfood-pin.png'
         });
 
         var infowindow = new google.maps.InfoWindow({
-              content: html
+            content: shop["shop"]
         });  
 
         marker.addListener('click', function() {
             infowindow.open(map, marker);
         });       
+
+        infowindow.open(map,marker);
 
         markers.push(marker); 
     }   
