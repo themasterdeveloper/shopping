@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="main">
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <!-- The table area -->
+        <hr>     
+        <div class="profile-form">
+            <form id="profile-form" class="form-horizontal">
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="name" type="text" placeholder="Enter your name">
+                </div>
+
+                <!-- Mobile -->
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input class="form-control" id="mobile" type="text" placeholder="Enter your mobile number">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input class="form-control" id="email" type="email" placeholder="Enter your email address">
+                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input class="form-control" id="password" type="password" placeholder="Enter your password">
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <textarea class="form-control" rows="5" id="address" placeholder="Enter address for delivery"></textarea>
+                </div>
+
+                <!-- Area -->
+                <!--
+                <div class="form-group">
+                    <label for="area_id">Area:</label>
+                    <select class="form-control selectpicker areas" data-live-search="true" id="area_id" data-size="5" data-header="Choose your area">
+                    </select>
+                </div>
+                -->
+                <!-- City -->
+                <div class="form-group">
+                    <label for="city_id">City:</label>
+                    <select class="form-control selectpicker cities" data-live-search="true" id="city_id" data-size="5" data-header="Choose your city">
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span id="msg"></span>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Go Back</button>
+                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Submit Info</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".alert").hide();
+        //load_dropdown("areas");
+        load_dropdown("cities");
+    });
+
+    $("#cancel-action").on("click", function(d){
+        d.preventDefault();
+        $("#content").load("/basket");
+    });
+
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        submitForm("profile");
+    });
+
+</script>

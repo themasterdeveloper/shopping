@@ -18,6 +18,7 @@
   margin-top: 18px;
   margin-bottom:  18px;
 }
+
 .app-title {
     font-size: 24px;
     padding-top: 18px;
@@ -254,7 +255,7 @@ body,
 }
 
 #basket-table thead th {
-  text-transform: capitalize;  
+  text-transform: capitalize;
   font-size: 12px;
 }
 
@@ -377,6 +378,12 @@ body,
     vertical-align: top;
 }
 
+.shop-image {
+    margin-top: 20px;
+    width: 256px;
+    vertical-align: top;
+}
+
 .buy-product-button {
     position: absolute;
     right: 5px;
@@ -491,8 +498,61 @@ input[type=range]:focus::-ms-fill-upper {
 
 .copyright span.iyabasira {
       color: #44BBEE;
-} 
+}
 
 .bold {
   font-weight: bold;
+}
+
+
+table {
+    background-color: #fff;
+}
+
+table thead tr th {
+    text-transform: uppercase;
+    background-color: #44BBEE;
+    color: #fff;
+}
+
+table tfoot tr td {
+    text-align: center;
+}
+
+.add-item {
+    margin-bottom: 18px;
+    margin-top: 10px;
+}
+
+.edit-item {
+    float: right;
+}
+
+.button-group{
+    width: 140px;
+    text-align: right;
+}
+
+.delete-item{
+    margin-right: 10px;
+}
+
+.__amount, .__price {
+    text-align: right;
+}
+
+.__available {
+    text-align: center;
+}
+
+.table-name {
+    padding: 6px;
+    margin-top: 10px;
+    font-size: 14pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #44BBEE;
+    color: #fff;
+    border-radius: 3px;
+    margin-bottom: 10px;
 }

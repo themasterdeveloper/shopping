@@ -21,6 +21,7 @@ window.onerror = function(message, filename, linenumber) {
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
+    cur_page = 0;
     token = '',
     error = false,
     intro = false,
@@ -292,10 +293,11 @@ load_products = function() {
     $(".area-message").addClass("hidden");
 
     var data = {};
-    data.action = "products_list";
+    data.action = "products_search";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
     data.area_id = getCookie("chosen-area");
+    data.shop_area_id = getCookie("shop-area-id");
     log("load_products", data);
 
     $(".alert").hide();
@@ -329,10 +331,16 @@ load_products = function() {
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
                         tmp[i] = "<div href='#' class='list-group-item it-" + $this["id"] + "'>";
-                        tmp[i] += "<img src='/img/" + $this["logo"] + "' class='shop-logo'>";
+                        if($this["logo"]!=''){
+                            tmp[i] += "<img src='/img/" + $this["logo"] + "' class='shop-logo'>";
+                        }
                         tmp[i] += "<span class='area'>" + $this["area"] + "</span>";
                         tmp[i] += "<span class='product'>" + $this["product"] + "</span><br/>";
-                        tmp[i] += "<img class='product-image' src='/img/" + $this["image"] + "'>";
+                        if($this["image"]==''){
+                            tmp[i] += "<img class='product-image' src='/img/no-image.jpg'>";
+                        } else {
+                            tmp[i] += "<img class='product-image' src='/img/" + $this["image"] + "'>";
+                        }
                         tmp[i] += "<span class='price'>" + $this["price"] + "</span>";
                         tmp[i] += "<button class='buy-product-button btn btn-success btn-lg' onclick=buy_product(" + $this["id"] + ") >ORDER NOW</button>";
                         tmp[i] += "</div>";
@@ -342,7 +350,7 @@ load_products = function() {
                 // List-group
                 i++;
             }
-            
+
             $("#dashboard-table").empty().append(tmp.join('')).show();
             $(".table-responsive").show();
             $(".search-box").show();
@@ -420,7 +428,7 @@ add_product = function(){
             updateBasket();
             load_products();
        }
-    });    
+    });
     //event.preventDefault();
 }
 
@@ -524,7 +532,7 @@ load_basket_products = function() {
                     }
                 }
                 tmp[i] = "<td><a href='#' onclick=removeItem(" + $this["id"] + ")><span class='glyphicon glyphicon-remove'></span></td></a></tr>";
-                i++;        
+                i++;
             }
             $("#basket-table thead").empty().append(header.join(''));
             $("#basket-table tbody").empty().append(tmp.join(''));
@@ -617,16 +625,20 @@ save_location = function(pos){
     });
 }
 
-load_dropdown = function(object, empty) {
+load_dropdown = function(object, empty, disabled) {
     empty = (typeof empty === 'undefined') ? false : empty;
+    disabled = (typeof disabled === 'undefined') ? false : disabled;
     var data = {};
     data.action = object + "_list";
     log("load_" + object, data);
     var msg = 'Nothing selected';
     switch(object){
-    case "areas":
-        msg = 'Select an area';
-        break;
+        case "areas":
+            msg = 'Select an area';
+            break;
+        case "category":
+            msg = 'Select a category';
+            break;
     }
     $.ajax({
         data : data,
@@ -642,7 +654,11 @@ load_dropdown = function(object, empty) {
                 tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
                 tmpEmpty = "";
             }
-            $("." + object).empty().append(tmp.join('')).selectpicker({noneSelectedText: msg}).selectpicker('refresh');
+            $("." + object).html(tmp.join('')).selectpicker({noneSelectedText: msg}).selectpicker('refresh');
+            if(disabled) {
+                $("." + object).prop('disabled', true);
+                $("." + object).selectpicker('refresh');
+            }
         }
     });
 };
@@ -654,8 +670,8 @@ var submitForm = function(object) {
 
     data.action = action;
     data.token = getCookie("token");
+
     data.area_id = getCookie("chosen-area");
-	
 	//Generate data items from form fields
 
 	$('#' + form).find(':input:not(button):not(reset)').each(function() {
@@ -674,7 +690,7 @@ var submitForm = function(object) {
             } else {
                 showMsg(data[0].message);
                 setCookie("order_id", data[0].order_id);
-                //notify(data[0].order_id);   
+                //notify(data[0].order_id);
                 $("#content").load("/geolocation");
             }
         }
@@ -716,7 +732,7 @@ save_area_location = function(area_id, lat, lng){
     data.action = "save_area_location";
     data.area_id = area_id;
     data.lat = lat;
-    data.lng = lng;    
+    data.lng = lng;
     log("save_area_location", data);
     $.ajax({
         data : data,
@@ -764,33 +780,285 @@ load_shops_locations = function(area_id){
         data : data,
         success : function(data) {
             log("load_shops_locations", data);
-            shops = data;
-            setShopMarkers()
+            setMarkers(data, 'shop', '/img/rsz_fastfood-pin.png');
         }
     });
 }
 
-setShopMarkers = function () {
-    for (var i = 0; i < shops.length; i++) {
-        var shop = shops[i];
-        var siteLatLng = new google.maps.LatLng(shop["lat"], shop["lng"]);
-        var marker = new google.maps.Marker({
-            position: siteLatLng,
-            map: map,
-            title: shop["shop"],
-            icon: '/img/rsz_1fastfood-pin.png'
+load_deliverers_locations = function(area_id) {
+    var data = {};
+    data.action = "deliverers_list";
+    log("deliverers_list", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("deliverers_list", data);
+            setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
+        }
+    });
+}
+
+setMarkers = function (list, field, image) {
+    for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var siteLatLng = new google.maps.LatLng(item["lat"], item["lng"]);
+        createMarker(siteLatLng, field, image, item);
+    }
+}
+
+createMarker = function(latlng, field, image, data) {
+    var marker = new google.maps.Marker({
+        position: latlng,
+        map: map,
+        title: data[field],
+        icon: image
+    });
+    marker.set('id', data['id']);
+    marker.addListener('click', function() {
+        $('#item_id').val(data['id']);
+        showMarkerData(data);
+    });
+    markers.push(marker);
+}
+
+showMarkerData = function(data){
+    var html = '';
+    $this = data[0];
+    var skip_columns = "-id-lat-lng-photo-available-";
+    for (var key in data) {
+        if (skip_columns.indexOf("-" + key + "-") == -1) {
+            html += '<span class="_data-value">';
+            html += data[key];
+            html += '</span></br>';
+        }
+    }
+    $('.marker-data').html(html);
+}
+
+remove_markers = function (){
+    for(i=0; i<markers.length; i++){
+        markers[i].setMap(null);
+    }
+}
+
+close_infowindows = function (){
+    for(i=0; i<infowindows.length; i++){
+        infowindows[i].close();
+    }
+}
+
+relocateMap = function(){
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            lat = position.coords.latitude;
+            lng = position.coords.longitude;
+            initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            //map.setCenter(initialLocation);
+            me_marker.setPosition(initialLocation);
         });
+    }
+}
 
-        var infowindow = new google.maps.InfoWindow({
-            content: shop["shop"]
-        });  
+adm_load_table = function(table, read_only) {
+    read_only = (typeof read_only === 'undefined') ? false : read_only;
+    $(".table-name").html(table.replace('_',' / '));
+    $(".alert").hide();
+    if(getCookie("cur_page")){
+        cur_page = parseInt(getCookie("cur_page"));
+    }
+    if(getCookie("rows_per_page")){
+        rows_per_page = parseInt(getCookie("rows_per_page"));
+    }
+    var data = {};
+    data.action = 'adm_load_table_' + table;
+    data.search = $("#search").val();
+    data.limit = cur_page;
+    data.rows = rows_per_page;
+    log("load_table", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("load_table", data);
+            if (data[0].error == 1) {
+                $("#" + table + "-table tbody").empty();
+                $("#" + table + "-table tbody").empty();
+                $("#" + table + "-table tfood").empty();
+                showErr(data[0].message);
+                return false;
+            }
+            var skip_columns = "-id-active-total_records-";
 
-        marker.addListener('click', function() {
-            infowindow.open(map, marker);
-        });       
+            var l = data.length;
+            var cols = 0;
+            var tmp = [],
+                i = 0;
+            $this = data[0];
+            var total_records = $this["total_records"];
+            // thead
+            tmp[i] = "<tr>";
+            i++;
+            for (var key in $this) {
+                if (skip_columns.indexOf("-" + key + "-") == -1) {
+                    tmp[i] = "<th class='__" + key + "'>" + key + "</th>";
+                    i++;
+                    cols++;
+                }
+            }
+            if(!read_only) {
+                tmp[i] = '<th></th>';
+                i++;
+            }
+            tmp[i] = "</tr>";
+            $("#" + table + "-table thead").empty().append(tmp.join(''));
 
-        infowindow.open(map,marker);
+            // tbody
+            tmp = [];
+            i=0;
+            for ( r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[i] = "<tr>";
+                i++;
+                for (var key in $this) {
+                    if (skip_columns.indexOf("-" + key + "-") == -1) {
+                        tmp[i] = "<td class='__" + key + "'>" + $this[key] + "</td>";
+                        i++;
+                    }
+                }
+                if(!read_only) {
+                    tmp[i] = '<td class="button-group">';
+                    i++
+                    if($this["active"]==0){
+                        tmp[i] = '<button class="btn btn-danger btn-sm delete-item" onclick="adm_delete_item(' + $this["id"] + ',\'' + table + '\')">Delete</button>';
+                        i++
+                    }
+                    tmp[i] = '<button class="btn btn-primary btn-sm edit-item" onclick="adm_edit_item(' + $this["id"] + ',\'' + table + '\')">Edit</button>';
+                    i++
+                    tmp[i] = '</td>';
+                    i++
+                }
+                tmp[i] = "</tr>";
+                i++;
+            }
+            $("#" + table + "-table tbody").empty().append(tmp.join(''));
 
-        markers.push(marker); 
-    }   
-}      
+            var footer = '';
+            footer += '<tr><td colspan=' + cols+ 2 + '>';
+            if(cur_page>0){
+                footer += '<button class= "btn btn-success btn-sm pull-left btn-prev table-button">Prev</button>';
+            } else {
+                footer += '<button class= "btn btn-success btn-sm pull-left disabled table-button">Prev</button>';
+            }
+            var page = parseInt(cur_page)+1
+            footer += "Page " + page;
+
+            if ( cur_page < parseInt(total_records/rows_per_page) ) {
+                footer += '<button class= "btn btn-success btn-sm pull-right btn-next">Next</button>';
+            } else {
+                footer += '<button class= "btn btn-success btn-sm pull-right disabled">Next</button>';
+            }
+            footer += '<br/>' + total_records + ' records';
+            footer += '</td></tr>';
+
+            $("#" + table + "-table tfoot").empty().append(footer);
+
+            $(".btn-prev").on("click", function(e){
+                e.preventDefault();
+                setCookie("cur_page", cur_page-1);
+                adm_load_table(table, read_only);
+            })
+
+            $(".btn-next").on("click", function(e){
+                e.preventDefault();
+                setCookie("cur_page", cur_page+1);
+                adm_load_table(table, read_only);
+            })
+
+        }
+    });
+}
+
+adm_edit_item = function(item_id, table) {
+    $("#item_id").val(item_id);
+    fillForm(item_id, table);
+}
+
+fillForm = function(item_id, table){
+    var data = {};
+    data.action = 'get_table_record';
+    data.table = table;
+    data.item_id = item_id;
+    log("get_table_record", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("get_table_record", data);
+            $this = data[0];
+            for (var key in $this) {
+                if(key == 'image' || key == 'logo'){
+                    if($this[key].length>0) {
+                        $("#"+key).attr("src", "/img/" + $this[key]);
+                    }else{
+                        $("#"+key).attr("src", "/img/no-image.jpg");
+                    }
+                }else{
+                    $("#"+key).val($this[key]);
+                }
+            }
+            if(table == 'shop_product') {
+                $(".selectpicker").prop('disabled', true);
+                $("#availability").prop('disabled', false);
+            }
+            $('.selectpicker').selectpicker('refresh');
+            $("." + table + "-list").addClass("hidden");
+            $("." + table + "-form").removeClass("hidden");
+        }
+    });
+}
+
+var adm_delete_item = function(item_id, table) {
+    var data = {};
+    data.action = 'delete_table_record';
+    data.table = table;
+    data.item_id = item_id;
+    log("get_table_data", data);
+    $.ajax({
+        data : data,
+        success : function(data) {
+            log("adm_delete_item", data);
+            if(data[0].error != 0) {
+                showErr(data[0].message);
+            } else {
+                adm_load_table(table);
+            }
+        }
+    });
+}
+
+var saveData = function(object) {
+    var action = object + "_save";
+    var form = object + "-form";
+    var data = {};
+    data.action = action;
+	$('#' + form).find(':input:not(button):not(reset)').each(function() {
+        var $this = $(this);
+        if($this.attr("id"))
+            data[$this.attr("id")] = $this.val().trim();
+    });
+    log("saveData", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("saveData", data);
+            if(data[0].error != 0) {
+                showErr(data[0].message);
+            } else {
+                showMsg(data[0].message);
+                setCookie("record_id", data[0].record_id);
+                $("." + object + "-list").removeClass("hidden");
+                $("." + object + "-form").addClass("hidden");
+                adm_load_table(object);
+            }
+        }
+    });
+};

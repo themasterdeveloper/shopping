@@ -1,4 +1,4 @@
-<?php 
+<?php
 date_default_timezone_set('Africa/Lagos');
 ini_set('html_errors', false);
 // Debug area
@@ -45,7 +45,111 @@ switch ($action) {
         $query = "login('" . $email . "','" . $password . "')";
 
         break;
+    case "adm_load_table_products":
 
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_products_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_customers":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_customers_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_orders":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_orders_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+    case "adm_load_table_shops":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_shops_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+    case "adm_load_table_shops_areas":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_shops_areas_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+    case "adm_load_table_shop_product":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_shop_product_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+    case "adm_load_table_categories":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_categories_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+    case "get_table_record":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $table = $_GET['table'];
+        $item_id = $_GET['item_id'];
+        $query = "get_table_record('" . $table . "','" . $item_id . "')";
+
+        break;
     case "get_token":
 
         // It's gonna be a query
@@ -56,6 +160,19 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "get_token('" . $area_id . "')";
+
+        break;
+
+    case "get_area_coordinates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $area_id = $_GET['area_id'];
+
+        // Fill the query parameters
+        $query = "get_area_coordinates('" . $area_id . "')";
 
         break;
 
@@ -81,6 +198,28 @@ switch ($action) {
 
         break;
 
+    case "products_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "products_list()";
+
+        break;
+
+    case "category_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "category_list()";
+
+        break;
+
     case "shops_list":
 
         // It's gonna be a query
@@ -89,6 +228,16 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "shops_list()";
+
+        break;
+    case "shop_types_list":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the query parameters
+        $query = "shop_types_list()";
 
         break;
     case "deliverers_list":
@@ -126,17 +275,17 @@ switch ($action) {
 
         break;
 
-    case "products_list":
+    case "products_search":
 
         // It's gonna be a query
 
         $action_type = $_query;
         $search = $_GET['search'];
         $token = $_GET['token'];
-        $area_id = $_GET['area_id'];
+        $shop_area_id = $_GET['shop_area_id'];
 
         // Fill the query parameters
-        $query = "products_list('" . $search . "','" . $area_id . "','" . $token . "')";
+        $query = "products_search('" . $search . "','" . $shop_area_id . "','" . $token . "')";
 
         break;
 
@@ -173,6 +322,26 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "get_config_value('" . $name . "')";
+
+        break;
+
+    case "delete_table_record":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delete_table_record(?,?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("si", $table, $item_id);
+
+        // Assign values
+        $table = $_GET['table'];
+        $item_id = $_GET['item_id'];
 
         break;
 
@@ -325,6 +494,114 @@ switch ($action) {
 
         break;
 
+    case "products_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL products_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("isi", $item_id, $name, $category_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $category_id = $_GET['category_id'];
+
+        break;
+
+    case "shops_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL shops_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("isi", $item_id, $name, $type_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $type_id = $_GET['type_id'];
+
+        break;
+
+    case "shops_areas_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("iss", $item_id, $contact, $mobile);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $contact = $_GET['contact'];
+        $mobile = $_GET['mobile'];
+
+        break;
+
+    case "shop_product_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL shop_product_save(?, ?, ?, ?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("iiiidi", $item_id, $shop_id, $area_id, $product_id, $price, $availability);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $shop_id = $_GET['shop_id'];
+        $area_id = $_GET['area_id'];
+        $product_id = $_GET['product_id'];
+        $price = $_GET['price'];
+        $availability = $_GET['availability'];
+
+        break;
+
+    case "categories_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL categories_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("isi", $item_id, $name, $type_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $type_id = $_GET['shop_type_id'];
+
+        break;
+
     case "order_notify":
 
         // It's gonna be an email
@@ -334,9 +611,9 @@ switch ($action) {
         $order_id = $_GET['order_id'];
         // Set the procedure we are going to use
         $query = 'get_order_details(' . $order_id . ')';
-        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]"); 
-        $template = file_get_contents('../templates/order_confirmation.html');       
-        $sms_template = file_get_contents('../templates/order_confirmation.txt');       
+        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
+        $template = file_get_contents('../templates/order_confirmation.html');
+        $sms_template = file_get_contents('../templates/order_confirmation.txt');
         $data = '';
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
@@ -369,7 +646,7 @@ switch ($action) {
             $data .= "</tr>";
            }
         $template = str_replace('{data}', $data, $template);
-        $result->free();    
+        $result->free();
 
         $URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
 
@@ -379,13 +656,13 @@ switch ($action) {
 
 switch ($action_type) {
     case $_query:
-    
+
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $rowcount=mysqli_num_rows($result);
         $rows = array();
         if($rowcount==0){
-            $rows[] = array("error"=>1, 
-                            "message"=>"Sorry, there are no products available<br/><span class='bold'>Check your basket!</span>");
+            $rows[] = array("error"=>1,
+                            "message"=>"Sorry, there are no products available");
         }else{
             while ($row = $result->fetch_array(MYSQLI_ASSOC))
                 {
@@ -429,7 +706,7 @@ switch ($action_type) {
         else
             log_this($email . ": " . $subject);
             log_this($body);
-        
+
         if($mobile != '') {
             $ch = curl_init($URL);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

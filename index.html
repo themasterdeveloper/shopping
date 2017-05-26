@@ -15,7 +15,7 @@
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Full screen for Safari under iOS --> 
+    <!-- Full screen for Safari under iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- Custom styles for this template -->
     <link href="/css/global.min.css" rel="stylesheet">
@@ -31,7 +31,7 @@
             "@context": "http://schema.org",
             "@type": "Organization",
             "url": "https://iyabasira.online",
-            "description": "iyabasira - a new way to shop for Naija",          
+            "description": "iyabasira - a new way to shop for Naija",
             "contactPoint": [{
                 "@type": "ContactPoint",
                 "telephone": "+54-291-575-4922",
@@ -76,7 +76,7 @@
             <hr>
             <p class="copyright">
             The fast food brands and logos showed here are property of their respective companies.<br/>
-            <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved. 
+            <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved.
             </p>
 
         </div>
@@ -119,7 +119,8 @@
             e.preventDefault();
             intro = true;
             setCookie("chosen-area", $(this).val());
-            $("#content").load(HOME);
+            //$("#content").load(HOME);
+            $("#content").load('/map');
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
         });

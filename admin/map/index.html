@@ -1,0 +1,88 @@
+
+<style>
+    .jumbotron{
+        padding: 0;
+        margin: 0;
+    }
+    #areaMap {
+      height: 500px;
+      margin: 0;
+      padding: 0;
+    }
+    .marker-data{
+        position: absolute;
+        right: 100px;
+        top: 80px;
+        padding: 10px;
+        background-color: #fff;
+    }
+</style>
+
+    <div id="areaMap"></div>
+    <div class="marker-data"></div>
+
+    <script>
+        var map;
+        var lat = 0;
+        var lng = 0;
+        var area_id = '';
+        var area_name = '';
+        var shop_id = '';
+        var shop_name = '';
+        var shops;
+        var deliverers;
+        var markers = [];
+        var infowindows = [];
+        var me_marker;
+        var zoom = 11;
+
+        $(document).ready(function() {
+            $(".alert").hide();
+            setInterval(function() {
+                relocateMap();
+            }, 60000);
+            setInterval(function() {
+                update_markers();
+            }, 30000);
+        });
+
+        update_markers = function(){
+
+            remove_markers();
+            load_shops_locations(0);
+            load_deliverers_locations(0);
+        }
+
+        initialize = function () {
+
+            var myOptions = {
+                zoom: zoom,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+
+            map = new google.maps.Map(document.getElementById("areaMap"), myOptions);
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                });
+            }
+            var centerMap = new google.maps.LatLng(4.8156, 7.0498);
+            initialLocation = centerMap;
+            map.panTo(initialLocation);
+            me_marker = new google.maps.Marker({
+                position: initialLocation,
+                map: map,
+                title: 'You are here'
+            });
+
+            load_shops_locations(0);
+            load_deliverers_locations(0);
+        }
+
+
+
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">
+    </script>

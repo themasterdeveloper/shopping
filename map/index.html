@@ -1,0 +1,83 @@
+<style>
+.marker-data{
+    font-size: 11pt;
+    font-weight: bold;
+    color: #333;
+}
+</style>
+<div class="row">
+    <div class="col-md-12">
+        <div class="app-title">iyabasira <span class="grey">delivery</span></div>
+        <div id="map">
+
+        </div>
+        <div class="button-area">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="msg"></span>
+            </div>
+            <input type="hidden" id="item_id">
+            <div class="col-md-6">
+                <div class="marker-data"></div>
+            </div>
+            <div class="col-md-6">
+                <button type="button" class="btn btn-success btn-md pull-right go-button">Go</button>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        var map;
+        var lat = 0;
+        var lng = 0;
+        var shops;
+        var markers = [];
+        var infowindows = [];
+        var zoom = 15;
+
+        start = function() {
+            $(".alert").hide();
+        };
+
+        initialize = function () {
+            var myOptions = {
+                zoom: zoom,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            }
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                });
+            }
+            set_area_coordinates(getCookie('chosen-area'));
+        }
+
+        set_area_coordinates = function(area_id) {
+            var data = {};
+            data.action = "get_area_coordinates";
+            data.area_id = area_id;
+            log("get_area_coordinates", data);
+            $.ajax({
+                data : data,
+                success : function(data) {
+                    log("get_area_coordinates", data);
+                    var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
+                    $('#area_id').val(area_id);
+                    initialLocation = centerMap;
+                    map.panTo(initialLocation);
+                    load_shops_locations(getCookie("chosen-area"));
+                }
+            });
+        }
+
+        $('.go-button').on('click', function(e){
+            e.preventDefault();
+            setCookie('shop-area-id', $('#item_id').val());
+            $("#content").load(HOME);
+        })
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">
+    </script>
