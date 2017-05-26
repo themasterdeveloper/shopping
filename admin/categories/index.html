@@ -1,0 +1,84 @@
+<div class="row">
+    <div class="main">
+        <div class="categories-list table-container">
+            <div class="table-name pull-left"></div>
+            <button class="btn btn-primary add-item pull-right">Add category</button>
+            <div class="form-group">
+                <input class="form-control" id="search" type="text" placeholder="Enter search">
+            </div>
+            <table class="table table-hover" id="categories-table">
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+            <div class="pagination"></div>
+        </div>
+        <div class="categories-form hidden">
+            <form id="categories-form" class="form-horizontal">
+                <input type="hidden" name="item_id" id="item_id">
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="name" type="text" placeholder="Enter category name">
+                </div>
+
+                <!-- category -->
+                <div class="form-group">
+                    <label for="shop_type_id">Shop type:</label>
+                    <select class="form-control selectpicker shop_types" data-live-search="true" id="shop_type_id" data-size="5" data-header="Choose shop type">
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span id="msg"></span>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel</button>
+                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".alert").hide();
+        setCookie("cur_page", 0);
+        setCookie("rows_per_page", 5);
+        adm_load_table('categories');
+        load_dropdown("shop_types");
+    });
+
+    $("#cancel-action").on("click", function(d){
+        d.preventDefault();
+        $(".categories-list").removeClass("hidden");
+        $(".categories-form").addClass("hidden");
+    });
+
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        saveData("categories");
+    });
+
+    $(".add-item").on("click", function() {
+        $(".categories-form").find("input[type=text], textarea").val("");
+        $("#item_id").val(0);
+        $(".categories-list").addClass("hidden");
+        $(".categories-form").removeClass("hidden");
+    });
+
+    $("#search" ).keypress(function( event ) {
+        if ( event.which == 13 ) {
+            event.preventDefault();
+            adm_load_table('categories');
+        }
+    });
+</script>

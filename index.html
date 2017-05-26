@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
+    <meta name="google-site-verification" content="rUQGy7uVvtoqDq5FR3OHW81IMFQl-hDLQtvD7ccokX0" />
     <meta name="description" content="iyabasira - a new way to shop for Naija">
     <meta name="author" content="www.escng.com">
     <link rel="icon" href="/img/favicon.ico">
@@ -14,7 +15,7 @@
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Full screen for Safari under iOS --> 
+    <!-- Full screen for Safari under iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- Custom styles for this template -->
     <link href="/css/global.min.css" rel="stylesheet">
@@ -25,6 +26,20 @@
             display: none;
         }
     </style>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "url": "https://iyabasira.online",
+            "description": "iyabasira - a new way to shop for Naija",
+            "contactPoint": [{
+                "@type": "ContactPoint",
+                "telephone": "+54-291-575-4922",
+                "author": "Omar Melendrez",
+                "contactType": "customer service"
+            }]
+        }
+    </script>
 </head>
 
 <body>
@@ -33,7 +48,7 @@
     <i class="fa fa-refresh fa-5x fa-spin"></i>
     <div class="shadow"></div>
     <div class="container">
-        <div id="content" class="content-fluid hidden">
+        <div id="content" class="content hidden">
         </div>
         <div class="intro" id="intro">
             <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
@@ -46,16 +61,22 @@
                 <li>Choose one of the delivery guys available in the same app</li>
                 <li>Rub your belly, the food is coming</li>
             </ul>
-            <br/>
+            <div class="form-group">
+                <label for="areas">Select the area you want the orders to be delivered</label>
+                <select class="form-control areas">
+                </select>
+            </div>
+            <!--
             <p>
             Now click <button type="button" class="btn btn-success btn-lg start" >Start</button>
             </p>
             <span class="bottom-message">Delivery service available in <span class="areas"></span> in Port Harcourt Only. Coming soon to other areas.</span>
+            -->
 
             <hr>
             <p class="copyright">
             The fast food brands and logos showed here are property of their respective companies.<br/>
-            <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved. 
+            <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved.
             </p>
 
         </div>
@@ -87,16 +108,19 @@
                 $(".intro").addClass("hidden");
                 $("#content").removeClass("hidden");
             } else {
+                load_dropdown("areas", true);
                 get_areas();
                 get_config_value("Online");
                 get_config_value("Debug");
             }
         });
 
-        $(".start").on("click", function(e){
+        $(".areas").on("change", function(e){
             e.preventDefault();
             intro = true;
-            $("#content").load(HOME);
+            setCookie("chosen-area", $(this).val());
+            //$("#content").load(HOME);
+            $("#content").load('/map');
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
         });
@@ -108,7 +132,6 @@
         $(".glyphicon-fullscreen").parent().on("click", function() {
             toggleFullScreen();
         });
-
     </script>
 </body>
 

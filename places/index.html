@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
+    <meta name="google-site-verification" content="rUQGy7uVvtoqDq5FR3OHW81IMFQl-hDLQtvD7ccokX0" />
+    <meta name="description" content="iyabasira - a new way to shop for Naija">
+    <meta name="author" content="www.escng.com">
+    <link rel="icon" href="/img/favicon.ico">
+    <title>iyabasira - delivery services</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Full screen for Safari under iOS --> 
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Custom styles for this template -->
+    <link href="/css/global.min.css" rel="stylesheet">
+    <style>
+        .alert,
+        .error_message,
+        .table-responsive {
+            display: none;
+        }
+    </style>
+</head>    
+<body>
+    <!-- Loading spin image -->
+    <i class="fa fa-refresh fa-5x fa-spin"></i>
+    <div class="container">
+        <div id="content" class="content places">
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="app-title">iyabasira <span class="grey">delivery</span></div>
+                    <!-- The table area -->
+
+                    <div class="header">        
+                        <!-- Area -->
+                        <div class="form-group">
+                            <select class="form-control selectpicker areas" id="area_id">
+                            </select>
+                        </div>
+                        <!-- Fast food -->
+                        <div class="form-group">
+                            <select class="form-control selectpicker shops" id="shop_id">
+                            </select>
+                        </div>
+                        <div id="map">
+                            
+                        </div>
+                    </div>
+                    <div class="button-area">
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <span id="msg"></span>
+                        </div>                
+                        <div class="col offset-md-8 col-md-12">   
+                            <button type="button" class="btn btn-success save-location">Save Geolocation</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/libs/jquery/js/jquery.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
+    <script src="/js/global.min.js"></script>
+
+    <script>
+        var map;
+        var lat = 0;
+        var lng = 0;
+        var area_id = '';
+        var area_name = '';
+        var shop_id = '';
+        var shop_name = '';
+        var shops;
+        var markers = [];
+        var me_marker;
+
+        $(document).ready(function() {
+            $(".alert").hide();
+            load_dropdown("areas", true);
+            load_dropdown("shops", true);
+            setInterval(function() {
+                relocateMap();
+            }, 5000);
+            setInterval(function() {
+                update_markers();
+            }, 60000);
+        });
+
+        $(".areas").on("change", function(e){
+            e.preventDefault();
+            area_id = $(this).val();
+            area_name = $('.areas option:selected').text();
+        });
+
+        $(".shops").on("change", function(e){
+            e.preventDefault();
+            shop_id = $(this).val();
+            shop_name = $('.shops option:selected').text();
+        });
+
+        $(".save-location").on("click", function(e){
+            if(area_id != ''  && shop_id != '' ){
+                save_shop_location(area_id, shop_id, lat, lng);
+            } else {
+                if(area_id == ''){
+                    showErr('You must select an area');
+                } else {
+                    save_area_location(area_id, lat, lng);
+                }
+            }
+        });
+
+        update_markers = function(){
+
+            remove_markers();
+            load_shops_locations(0);
+        }
+
+        remove_markers = function (){
+
+            for(i=0; i<markers.length; i++){
+                markers[i].setMap(null);
+            }
+        }
+
+        initialize = function () {
+
+            var myOptions = {
+                zoom: 13,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                panControl: true,
+                zoomControl: true,
+                mapTypeControl: false,
+                streetViewControl: false
+            }
+            
+            map = new google.maps.Map(document.getElementById("map"), myOptions);
+            
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                    var centerMap = new google.maps.LatLng(4.88246, 6.976786);
+                    initialLocation = centerMap;
+                    map.panTo(initialLocation);
+                    me_marker = new google.maps.Marker({
+                        position: initialLocation,
+                        map: map,
+                        title: 'You are here'
+                    });
+                });
+            }
+            
+            load_shops_locations(0);
+        }
+
+        relocateMap = function(){
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    lat = position.coords.latitude;
+                    lng = position.coords.longitude;
+                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);                    
+                    //map.setCenter(initialLocation);
+                    me_marker.setPosition(initialLocation);
+                });
+            }
+        }
+
+    </script>
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">
+    </script>
+
+    </body>
+
+</html>

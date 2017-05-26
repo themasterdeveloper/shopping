@@ -1,0 +1,125 @@
+<div class="row">
+    <div class="main">
+        <div class="shop_product-list table-container">
+            <div class="table-name pull-left"></div>
+            <button class="btn btn-primary add-item pull-right">Add product</button>
+            <div class="form-group">
+                <input class="form-control" id="search" type="text" placeholder="Enter search">
+            </div>
+            <table class="table table-hover" id="shop_product-table">
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+            <div class="pagination"></div>
+        </div>
+        <div class="shop_product-form hidden">
+            <form id="shop_product-form" class="form-horizontal">
+                <input type="hidden" name="item_id" id="item_id">
+
+                <!-- shop -->
+                <div class="form-group">
+                    <label for="shop_id">Shop:</label>
+                    <select class="form-control selectpicker shops" id="shop_id" data-live-search="true" data-size="5" data-header="Choose a shop">
+                    </select>
+                </div>
+
+                <!-- area -->
+                <div class="form-group">
+                    <label for="area_id">Area:</label>
+                    <select class="form-control selectpicker areas" id="area_id" data-live-search="true" data-size="5" data-header="Choose an area">
+                    </select>
+                </div>
+
+                <!-- city -->
+                <!--
+                <div class="form-group">
+                    <label for="city_id">City:</label>
+                    <select class="form-control selectpicker cities" id="city_id" data-live-search="true" data-size="5" data-header="Choose a city">
+                    </select>
+                </div>
+                -->
+                <!-- product -->
+                <div class="form-group">
+                    <label for="product_id">Product:</label>
+                    <select class="form-control selectpicker products" id="product_id" data-live-search="true" data-size="5" data-header="Choose a product">
+                    </select>
+                </div>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Price:</label>
+                    <input class="form-control" id="price" type="text" placeholder="Enter product price">
+                </div>
+
+                <!-- product -->
+                <div class="form-group">
+                    <label for="availability">Available:</label>
+                    <select class="form-control selectpicker" id="availability">
+                        <option value="1">YES</option>
+                        <option value="0">NO</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span id="msg"></span>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel</button>
+                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".alert").hide();
+        setCookie("cur_page", 0);
+        setCookie("rows_per_page", 5);
+        adm_load_table('shop_product');
+        load_dropdown("shops");
+        load_dropdown("areas");
+        load_dropdown("cities");
+        load_dropdown("products");
+    });
+
+    $(".selectpicker").on("click", function(e){
+        e.preventDefault();
+    })
+
+    $("#cancel-action").on("click", function(d){
+        d.preventDefault();
+        $(".shop_product-list").removeClass("hidden");
+        $(".shop_product-form").addClass("hidden");
+    });
+
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        saveData("shop_product");
+    });
+
+    $(".add-item").on("click", function() {
+        $(".shop_product-form").find("input[type=text], textarea").val("");
+        $("#item_id").val(0);
+        $(".shop_product-list").addClass("hidden");
+        $(".shop_product-form").removeClass("hidden");
+        $(".selectpicker").prop('disabled', false);
+        $('.selectpicker').selectpicker('refresh');
+    });
+
+    $("#search" ).keypress(function( event ) {
+        if ( event.which == 13 ) {
+            event.preventDefault();
+            adm_load_table('shop_product');
+        }
+    });
+</script>

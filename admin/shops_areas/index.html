@@ -1,0 +1,103 @@
+<div class="row">
+    <div class="main">
+        <div class="shops_areas-list table-container">
+            <div class="table-name pull-left"></div>
+            <div class="form-group">
+                <input class="form-control" id="search" type="text" placeholder="Enter search">
+            </div>
+            <table class="table table-hover" id="shops_areas-table">
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+            <div class="pagination"></div>
+        </div>
+        <div class="shops_areas-form hidden">
+            <form id="shops_areas-form" class="form-horizontal">
+                <input type="hidden" name="item_id" id="item_id">
+
+                <!-- shop -->
+                <div class="form-group">
+                    <label for="shop_id">Category:</label>
+                    <select class="form-control selectpicker shops" id="shop_id">
+                    </select>
+                </div>
+
+                <!-- area -->
+                <div class="form-group">
+                    <label for="area_id">Category:</label>
+                    <select class="form-control selectpicker areas" id="area_id">
+                    </select>
+                </div>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Contact:</label>
+                    <input class="form-control" id="contact" type="text" placeholder="Enter contact name">
+                </div>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Mobile:</label>
+                    <input class="form-control" id="mobile" type="text" placeholder="Enter mobile number">
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span id="msg"></span>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel</button>
+                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".alert").hide();
+        setCookie("cur_page", 0);
+        setCookie("rows_per_page", 5);
+        adm_load_table('shops_areas');
+        load_dropdown("shops", false, true);
+        load_dropdown("areas", false, true);
+    });
+
+    $(".selectpicker").on("click", function(e){
+        e.preventDefault();
+
+    })
+
+    $("#cancel-action").on("click", function(d){
+        d.preventDefault();
+        $(".shops_areas-list").removeClass("hidden");
+        $(".shops_areas-form").addClass("hidden");
+    });
+
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        saveData("shops_areas");
+    });
+
+    $(".add-item").on("click", function() {
+        $(".shops_areas-form").find("input[type=text], textarea").val("");
+        $("#item_id").val(0);
+        $(".shops_areas-list").addClass("hidden");
+        $(".shops_areas-form").removeClass("hidden");
+    });
+
+    $("#search" ).keypress(function( event ) {
+        if ( event.which == 13 ) {
+            event.preventDefault();
+            adm_load_table('shops_areas');
+        }
+    });
+</script>

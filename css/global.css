@@ -13,7 +13,33 @@
     opacity: 0.25;
 }
 
+#map {
+  height: 400px;
+  margin-top: 18px;
+  margin-bottom:  18px;
+}
 
+.app-title {
+    font-size: 24px;
+    padding-top: 18px;
+    color: #44BBEE;
+}
+
+.header {
+    padding-left: 10px;
+}
+.button-area {
+    margin-bottom: 60px;
+}
+
+.delivery-guy {
+    font-size: 18px;
+    color: #000;
+}
+.photo {
+    height: 144px;
+    margin-bottom: 10px;
+}
 /*
  * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
  *
@@ -106,7 +132,6 @@ body {
     margin: 0;
 }
 
-
 /*
  * Global add-ons
  */
@@ -146,7 +171,7 @@ body {
     }
 }
 
-.main .page-header {
+.main, .page-header {
     margin-top: 0;
     font-weight: bold;
 }
@@ -215,6 +240,7 @@ footer .glyphicon {
 
 .main,
 body,
+.intro,
 #dashboard-table{
     background-color: #f8f8f8;
 }
@@ -225,10 +251,11 @@ body,
 
 #basket-table {
   background-color: #fff;
+  margin-bottom: 20px;
 }
 
 #basket-table thead th {
-  text-transform: capitalize;  
+  text-transform: capitalize;
   font-size: 12px;
 }
 
@@ -261,17 +288,23 @@ body,
     font-weight: bold;
 }
 
-#content, #intro {
-    margin-bottom: 60px;
+.main, #profile-form {
+  padding-right: 20px;
+  padding-left: 20px;
+  margin-bottom: 60px;
+
 }
 
-.order-form {
-  margin-left: 22px;
-  margin-right: 22px;
+.area-message{
+  margin-top: 20px;
 }
 
 .list-group-item {
     height: 260px;
+}
+
+#basket-table {
+  width: 100%;
 }
 
 .shop-logo {
@@ -323,6 +356,16 @@ body,
 
 ._amount, ._total {
   text-align: right;
+  padding: 6px;
+}
+
+._grand_total {
+  border-top: 1px solid #aaa;
+  border-bottom: 2px solid #aaa;
+}
+
+._top_line {
+  border-top: 1px solid #aaa;
 }
 
 ._quantity {
@@ -330,6 +373,12 @@ body,
 }
 
 .product-image {
+    margin-top: 20px;
+    width: 256px;
+    vertical-align: top;
+}
+
+.shop-image {
     margin-top: 20px;
     width: 256px;
     vertical-align: top;
@@ -431,8 +480,6 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .intro {
-  padding: 20px;
-  background-color: #fff;
   font-size: 16px;
 }
 
@@ -451,8 +498,61 @@ input[type=range]:focus::-ms-fill-upper {
 
 .copyright span.iyabasira {
       color: #44BBEE;
-} 
+}
 
 .bold {
   font-weight: bold;
+}
+
+
+table {
+    background-color: #fff;
+}
+
+table thead tr th {
+    text-transform: uppercase;
+    background-color: #44BBEE;
+    color: #fff;
+}
+
+table tfoot tr td {
+    text-align: center;
+}
+
+.add-item {
+    margin-bottom: 18px;
+    margin-top: 10px;
+}
+
+.edit-item {
+    float: right;
+}
+
+.button-group{
+    width: 140px;
+    text-align: right;
+}
+
+.delete-item{
+    margin-right: 10px;
+}
+
+.__amount, .__price {
+    text-align: right;
+}
+
+.__available {
+    text-align: center;
+}
+
+.table-name {
+    padding: 6px;
+    margin-top: 10px;
+    font-size: 14pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: #44BBEE;
+    color: #fff;
+    border-radius: 3px;
+    margin-bottom: 10px;
 }

@@ -5,6 +5,11 @@ $php_user="shopping_webuser";
 $php_password="M1a4$1t4E8r0";
 $php_schema="escng_shopping";
 
+$sms_url = "https://www.bulksmsnigeria.net/components/com_spc/smsapi.php";
+$sms_user ="nwabuezestephen27@gmail.com";
+$sms_password = "Foot27ball";
+$sms_sender = "iyabasira";
+
 //GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON `escng_shopping`.* TO 'shopping_webuser'@'localhost';
 
 function stmt_bind_assoc(&$stmt, &$bound_assoc)
@@ -62,6 +67,7 @@ function log_this($content = '', $type = "log"){
     file_put_contents('../logs/usr_' . date("ymd") . '.txt', $_SERVER['REMOTE_ADDR'] .' ' . date("d-m-y H:i:s") . ' '.  $_GET['action'] . PHP_EOL, FILE_APPEND);
     file_put_contents('../logs/' . $type . '_' . date("ymd") . '.txt', $log, FILE_APPEND);
 }
+
 
 ?>
 
