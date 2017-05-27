@@ -5,18 +5,15 @@
     src: url('../fonts/Roboto-Regular.ttf') format('truetype');
 }
 
-[class^="glyphicon-"][disabled],
-[class*=" glyphicon-"][disabled],
-[class^="glyphicon-"].disabled,
-[class*=" glyphicon-"].disabled {
+[class^="glyphicon-"][disabled], [class*=" glyphicon-"][disabled], [class^="glyphicon-"].disabled, [class*=" glyphicon-"].disabled {
     cursor: default;
     opacity: 0.25;
 }
 
 #map {
-  height: 400px;
-  margin-top: 18px;
-  margin-bottom:  18px;
+    height: 400px;
+    margin-top: 18px;
+    margin-bottom: 18px;
 }
 
 .app-title {
@@ -28,6 +25,7 @@
 .header {
     padding-left: 10px;
 }
+
 .button-area {
     margin-bottom: 60px;
 }
@@ -36,10 +34,13 @@
     font-size: 18px;
     color: #000;
 }
+
 .photo {
     height: 144px;
     margin-bottom: 10px;
 }
+
+
 /*
  * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
  *
@@ -68,18 +69,18 @@
     color: #44BBEE;
 }
 
-.alert,
-.order-form,
-.table-responsive {
+.alert, .order-form, .table-responsive {
     display: none;
 }
 
 .table-responsive {
     z-index: 99996;
 }
+
 .order-form {
     text-align: center;
 }
+
 .error_message {
     color: #ff0000;
     font-size: 24px;
@@ -92,7 +93,6 @@
     position: absolute;
     background-color: #fff;
     border: 5px solid #4cae4c;
-
 }
 
 .shadow {
@@ -112,13 +112,10 @@
 }
 
 .quantity {
-  font-size: 18px;
+    font-size: 18px;
 }
 
-h1,
-h2,
-h3,
-h4 {
+h1, h2, h3, h4 {
     color: #44BBEE;
 }
 
@@ -131,6 +128,7 @@ body {
     font-family: 'Roboto', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
     margin: 0;
 }
+
 
 /*
  * Global add-ons
@@ -238,10 +236,7 @@ footer .glyphicon {
  * Tickets
  */
 
-.main,
-body,
-.intro,
-#dashboard-table{
+.main, body, .intro, #dashboard-table {
     background-color: #f8f8f8;
 }
 
@@ -250,33 +245,31 @@ body,
 }
 
 #basket-table {
-  background-color: #fff;
-  margin-bottom: 20px;
+    background-color: #fff;
+    margin-bottom: 20px;
 }
 
 #basket-table thead th {
-  text-transform: capitalize;
-  font-size: 12px;
+    text-transform: capitalize;
+    font-size: 12px;
 }
 
 #basket-table thead th, #basket-table tbody td {
-  padding: 4px;
-  font-size: 14px;
+    padding: 4px;
+    font-size: 14px;
 }
 
 #basket-table tbody td.__shop {
-  font-size: 12px;
+    font-size: 12px;
 }
 
-.__qty
-,.__total {
-  text-align: right;
+.__qty, .__total {
+    text-align: right;
 }
 
 .__total {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 
 .dashboard {
     margin-top: 5px;
@@ -289,14 +282,13 @@ body,
 }
 
 .main, #profile-form {
-  padding-right: 20px;
-  padding-left: 20px;
-  margin-bottom: 60px;
-
+    padding-right: 20px;
+    padding-left: 20px;
+    margin-bottom: 60px;
 }
 
-.area-message{
-  margin-top: 20px;
+.area-message {
+    margin-top: 20px;
 }
 
 .list-group-item {
@@ -304,7 +296,7 @@ body,
 }
 
 #basket-table {
-  width: 100%;
+    width: 100%;
 }
 
 .shop-logo {
@@ -348,28 +340,28 @@ body,
 }
 
 #basket_button {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 99998;
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 99998;
 }
 
 ._amount, ._total {
-  text-align: right;
-  padding: 6px;
+    text-align: right;
+    padding: 6px;
 }
 
 ._grand_total {
-  border-top: 1px solid #aaa;
-  border-bottom: 2px solid #aaa;
+    border-top: 1px solid #aaa;
+    border-bottom: 2px solid #aaa;
 }
 
 ._top_line {
-  border-top: 1px solid #aaa;
+    border-top: 1px solid #aaa;
 }
 
 ._quantity {
-  text-align: center;
+    text-align: center;
 }
 
 .product-image {
@@ -391,119 +383,130 @@ body,
 }
 
 input[type=range] {
-  -webkit-appearance: none;
-  margin: 18px 0;
-  width: 100%;
+    -webkit-appearance: none;
+    margin: 18px 0;
+    width: 100%;
 }
+
 input[type=range]:focus {
-  outline: none;
+    outline: none;
 }
+
 input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 8.4px;
-  cursor: pointer;
-  animate: 0.2s;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: #3071a9;
-  border-radius: 1.3px;
-  border: 0.2px solid #010101;
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #3071a9;
+    border-radius: 1.3px;
+    border: 0.2px solid #010101;
 }
+
 input[type=range]::-webkit-slider-thumb {
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #ffffff;
-  cursor: pointer;
-  -webkit-appearance: none;
-  margin-top: -14px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -14px;
 }
+
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #367ebd;
+    background: #367ebd;
 }
+
 input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 8.4px;
-  cursor: pointer;
-  animate: 0.2s;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: #3071a9;
-  border-radius: 1.3px;
-  border: 0.2px solid #010101;
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #3071a9;
+    border-radius: 1.3px;
+    border: 0.2px solid #010101;
 }
+
 input[type=range]::-moz-range-thumb {
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #ffffff;
-  cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
 }
+
 input[type=range]::-ms-track {
-  width: 100%;
-  height: 8.4px;
-  cursor: pointer;
-  animate: 0.2s;
-  background: transparent;
-  border-color: transparent;
-  border-width: 16px 0;
-  color: transparent;
+    width: 100%;
+    height: 8.4px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    border-width: 16px 0;
+    color: transparent;
 }
+
 input[type=range]::-ms-fill-lower {
-  background: #2a6495;
-  border: 0.2px solid #010101;
-  border-radius: 2.6px;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #2a6495;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
+
 input[type=range]::-ms-fill-upper {
-  background: #3071a9;
-  border: 0.2px solid #010101;
-  border-radius: 2.6px;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    background: #3071a9;
+    border: 0.2px solid #010101;
+    border-radius: 2.6px;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
+
 input[type=range]::-ms-thumb {
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  border: 1px solid #000000;
-  height: 36px;
-  width: 16px;
-  border-radius: 3px;
-  background: #ffffff;
-  cursor: pointer;
+    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+    border: 1px solid #000000;
+    height: 36px;
+    width: 16px;
+    border-radius: 3px;
+    background: #ffffff;
+    cursor: pointer;
 }
+
 input[type=range]:focus::-ms-fill-lower {
-  background: #3071a9;
+    background: #3071a9;
 }
+
 input[type=range]:focus::-ms-fill-upper {
-  background: #367ebd;
+    background: #367ebd;
 }
 
 .intro {
-  font-size: 16px;
+    font-size: 16px;
 }
 
 .bottom-message {
-  font-size: 12px;
+    font-size: 12px;
 }
 
 .intro p, .intro ul li {
-  padding-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .copyright {
-  font-size: 12px;
-  color: #888;
-  }
+    font-size: 12px;
+    color: #888;
+}
 
 .copyright span.iyabasira {
-      color: #44BBEE;
+    color: #44BBEE;
 }
 
 .bold {
-  font-weight: bold;
+    font-weight: bold;
 }
-
 
 table {
     background-color: #fff;
@@ -528,12 +531,12 @@ table tfoot tr td {
     float: right;
 }
 
-.button-group{
+.button-group {
     width: 140px;
     text-align: right;
 }
 
-.delete-item{
+.delete-item {
     margin-right: 10px;
 }
 
@@ -555,4 +558,14 @@ table tfoot tr td {
     color: #fff;
     border-radius: 3px;
     margin-bottom: 10px;
+}
+
+div[class*="-form"] {
+    background-color: #fefefe;
+    padding: 40px;
+    border-radius: 6px;
+    margin: 5% auto 15% auto;
+    /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 80%;
 }
