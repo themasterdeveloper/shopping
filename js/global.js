@@ -667,7 +667,7 @@ var submitForm = function(object) {
     $('#' + form).find(':input:not(button):not(reset)').each(function() {
         var $this = $(this);
         if ($this.attr("id"))
-            data[$this.attr("id")] = $this.val().trim();
+            data[$this.attr("id")] = uppercase($this.val().trim());
     });
 
     log("submitForm", data);
@@ -920,7 +920,7 @@ adm_load_table = function(table, read_only) {
             i++;
             for (var key in $this) {
                 if (skip_columns.indexOf("-" + key + "-") == -1) {
-                    tmp[i] = "<th class='__" + key + "'>" + key + "</th>";
+                    tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key + "</th>";
                     i++;
                     cols++;
                 }
@@ -928,6 +928,7 @@ adm_load_table = function(table, read_only) {
             if (!read_only) {
                 tmp[i] = '<th></th>';
                 i++;
+                cols++;
             }
             tmp[i] = "</tr>";
             $("#" + table + "-table thead").empty().append(tmp.join(''));
@@ -941,7 +942,7 @@ adm_load_table = function(table, read_only) {
                 i++;
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        tmp[i] = "<td class='__" + key + "'>" + $this[key] + "</td>";
+                        tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
                         i++;
                     }
                 }
@@ -963,7 +964,8 @@ adm_load_table = function(table, read_only) {
             $("#" + table + "-table tbody").empty().append(tmp.join(''));
 
             var footer = '';
-            footer += '<tr><td colspan=' + cols + 2 + '>';
+            var span = parseInt(cols);
+            footer += '<tr><td colspan=' + span + '>';
             if (cur_page > 0) {
                 footer += '<button class= "btn btn-success btn-md pull-left btn-prev table-button">Prev</button>';
             } else {

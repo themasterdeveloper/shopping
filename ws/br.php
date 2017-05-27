@@ -820,8 +820,8 @@ switch ($action) {
         // Set the procedure we are going to use
         $query = 'get_order_details(' . $order_id . ')';
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
-        $template = file_get_contents('../templates/order_confirmation.html');
-        $sms_template = file_get_contents('../templates/order_confirmation.txt');
+        $template = file_get_contents('../assets/templates/order_confirmation.html');
+        $sms_template = file_get_contents('../assets/templates/order_confirmation.txt');
         $data = '';
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {

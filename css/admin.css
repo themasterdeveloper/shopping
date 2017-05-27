@@ -10,36 +10,6 @@
     opacity: 0.25;
 }
 
-#map {
-    height: 360px;
-    margin-top: 18px;
-    margin-bottom: 18px;
-}
-
-.app-title {
-    font-size: 24px;
-    padding-top: 18px;
-    color: #44BBEE;
-}
-
-.header {
-    padding-left: 10px;
-}
-
-.button-area {
-    margin-bottom: 60px;
-}
-
-.delivery-guy {
-    font-size: 18px;
-    color: #000;
-}
-
-.photo {
-    height: 144px;
-    margin-bottom: 10px;
-}
-
 
 /*
  * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
@@ -57,18 +27,6 @@
  * Base structure
  */
 
-.grey {
-    color: #99CC99;
-}
-
-.text-muted {
-    color: #dadada;
-}
-
-.light-blue {
-    color: #44BBEE;
-}
-
 .alert, .order-form, .table-responsive {
     display: none;
 }
@@ -77,42 +35,9 @@
     z-index: 99996;
 }
 
-.order-form {
-    text-align: center;
-}
-
 .error_message {
     color: #ff0000;
     font-size: 24px;
-}
-
-.order-form {
-    z-index: 99999;
-    padding: 20px;
-    border-radius: 10px;
-    position: absolute;
-    background-color: #fff;
-    border: 5px solid #4cae4c;
-}
-
-.shadow {
-    background: #444;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: none;
-    height: 100%;
-    width: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 99998;
-    opacity: .5;
-}
-
-.quantity {
-    font-size: 18px;
 }
 
 h1, h2, h3, h4 {
@@ -124,20 +49,13 @@ h1, h2, h3, h4 {
 
 body {
     color: #888;
-    padding-top: 0px;
     font-family: 'Roboto', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
-    margin: 0;
 }
 
 
 /*
  * Global add-ons
  */
-
-.sub-header {
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-}
 
 .fa {
     display: none;
@@ -152,10 +70,6 @@ body {
  * Hide default border to remove 1px line.
  */
 
-.navbar-fixed-top {
-    border: 0;
-}
-
 
 /*
  * Main content
@@ -163,205 +77,19 @@ body {
 
 @media (min-width: 768px) {
     .main {
-        padding-right: 40px;
-        padding-left: 40px;
-        padding-bottom: 60px;
+        padding-right: 18px;
+        padding-left: 18px;
+        padding-bottom: 18px;
     }
-}
-
-.main, .page-header {
-    margin-top: 0;
-    font-weight: bold;
 }
 
 .pointer {
     cursor: pointer;
 }
 
-.popover {
-    background-color: #e74c3c;
-    color: #ecf0f1;
-    width: 120px;
-}
-
-.popover.right .arrow:after {
-    border-right-color: #e74c3c;
-}
-
 .input-group[class*="col-"] {
     padding-right: 15px;
     padding-left: 15px;
-}
-
-
-/**
- *     Footer
- *
- */
-
-footer {
-    background-color: #44BBEE;
-    z-index: 99999;
-}
-
-footer .navbar-nav {
-    float: left;
-    margin: 0;
-}
-
-footer .navbar-nav>li {
-    float: left;
-}
-
-footer .navbar-nav>li>a {
-    color: #fff;
-}
-
-footer .navbar-nav>li>a:hover {
-    color: #44BBEE;
-    background-color: #fff;
-}
-
-footer .navbar-nav>li>a:focus {
-    color: #44BBEE;
-    background-color: #fff;
-}
-
-footer .glyphicon {
-    font-size: 18pt;
-}
-
-
-/****
- * Tickets
- */
-
-.main, body, .intro, #dashboard-table {
-    background-color: #f8f8f8;
-}
-
-#dashboard-table {
-    background-color: #44BBEE;
-}
-
-#basket-table {
-    background-color: #fff;
-    margin-bottom: 20px;
-}
-
-#basket-table thead th {
-    text-transform: capitalize;
-    font-size: 12px;
-}
-
-#basket-table thead th, #basket-table tbody td {
-    padding: 4px;
-    font-size: 14px;
-}
-
-#basket-table tbody td.__shop {
-    font-size: 12px;
-}
-
-.__qty, .__total {
-    text-align: right;
-}
-
-.__total {
-    font-weight: bold;
-}
-
-.dashboard {
-    margin-top: 5px;
-    margin-right: 5px;
-}
-
-.app-title {
-    padding: 10px;
-    font-weight: bold;
-}
-
-.main, #profile-form {
-    padding-right: 20px;
-    padding-left: 20px;
-    margin-bottom: 60px;
-}
-
-.area-message {
-    margin-top: 20px;
-}
-
-.list-group-item {
-    height: 260px;
-}
-
-#basket-table {
-    width: 100%;
-}
-
-.shop-logo {
-    width: 90px;
-    position: absolute;
-    top: 5px;
-    left: 5px;
-}
-
-.area {
-    font-weight: bold;
-    color: #aaa;
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-}
-
-.product {
-    color: #000;
-    font-size: 26px;
-    position: absolute;
-    top: 5px;
-    right: 5px;
-}
-
-.price {
-    padding-left: 6px;
-    padding-right: 6px;
-    border-radius: 6px;
-    background-color: #fff;
-    color: darkgreen;
-    font-size: 32px;
-    font-weight: bold;
-    position: absolute;
-    top: 48px;
-    right: 5px;
-}
-
-.price::before, .basket::before {
-    content: "\0020A6\020";
-}
-
-#basket_button {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: 99998;
-}
-
-._amount, ._total {
-    text-align: right;
-    padding: 6px;
-}
-
-._grand_total {
-    border-top: 1px solid #aaa;
-    border-bottom: 2px solid #aaa;
-}
-
-._top_line {
-    border-top: 1px solid #aaa;
-}
-
-._quantity {
-    text-align: center;
 }
 
 .product-image {
@@ -374,12 +102,6 @@ footer .glyphicon {
     margin-top: 20px;
     width: 256px;
     vertical-align: top;
-}
-
-.buy-product-button {
-    position: absolute;
-    right: 5px;
-    bottom: 5px;
 }
 
 input[type=range] {
@@ -483,31 +205,6 @@ input[type=range]:focus::-ms-fill-upper {
     background: #367ebd;
 }
 
-.intro {
-    font-size: 16px;
-}
-
-.bottom-message {
-    font-size: 12px;
-}
-
-.intro p, .intro ul li {
-    padding-bottom: 10px;
-}
-
-.copyright {
-    font-size: 12px;
-    color: #888;
-}
-
-.copyright span.iyabasira {
-    color: #44BBEE;
-}
-
-.bold {
-    font-weight: bold;
-}
-
 table {
     background-color: #fff;
 }
@@ -540,7 +237,15 @@ table tfoot tr td {
     margin-right: 10px;
 }
 
-.__amount, .__price {
+.__amount::before, .__price::before, .__fast_foods::before, .__mamaputs::before {
+    content: "\0020A6\020";
+}
+
+.__fees::after {
+    content: "\020\000025";
+}
+
+.__amount, .__price, .__fast_foods, .__mamaputs, .__fees {
     text-align: right;
 }
 
@@ -561,11 +266,13 @@ table tfoot tr td {
 }
 
 div[class*="-form"] {
-    background-color: #fefefe;
+    background-color: #e8e9ff;
     padding: 40px;
     border-radius: 6px;
-    margin: 5% auto 15% auto;
+    margin: 0 auto 15% auto;
     /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%;
+    box-shadow:0px 0px 10px #aaa;
+    border: 5px solid #888;
 }
