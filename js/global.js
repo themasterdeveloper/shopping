@@ -22,12 +22,12 @@ var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
     cur_page = 0;
-    token = '',
+token = '',
     error = false,
     intro = false,
     HOME = "/home.html",
     sms_url = "https://www.bulksmsnigeria.net/components/com_spc/smsapi.php",
-    sms_user ="nwabuezestephen27@gmail.com",
+    sms_user = "nwabuezestephen27@gmail.com",
     sms_password = "Foot27ball",
     sms_sender = "iyabasira";
 
@@ -37,7 +37,7 @@ var webservice_path = "/ws/br.php",
  */
 
 var log = function(name, value) {
-    if(getCookie("Debug")=="True")
+    if (getCookie("Debug") == "True")
         console.debug(name, value);
 }
 
@@ -72,8 +72,7 @@ getCookie = function(c_description) {
     }
     if (c_start == -1) {
         c_value = null;
-    }
-    else {
+    } else {
         c_start = c_value.indexOf("=", c_start) + 1;
         var c_end = c_value.indexOf(";", c_start);
         if (c_end == -1) {
@@ -111,7 +110,7 @@ pad = function(val, len) {
     val = String(val);
     len = len || 2;
     while (val.length < len)
-    val = "0" + val;
+        val = "0" + val;
     return val;
 };
 
@@ -149,8 +148,7 @@ $.fn.serializeObject = function() {
                 o[this.name] = [o[this.name]];
             }
             o[this.name].push(this.value || '');
-        }
-        else {
+        } else {
             o[this.name] = this.value || '';
         }
     });
@@ -172,34 +170,27 @@ function toggleFullScreen() {
 
         if (document.documentElement.requestFullscreen) {
             document.documentElement.requestFullscreen();
-        }
-        else
+        } else
         if (document.documentElement.msRequestFullscreen) {
             document.documentElement.msRequestFullscreen();
-        }
-        else
+        } else
         if (document.documentElement.mozRequestFullScreen) {
             document.documentElement.mozRequestFullScreen();
-        }
-        else
+        } else
         if (document.documentElement.webkitRequestFullscreen) {
             document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
         }
-    }
-    else {
+    } else {
 
         if (document.exitFullscreen) {
             document.exitFullscreen();
-        }
-        else
+        } else
         if (document.msExitFullscreen) {
             document.msExitFullscreen();
-        }
-        else
+        } else
         if (document.mozCancelFullScreen) {
             document.mozCancelFullScreen();
-        }
-        else
+        } else
         if (document.webkitExitFullscreen) {
             document.webkitExitFullscreen();
         }
@@ -211,14 +202,14 @@ function toggleFullScreen() {
  *
  */
 $.ajaxSetup({
-    type : 'GET',
-    url : webservice_path,
-    contentType : "application/json; charset=utf-8",
-    dataType : "json",
-    cache : true,
-    async : true,
-    timeout : 0, // Timeout of 60 seconds
-    error : function(xhr, errorThrown) {
+    type: 'GET',
+    url: webservice_path,
+    contentType: "application/json; charset=utf-8",
+    dataType: "json",
+    cache: true,
+    async: true,
+    timeout: 0, // Timeout of 60 seconds
+    error: function(xhr, errorThrown) {
         log_ajax_error(xhr, errorThrown);
     }
 });
@@ -264,8 +255,7 @@ validate_form = function(form) {
     }
     if (error) {
         showErr("Some errors were found. Please correct them and try again");
-    }
-    else {
+    } else {
         save_ticket();
     }
 };
@@ -277,8 +267,7 @@ validate_field = function(field) {
         $(obj).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
         $(obj1).removeClass('glyphicon-ok').addClass('glyphicon-remove');
         error = true;
-    }
-    else {
+    } else {
         $(obj).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
         $(obj1).removeClass('glyphicon-remove').addClass('glyphicon-ok');
     }
@@ -304,8 +293,8 @@ load_products = function() {
 
     $.ajax({
 
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
 
             log("load_products", data);
 
@@ -323,7 +312,7 @@ load_products = function() {
 
             var skip_columns = "-total_rows-";
 
-            for ( r = 0; r < l; r++) {
+            for (r = 0; r < l; r++) {
                 $this = data[r];
 
                 tmp[i] = "<div class='list-group'>";
@@ -331,12 +320,12 @@ load_products = function() {
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
                         tmp[i] = "<div href='#' class='list-group-item it-" + $this["id"] + "'>";
-                        if($this["logo"]!=''){
+                        if ($this["logo"] != '') {
                             tmp[i] += "<img src='/img/" + $this["logo"] + "' class='shop-logo'>";
                         }
                         tmp[i] += "<span class='area'>" + $this["area"] + "</span>";
                         tmp[i] += "<span class='product'>" + $this["product"] + "</span><br/>";
-                        if($this["image"]==''){
+                        if ($this["image"] == '') {
                             tmp[i] += "<img class='product-image' src='/img/no-image.jpg'>";
                         } else {
                             tmp[i] += "<img class='product-image' src='/img/" + $this["image"] + "'>";
@@ -358,8 +347,8 @@ load_products = function() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
                     var pos = {
-                      lat: position.coords.latitude,
-                      lng: position.coords.longitude
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
                     };
                     save_location(pos);
                 });
@@ -372,7 +361,7 @@ load_products = function() {
 };
 
 get_token = function() {
-    if(getCookie("token")){
+    if (getCookie("token")) {
         token = getCookie("token");
         $("#token").val(token);
         return;
@@ -384,8 +373,8 @@ get_token = function() {
     log("get_token", data);
 
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("get_token", data);
             token = data[0].token;
             $("#token").val(token);
@@ -394,17 +383,17 @@ get_token = function() {
     });
 }
 
-buy_product = function(product_id){
-    var caller = "it-"+product_id;
+buy_product = function(product_id) {
+    var caller = "it-" + product_id;
     var pos = $("." + caller).position();
     $("#quantity").val(1);
-    $(".order-form").css("top", pos.top+32).show();
+    $(".order-form").css("top", pos.top + 32).show();
     $(".order-form #product_id").val(product_id);
     $(".shadow").show();
     event.preventDefault();
 }
 
-add_product = function(){
+add_product = function() {
     var data = {};
     data.action = "save_item";
     data.token = token;
@@ -412,34 +401,34 @@ add_product = function(){
     data.quantity = $("#quantity").val();
     log("add_product", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("add_product", data);
             var results = data[0];
-            if(results.error == 0) {
+            if (results.error == 0) {
                 $(".order-form").hide();
                 $(".shadow").hide();
-            }else {
-                if(results.error == 2){
+            } else {
+                if (results.error == 2) {
                     resetToken();
                 };
                 $(".error_message").html(results.message).show();
             }
             updateBasket();
             load_products();
-       }
+        }
     });
     //event.preventDefault();
 }
 
-updateBasket = function(){
+updateBasket = function() {
     var data = {};
     data.action = "get_total_basket";
     data.token = getCookie("token");
     log("updateBasket", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("updateBasket", data);
             var results = data[0];
             var total_basket = results.grand_total;
@@ -448,12 +437,12 @@ updateBasket = function(){
             setCookie("total_fees", results.total_fees);
             setCookie("delivery_fees", results.delivery_fees);
             setCookie("grand_total", results.grand_total);
-            if(parseFloat(total_basket) > 0){
+            if (parseFloat(total_basket) > 0) {
                 $(".basket").parent().removeClass("hidden");
             } else {
                 $(".basket").parent().addClass("hidden");
             }
-       }
+        }
     });
 }
 
@@ -469,8 +458,7 @@ function listCookies() {
                 o[name] = [o[name]];
             }
             o[name].push(value || '');
-        }
-        else {
+        } else {
             o[name] = value || '';
         }
     }
@@ -489,12 +477,12 @@ load_basket_products = function() {
 
     $.ajax({
 
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
 
             log("load_basket_products", data);
 
-            if(data[0].error == 1) {
+            if (data[0].error == 1) {
                 $("#content").load(HOME);
                 return;
             }
@@ -517,15 +505,15 @@ load_basket_products = function() {
 
             i = 0;
             var l = data.length;
-            for ( r = 0; r < l; r++) {
+            for (r = 0; r < l; r++) {
                 $this = data[r];
                 tmp[i] = "<tr>";
                 i++;
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        if(key == 'shop'){
+                        if (key == 'shop') {
                             tmp[i] = "<td class='" + "__" + key + "'>" + $this[key] + "<br>" + $this["area"] + "</td>";
-                        }else{
+                        } else {
                             tmp[i] = "<td class='" + "__" + key + "'>" + $this[key] + "</td>";
                         }
                         i++;
@@ -560,8 +548,8 @@ removeItem = function(item_id) {
     data.item_id = item_id;
     log("removeItem", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("removeItem", data);
             load_basket_products();
         }
@@ -577,37 +565,37 @@ removeAll = function() {
     log("removeAll", data);
 
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("removeAll", data);
             load_basket_products();
         }
     });
 };
 
-resetToken = function(){
+resetToken = function() {
     token = "";
     $("#token").val(token);
     deleteAllCookies();
     get_token();
 }
 
-get_areas = function(){
+get_areas = function() {
     var data = {};
     data.action = "get_areas";
 
     log("get_areas", data);
 
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("get_areas", data);
             $(".areas-list").html(data[0].areas);
         }
     });
 }
 
-save_location = function(pos){
+save_location = function(pos) {
     var data = {};
     data.action = "save_location";
     data.token = getCookie("token");
@@ -615,11 +603,11 @@ save_location = function(pos){
     data.lng = pos.lng;
     log("save_location", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("save_location", data);
         },
-        error : function(data) {
+        error: function(data) {
             log("save_location.error", data);
         }
     });
@@ -632,7 +620,7 @@ load_dropdown = function(object, empty, disabled) {
     data.action = object + "_list";
     log("load_" + object, data);
     var msg = 'Nothing selected';
-    switch(object){
+    switch (object) {
         case "areas":
             msg = 'Select an area';
             break;
@@ -641,21 +629,23 @@ load_dropdown = function(object, empty, disabled) {
             break;
     }
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("load_" + object, data);
             var tmp = [];
             var l = data.length;
-            if(empty == 1){
+            if (empty == 1) {
                 var tmpEmpty = "<option></option>";
             }
-            for ( r = 0; r < l; r++) {
+            for (r = 0; r < l; r++) {
                 $this = data[r];
                 tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
                 tmpEmpty = "";
             }
-            $("." + object).html(tmp.join('')).selectpicker({noneSelectedText: msg}).selectpicker('refresh');
-            if(disabled) {
+            $("." + object).html(tmp.join('')).selectpicker({
+                noneSelectedText: msg
+            }).selectpicker('refresh');
+            if (disabled) {
                 $("." + object).prop('disabled', true);
                 $("." + object).selectpicker('refresh');
             }
@@ -672,11 +662,11 @@ var submitForm = function(object) {
     data.token = getCookie("token");
 
     data.area_id = getCookie("chosen-area");
-	//Generate data items from form fields
+    //Generate data items from form fields
 
-	$('#' + form).find(':input:not(button):not(reset)').each(function() {
+    $('#' + form).find(':input:not(button):not(reset)').each(function() {
         var $this = $(this);
-        if($this.attr("id"))
+        if ($this.attr("id"))
             data[$this.attr("id")] = $this.val().trim();
     });
 
@@ -685,13 +675,43 @@ var submitForm = function(object) {
         data: data,
         success: function(data) {
             log("submitForm", data);
-            if(data[0].error != 0) {
+            if (data[0].error != 0) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);
                 setCookie("order_id", data[0].order_id);
                 //notify(data[0].order_id);
                 $("#content").load("/geolocation");
+            }
+        }
+    });
+};
+
+var login = function() {
+    var data = {};
+
+    data.action = "login";
+    //Generate data items from form fields
+    $('#login').find(':input:not(button):not(reset)').each(function() {
+        var $this = $(this);
+        if ($this.attr("id"))
+            data[$this.attr("id")] = $this.val().trim();
+    });
+
+    log("login", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("login", data);
+            if (data[0].user_id) {
+                document.getElementById('id01').style.display = 'none';
+                $(".navbar").removeClass("hidden");
+                $this = data[0];
+                for (key in $this) {
+                    setCookie(key, $this[key]);
+                }
+            } else {
+                showErr("Email or password incorrect");
             }
         }
     });
@@ -712,22 +732,22 @@ notify = function(order_id) {
     });
 }
 
-get_config_value = function(name){
+get_config_value = function(name) {
     var data = {};
     data.action = "get_config_value";
     data.name = name;
     log("get_config_value", data);
     $.ajax({
-        data : data,
+        data: data,
         dataType: 'json',
-        success : function(data) {
+        success: function(data) {
             log("get_config_value", data);
             setCookie(name, data[0].value);
         }
     });
 }
 
-save_area_location = function(area_id, lat, lng){
+save_area_location = function(area_id, lat, lng) {
     var data = {};
     data.action = "save_area_location";
     data.area_id = area_id;
@@ -735,11 +755,11 @@ save_area_location = function(area_id, lat, lng){
     data.lng = lng;
     log("save_area_location", data);
     $.ajax({
-        data : data,
+        data: data,
         dataType: 'json',
-        success : function(data) {
+        success: function(data) {
             log("save_area_location", data);
-            if(data[0].error != 0) {
+            if (data[0].error != 0) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);
@@ -748,7 +768,7 @@ save_area_location = function(area_id, lat, lng){
     });
 }
 
-save_shop_location = function(area_id, shop_id, lat, lng){
+save_shop_location = function(area_id, shop_id, lat, lng) {
     var data = {};
     data.action = "save_shop_location";
     data.area_id = area_id;
@@ -757,11 +777,11 @@ save_shop_location = function(area_id, shop_id, lat, lng){
     data.lng = lng;
     log("save_shop_location", data);
     $.ajax({
-        data : data,
+        data: data,
         dataType: 'json',
-        success : function(data) {
+        success: function(data) {
             log("save_shop_location", data);
-            if(data[0].error != 0) {
+            if (data[0].error != 0) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);
@@ -771,14 +791,14 @@ save_shop_location = function(area_id, shop_id, lat, lng){
     });
 }
 
-load_shops_locations = function(area_id){
+load_shops_locations = function(area_id) {
     var data = {};
     data.action = "shops_locations_list";
     data.area_id = 0;
     log("load_shops_locations", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("load_shops_locations", data);
             setMarkers(data, 'shop', '/img/rsz_fastfood-pin.png');
         }
@@ -790,15 +810,15 @@ load_deliverers_locations = function(area_id) {
     data.action = "deliverers_list";
     log("deliverers_list", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("deliverers_list", data);
             setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
         }
     });
 }
 
-setMarkers = function (list, field, image) {
+setMarkers = function(list, field, image) {
     for (var i = 0; i < list.length; i++) {
         var item = list[i];
         var siteLatLng = new google.maps.LatLng(item["lat"], item["lng"]);
@@ -821,7 +841,7 @@ createMarker = function(latlng, field, image, data) {
     markers.push(marker);
 }
 
-showMarkerData = function(data){
+showMarkerData = function(data) {
     var html = '';
     $this = data[0];
     var skip_columns = "-id-lat-lng-photo-available-";
@@ -835,22 +855,22 @@ showMarkerData = function(data){
     $('.marker-data').html(html);
 }
 
-remove_markers = function (){
-    for(i=0; i<markers.length; i++){
+remove_markers = function() {
+    for (i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
 }
 
-close_infowindows = function (){
-    for(i=0; i<infowindows.length; i++){
+close_infowindows = function() {
+    for (i = 0; i < infowindows.length; i++) {
         infowindows[i].close();
     }
 }
 
-relocateMap = function(){
+relocateMap = function() {
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
             lng = position.coords.longitude;
             initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -862,12 +882,12 @@ relocateMap = function(){
 
 adm_load_table = function(table, read_only) {
     read_only = (typeof read_only === 'undefined') ? false : read_only;
-    $(".table-name").html(table.replace('_',' / '));
+    $(".table-name").html(table.replace('_', ' / '));
     $(".alert").hide();
-    if(getCookie("cur_page")){
+    if (getCookie("cur_page")) {
         cur_page = parseInt(getCookie("cur_page"));
     }
-    if(getCookie("rows_per_page")){
+    if (getCookie("rows_per_page")) {
         rows_per_page = parseInt(getCookie("rows_per_page"));
     }
     var data = {};
@@ -877,8 +897,8 @@ adm_load_table = function(table, read_only) {
     data.rows = rows_per_page;
     log("load_table", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("load_table", data);
             if (data[0].error == 1) {
                 $("#" + table + "-table tbody").empty();
@@ -905,7 +925,7 @@ adm_load_table = function(table, read_only) {
                     cols++;
                 }
             }
-            if(!read_only) {
+            if (!read_only) {
                 tmp[i] = '<th></th>';
                 i++;
             }
@@ -914,8 +934,8 @@ adm_load_table = function(table, read_only) {
 
             // tbody
             tmp = [];
-            i=0;
-            for ( r = 0; r < l; r++) {
+            i = 0;
+            for (r = 0; r < l; r++) {
                 $this = data[r];
                 tmp[i] = "<tr>";
                 i++;
@@ -925,10 +945,10 @@ adm_load_table = function(table, read_only) {
                         i++;
                     }
                 }
-                if(!read_only) {
+                if (!read_only) {
                     tmp[i] = '<td class="button-group">';
                     i++
-                    if($this["active"]==0){
+                    if ($this["active"] == 0) {
                         tmp[i] = '<button class="btn btn-danger btn-sm delete-item" onclick="adm_delete_item(' + $this["id"] + ',\'' + table + '\')">Delete</button>';
                         i++
                     }
@@ -943,16 +963,16 @@ adm_load_table = function(table, read_only) {
             $("#" + table + "-table tbody").empty().append(tmp.join(''));
 
             var footer = '';
-            footer += '<tr><td colspan=' + cols+ 2 + '>';
-            if(cur_page>0){
+            footer += '<tr><td colspan=' + cols + 2 + '>';
+            if (cur_page > 0) {
                 footer += '<button class= "btn btn-success btn-md pull-left btn-prev table-button">Prev</button>';
             } else {
                 footer += '<button class= "btn btn-success btn-md pull-left disabled table-button">Prev</button>';
             }
-            var page = parseInt(cur_page)+1
+            var page = parseInt(cur_page) + 1
             footer += "Page " + page;
 
-            if ( cur_page < parseInt(total_records/rows_per_page) ) {
+            if (cur_page < parseInt(total_records / rows_per_page)) {
                 footer += '<button class= "btn btn-success btn-md pull-right btn-next">Next</button>';
             } else {
                 footer += '<button class= "btn btn-success btn-md pull-right disabled">Next</button>';
@@ -962,15 +982,15 @@ adm_load_table = function(table, read_only) {
 
             $("#" + table + "-table tfoot").empty().append(footer);
 
-            $(".btn-prev").on("click", function(e){
+            $(".btn-prev").on("click", function(e) {
                 e.preventDefault();
-                setCookie("cur_page", cur_page-1);
+                setCookie("cur_page", cur_page - 1);
                 adm_load_table(table, read_only);
             })
 
-            $(".btn-next").on("click", function(e){
+            $(".btn-next").on("click", function(e) {
                 e.preventDefault();
-                setCookie("cur_page", cur_page+1);
+                setCookie("cur_page", cur_page + 1);
                 adm_load_table(table, read_only);
             })
 
@@ -983,29 +1003,29 @@ adm_edit_item = function(item_id, table) {
     fillForm(item_id, table);
 }
 
-fillForm = function(item_id, table){
+fillForm = function(item_id, table) {
     var data = {};
     data.action = 'get_table_record';
     data.table = table;
     data.item_id = item_id;
     log("get_table_record", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("get_table_record", data);
             $this = data[0];
             for (var key in $this) {
-                if(key == 'image' || key == 'logo'){
-                    if($this[key].length>0) {
-                        $("#"+key).attr("src", "/img/" + $this[key]);
-                    }else{
-                        $("#"+key).attr("src", "/img/no-image.jpg");
+                if (key == 'image' || key == 'logo') {
+                    if ($this[key].length > 0) {
+                        $("#" + key).attr("src", "/img/" + $this[key]);
+                    } else {
+                        $("#" + key).attr("src", "/img/no-image.jpg");
                     }
-                }else{
-                    $("#"+key).val($this[key]);
+                } else {
+                    $("#" + key).val($this[key]);
                 }
             }
-            if(table == 'shop_product') {
+            if (table == 'shop_product') {
                 $(".selectpicker").prop('disabled', true);
                 $("#availability").prop('disabled', false);
             }
@@ -1023,10 +1043,10 @@ var adm_delete_item = function(item_id, table) {
     data.item_id = item_id;
     log("get_table_data", data);
     $.ajax({
-        data : data,
-        success : function(data) {
+        data: data,
+        success: function(data) {
             log("adm_delete_item", data);
-            if(data[0].error != 0) {
+            if (data[0].error != 0) {
                 showErr(data[0].message);
             } else {
                 adm_load_table(table);
@@ -1040,9 +1060,9 @@ var saveData = function(object) {
     var form = object + "-form";
     var data = {};
     data.action = action;
-	$('#' + form).find(':input:not(button):not(reset)').each(function() {
+    $('#' + form).find(':input:not(button):not(reset)').each(function() {
         var $this = $(this);
-        if($this.attr("id"))
+        if ($this.attr("id"))
             data[$this.attr("id")] = $this.val().trim();
     });
     log("saveData", data);
@@ -1050,7 +1070,7 @@ var saveData = function(object) {
         data: data,
         success: function(data) {
             log("saveData", data);
-            if(data[0].error != 0) {
+            if (data[0].error != 0) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);

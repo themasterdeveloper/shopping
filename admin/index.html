@@ -39,6 +39,7 @@
             }
             .main {
                 font-weight: normal;
+                background-color: #fff;
             }
         </style>
     </head>
@@ -47,7 +48,7 @@
         <div class="container">
             <i class="fa fa-refresh fa-5x fa-spin"></i>
             <!-- Static navbar -->
-            <nav class="navbar navbar-default" role="navigation">
+            <nav class="navbar navbar-default hidden" role="navigation">
                 <div class="container-fluid">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -96,13 +97,6 @@
             </nav>
             <!-- Main component for a primary marketing message or call to action -->
             <div class="master-container">
-                <div class="jumbotron">
-                    <h1>Admin area</h1>
-                    <p>This area is where iyabasira is managed</p>
-                    <p>
-                        <a class="btn btn-primary" href="/" role="button">Go to iyabasira.online &raquo;</a>
-                    </p>
-                </div>
             </div>
         </div> <!-- /container -->
         <!-- Bootstrap core JavaScript
@@ -115,6 +109,11 @@
         <script src="/libs/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
         <script src="/js/global.min.js"></script>
         <script>
+            $(document).ready(function() {
+                $(".alert").hide();
+                $('.master-container').load("login");
+            });
+
             load = function(folder) {
                 $('.master-container').load(folder)
             }
