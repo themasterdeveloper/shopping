@@ -59,6 +59,90 @@ switch ($action) {
 
         break;
 
+    case "adm_load_table_orders_fees":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_orders_fees_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_deliverers":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_deliverers_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_shop_types":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_shop_types_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_areas":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_areas_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_cities":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_cities_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_delivery_rates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_delivery_rates_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
     case "adm_load_table_customers":
 
         // It's gonna be a query
@@ -536,6 +620,109 @@ switch ($action) {
 
         break;
 
+    case "orders_fees_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL orders_fees_save(?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("id", $item_id, $fees);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $fees = $_GET['fees'];
+
+        break;
+
+    case "shop_types_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL shop_types_save(?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("is", $item_id, $name);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+
+        break;
+
+    case "deliverers_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL deliverers_save(?, ?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("isss", $item_id, $name, $mobile, $email);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $mobile = $_GET['mobile'];
+        $email = $_GET['email'];
+
+        break;
+
+    case "areas_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL areas_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("isi", $item_id, $name, $city_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $city_id = $_GET['city_id'];
+
+        break;
+
+    case "cities_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL cities_save(?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("is", $item_id, $name);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+
+        break;
+
     case "shops_areas_save":
 
         // It's gonna be a database update
@@ -554,6 +741,27 @@ switch ($action) {
         $item_id = $_GET['item_id'];
         $contact = $_GET['contact'];
         $mobile = $_GET['mobile'];
+
+        break;
+
+    case "delivery_rates_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delivery_rates_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("idd", $item_id, $value, $value2);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $value = $_GET['value'];
+        $value2 = $_GET['value2'];
 
         break;
 

@@ -1,45 +1,25 @@
 <div class="row">
     <div class="main">
-        <div class="shops_areas-list table-container">
+        <div class="cities-list table-container">
             <div class="table-name pull-left"></div>
+            <button class="btn btn-primary add-item pull-right">Add city</button>
             <div class="form-group">
                 <input class="form-control" id="search" type="text" placeholder="Enter search">
             </div>
-            <table class="table table-hover" id="shops_areas-table">
+            <table class="table table-hover" id="cities-table">
                 <thead></thead>
                 <tbody></tbody>
                 <tfoot></tfoot>
             </table>
             <div class="pagination"></div>
         </div>
-        <div class="shops_areas-form hidden">
-            <form id="shops_areas-form" class="form-horizontal">
+        <div class="cities-form hidden">
+            <form id="cities-form" class="form-horizontal">
                 <input type="hidden" name="item_id" id="item_id">
-
-                <!-- shop -->
-                <div class="form-group">
-                    <label for="shop_id">Category:</label>
-                    <select class="form-control selectpicker shops" id="shop_id">
-                    </select>
-                </div>
-
-                <!-- area -->
-                <div class="form-group">
-                    <label for="area_id">Category:</label>
-                    <select class="form-control selectpicker areas" id="area_id">
-                    </select>
-                </div>
-
                 <!-- Name -->
                 <div class="form-group">
-                    <label for="name">Contact:</label>
-                    <input class="form-control" id="contact" type="text" placeholder="Enter contact name">
-                </div>
-
-                <!-- Name -->
-                <div class="form-group">
-                    <label for="name">Mobile:</label>
-                    <input class="form-control" id="mobile" type="text" placeholder="Enter mobile number">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="name" type="text" placeholder="Enter city name">
                 </div>
 
                 <!-- Buttons -->
@@ -66,33 +46,31 @@
         $(".alert").hide();
         setCookie("cur_page", 0);
         setCookie("rows_per_page", 5);
-        adm_load_table('shops_areas');
-        load_dropdown("shops", false, true);
-        load_dropdown("areas", false, true);
+        adm_load_table('cities');
     });
 
     $("#cancel-action").on("click", function(d){
         d.preventDefault();
-        $(".shops_areas-list").removeClass("hidden");
-        $(".shops_areas-form").addClass("hidden");
+        $(".cities-list").removeClass("hidden");
+        $(".cities-form").addClass("hidden");
     });
 
     $("#submit-form").on("click", function(d){
         d.preventDefault();
-        saveData("shops_areas");
+        saveData("cities");
     });
 
     $(".add-item").on("click", function() {
-        $(".shops_areas-form").find("input[type=text], textarea").val("");
+        $(".cities-form").find("input[type=text], textarea").val("");
         $("#item_id").val(0);
-        $(".shops_areas-list").addClass("hidden");
-        $(".shops_areas-form").removeClass("hidden");
+        $(".cities-list").addClass("hidden");
+        $(".cities-form").removeClass("hidden");
     });
 
     $("#search" ).keypress(function( event ) {
         if ( event.which == 13 ) {
             event.preventDefault();
-            adm_load_table('shops_areas');
+            adm_load_table('cities');
         }
     });
 </script>

@@ -945,17 +945,17 @@ adm_load_table = function(table, read_only) {
             var footer = '';
             footer += '<tr><td colspan=' + cols+ 2 + '>';
             if(cur_page>0){
-                footer += '<button class= "btn btn-success btn-sm pull-left btn-prev table-button">Prev</button>';
+                footer += '<button class= "btn btn-success btn-md pull-left btn-prev table-button">Prev</button>';
             } else {
-                footer += '<button class= "btn btn-success btn-sm pull-left disabled table-button">Prev</button>';
+                footer += '<button class= "btn btn-success btn-md pull-left disabled table-button">Prev</button>';
             }
             var page = parseInt(cur_page)+1
             footer += "Page " + page;
 
             if ( cur_page < parseInt(total_records/rows_per_page) ) {
-                footer += '<button class= "btn btn-success btn-sm pull-right btn-next">Next</button>';
+                footer += '<button class= "btn btn-success btn-md pull-right btn-next">Next</button>';
             } else {
-                footer += '<button class= "btn btn-success btn-sm pull-right disabled">Next</button>';
+                footer += '<button class= "btn btn-success btn-md pull-right disabled">Next</button>';
             }
             footer += '<br/>' + total_records + ' records';
             footer += '</td></tr>';

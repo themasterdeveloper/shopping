@@ -1,45 +1,45 @@
 <div class="row">
     <div class="main">
-        <div class="shops_areas-list table-container">
+        <div class="delivery_rates-list table-container">
             <div class="table-name pull-left"></div>
             <div class="form-group">
                 <input class="form-control" id="search" type="text" placeholder="Enter search">
             </div>
-            <table class="table table-hover" id="shops_areas-table">
+            <table class="table table-hover" id="delivery_rates-table">
                 <thead></thead>
                 <tbody></tbody>
                 <tfoot></tfoot>
             </table>
             <div class="pagination"></div>
         </div>
-        <div class="shops_areas-form hidden">
-            <form id="shops_areas-form" class="form-horizontal">
+        <div class="delivery_rates-form hidden">
+            <form id="delivery_rates-form" class="form-horizontal">
                 <input type="hidden" name="item_id" id="item_id">
 
-                <!-- shop -->
+                <!-- area -->
                 <div class="form-group">
-                    <label for="shop_id">Category:</label>
-                    <select class="form-control selectpicker shops" id="shop_id">
+                    <label for="area_id">Area from:</label>
+                    <select class="form-control selectpicker areas" id="location_a">
                     </select>
                 </div>
 
                 <!-- area -->
                 <div class="form-group">
-                    <label for="area_id">Category:</label>
-                    <select class="form-control selectpicker areas" id="area_id">
+                    <label for="area_id">Area to:</label>
+                    <select class="form-control selectpicker areas" id="location_b">
                     </select>
                 </div>
 
-                <!-- Name -->
+                <!-- value -->
                 <div class="form-group">
-                    <label for="name">Contact:</label>
-                    <input class="form-control" id="contact" type="text" placeholder="Enter contact name">
+                    <label for="value">Fast foods:</label>
+                    <input class="form-control" id="value" type="text" placeholder="Enter price for fast foods">
                 </div>
 
-                <!-- Name -->
+                <!-- value1 -->
                 <div class="form-group">
-                    <label for="name">Mobile:</label>
-                    <input class="form-control" id="mobile" type="text" placeholder="Enter mobile number">
+                    <label for="value2">Mamma puts:</label>
+                    <input class="form-control" id="value2" type="text" placeholder="Enter price for mamma puts">
                 </div>
 
                 <!-- Buttons -->
@@ -66,33 +66,37 @@
         $(".alert").hide();
         setCookie("cur_page", 0);
         setCookie("rows_per_page", 5);
-        adm_load_table('shops_areas');
-        load_dropdown("shops", false, true);
+        adm_load_table('delivery_rates');
         load_dropdown("areas", false, true);
     });
 
+    $(".selectpicker").on("click", function(e){
+        e.preventDefault();
+
+    })
+
     $("#cancel-action").on("click", function(d){
         d.preventDefault();
-        $(".shops_areas-list").removeClass("hidden");
-        $(".shops_areas-form").addClass("hidden");
+        $(".delivery_rates-list").removeClass("hidden");
+        $(".delivery_rates-form").addClass("hidden");
     });
 
     $("#submit-form").on("click", function(d){
         d.preventDefault();
-        saveData("shops_areas");
+        saveData("delivery_rates");
     });
 
     $(".add-item").on("click", function() {
-        $(".shops_areas-form").find("input[type=text], textarea").val("");
+        $(".delivery_rates-form").find("input[type=text], textarea").val("");
         $("#item_id").val(0);
-        $(".shops_areas-list").addClass("hidden");
-        $(".shops_areas-form").removeClass("hidden");
+        $(".delivery_rates-list").addClass("hidden");
+        $(".delivery_rates-form").removeClass("hidden");
     });
 
     $("#search" ).keypress(function( event ) {
         if ( event.which == 13 ) {
             event.preventDefault();
-            adm_load_table('shops_areas');
+            adm_load_table('delivery_rates');
         }
     });
 </script>
