@@ -172,16 +172,6 @@ body {
     cursor: pointer;
 }
 
-.popover {
-    background-color: #e74c3c;
-    color: #ecf0f1;
-    width: 120px;
-}
-
-.popover.right .arrow:after {
-    border-right-color: #e74c3c;
-}
-
 .input-group[class*="col-"] {
     padding-right: 15px;
     padding-left: 15px;
@@ -296,7 +286,7 @@ footer .glyphicon {
 .shop-logo {
     width: 90px;
     position: absolute;
-    top: 5px;
+    bottom: 24px;
     left: 5px;
 }
 
@@ -310,10 +300,11 @@ footer .glyphicon {
 
 .product {
     color: #000;
-    font-size: 26px;
+    font-size: 24px;
     position: absolute;
     top: 5px;
     right: 5px;
+    background-color: #fff;
 }
 
 .price {
@@ -568,4 +559,9 @@ div[class*="-form"] {
     .container  {
         width: 762px;
     }
+    div[class*="-form"] {
+        width: 762px;
+        margin: 10px;
+    }
+
 }

@@ -1,0 +1,137 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="app-title">iyabasira <span class="grey">delivery</span></div>
+        <!-- The table area -->
+        <div class="header">        
+            <p>
+                Choose your delivery guy in the map, then click Confirm
+            </p>
+        </div>
+        <div id="map">
+            
+        </div>
+        <div class="button-area">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="msg"></span>
+            </div>                
+            <button type="button" class="btn btn-danger btn-lg cancel-order">Cancel Order</button>
+            <button type="button" class="btn btn-success btn-lg pull-right confirm-order">Confirm Order</button>
+        </div>
+    </div>
+</div>
+<script>
+
+    var last_bouncing_marker = undefined;
+    var infoWindows = [];
+
+    function start() {
+        var data = {};
+        data.action = "deliverers_list";
+        log("deliverers_list", data);
+        $.ajax({
+            data : data,
+            success : function(data) {
+                log("deliverers_list", data);
+                deliverers = data;
+                initialize()
+            }
+        });
+    }
+
+    function initialize() {
+
+        var centerMap = new google.maps.LatLng(4.88246, 6.976786);
+
+        var myOptions = {
+            zoom: 14,
+            center: centerMap,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            animation: google.maps.Animation.DROP,
+        }
+
+        var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+        setMarkers(map, deliverers);
+        infowindow = new google.maps.InfoWindow({
+            content: "loading..."
+        });
+
+    }
+
+    function toggleBounce(marker) {
+
+        if ( last_bouncing_marker != undefined ) {
+            last_bouncing_marker.setAnimation(null)
+        }
+
+        if (marker.getAnimation() !== null ) {
+            marker.setAnimation(null);
+        } else {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            last_bouncing_marker = marker;
+        }
+
+    }
+
+    function closeAllInfoWindows() {
+        for (var i=0;i<infoWindows.length;i++) {
+            infoWindows[i].close();
+        }
+    }
+
+    function save_delivery_guy(id) {
+        console.debug("save_delivery_guy", id);
+        closeAllInfoWindows();
+        showErr("Work in progress... Please be patient")
+        //document.location.href = "/";
+    }
+
+    function setMarkers(map, markers) {
+
+        for (var i = 0; i < markers.length; i++) {
+            var deliverers = markers[i];
+            var id = 1
+            var contentString = "<div class='delivery-guy'><strong>" + deliverers["name"] + "</strong><br/>" + deliverers["mobile"] + "<br/><img class='photo' src='https://iyabasira.online/photos/" + deliverers["photo"] + ".jpg'><br/><button class='btn btn-sm btn-danger close-button' onclick='closeAllInfoWindows()'>No</button><button class='btn btn-sm btn-success pull-right' onclick='save_delivery_guy(" + deliverers["id"] + ")'>Yes</button></div>";
+            if( !deliverers["available"]) {
+                contentString = "<div class='delivery-guy'><strong><font color='red'>" + deliverers["name"] + "</font></strong><br/>Not available<br/><img class='photo' src='https://iyabasira.online/photos/" + deliverers["photo"] + ".jpg'></div>";
+            }
+            var image = '/img/fastfood-worker-32-255355.png';
+            var siteLatLng = new google.maps.LatLng(deliverers["lat"], deliverers["lng"]);
+            var marker = new google.maps.Marker({
+                position: siteLatLng,
+                map: map,
+                title: deliverers["name"],
+                //zIndex: deliverers["id"],
+                html: contentString,
+                icon: image
+            });
+
+            google.maps.event.addListener(marker, "click", function () {
+                infowindow.setContent(this.html);
+                infowindow.open(map, this);
+                infoWindows.push(infowindow); 
+                toggleBounce(this);
+            });
+
+        }
+
+    }
+
+    $(".cancel-order").on("click", function(e){
+        e.preventDefault();
+        removeAll();
+    })
+    
+    $(".confirm-order").on("click", function(e){
+        e.preventDefault();
+        showErr("Work in progress... Please be patient")
+    })
+    
+</script>
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=start">
+</script>
+
