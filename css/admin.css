@@ -237,15 +237,11 @@ table tfoot tr td {
     margin-right: 10px;
 }
 
-.__amount::before, .__price::before, .__fast_foods::before, .__mamaputs::before {
-    content: "\0020A6\020";
-}
-
 .__fees::after {
     content: "\020\000025";
 }
 
-.__amount, .__price, .__fast_foods, .__mamaputs, .__fees {
+.__amount, .__total, .__price , .__delivery, .__service, .__fast_foods, .__mamaputs, .__fees {
     text-align: right;
 }
 
@@ -275,4 +271,10 @@ div[class*="-form"] {
     width: 80%;
     box-shadow:0px 0px 10px #aaa;
     border: 5px solid #888;
+}
+
+.image-size-text {
+    font-size: 12pt;
+    font-weight: bold;
+    color: #ff0000;
 }

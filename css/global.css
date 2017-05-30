@@ -161,13 +161,7 @@ body {
  * Main content
  */
 
-@media (min-width: 768px) {
-    .main {
-        padding-right: 40px;
-        padding-left: 40px;
-        padding-bottom: 60px;
-    }
-}
+
 
 .main, .page-header {
     margin-top: 0;
@@ -568,4 +562,10 @@ div[class*="-form"] {
     /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%;
+}
+
+@media (min-width: 762px) {
+    .container  {
+        width: 762px;
+    }
 }

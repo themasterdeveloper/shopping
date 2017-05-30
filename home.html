@@ -24,7 +24,7 @@
         <div class="order-form">
             <form class="form-horizontal" id="order-form">
                 <input type="hidden" id="token">
-                <input type="hidden" id="product_id">
+                <input type="hidden" id="shop_product_id">
 
                 <!-- Quantity -->
                 <div class="form-group">
@@ -49,7 +49,7 @@
 </div>
 <script type="text/javascript">
         $(document).ready(function() {
-            $(".alert").hide();    
+            $(".alert").hide();
             load_products();
         });
 
@@ -62,10 +62,6 @@
             e.preventDefault();
             $(this).parent().hide();
         });
-
-        updateRangeValue = function(value) {
-            $("#quantityValue").html(value);
-        };
 
         $("#add-product").on("click", function(e) {
            e.preventDefault();
