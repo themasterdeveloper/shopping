@@ -563,5 +563,12 @@ div[class*="-form"] {
         width: 762px;
         margin: 10px;
     }
+}
 
+.btn-shop {
+    height: 56px;
+    vertical-align: middle;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 24px;
 }

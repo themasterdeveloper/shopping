@@ -1,0 +1,46 @@
+<div class="row">
+    <div class="main">
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <hr>
+        <!-- The table area -->
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span id="msg"></span>
+        </div>
+        <div class="shops-container">
+            <!-- List of shops -->
+            <div id="shops-table" class="table-hover form-group">
+            </div>
+        </div>
+        <button type="button" class="btn btn-lg btn-danger btn-dismiss">
+            Back
+        </button>
+        <button type="button" class="btn btn-lg btn-info pull-right btn-map">
+            Map
+        </button>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $(".alert").hide();
+        load_shops_areas();
+    });
+
+    $(".btn-dismiss").on("click", function(e) {
+        e.preventDefault();
+        document.location = "/";
+    });
+
+    $(".btn-map").on("click", function(e) {
+        e.preventDefault();
+        $("#content").load("/map");
+    });
+
+    select_shop_area = function(shop_area_id) {
+        setCookie('shop-area-id', shop_area_id);
+        $("#content").load(HOME);
+    }
+
+</script>

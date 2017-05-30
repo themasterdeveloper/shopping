@@ -372,6 +372,18 @@ switch ($action) {
 
         break;
 
+    case "get_shops_areas":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $area_id = $_GET['area_id'];
+
+        // Fill the query parameters
+        $query = "get_shops_areas('" . $area_id . "')";
+
+        break;
+
     case "get_total_basket":
 
         // It's gonna be a query

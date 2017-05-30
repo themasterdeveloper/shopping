@@ -748,3 +748,37 @@ fillForm = function(item_id, table) {
         }
     });
 }
+
+load_shops_areas = function() {
+    var data = {};
+    data.action = 'get_shops_areas';
+    data.area_id = getCookie('chosen-area');
+    log("get_shops_areas", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("get_shops_areas", data);
+            var l = data.length;
+            if (l == 1 && data[0].error) {
+                return;
+            }
+            var tmp = [],
+                i = 0;
+            var skip_columns = "-id-";
+            i = 0;
+            for (r = 0; r < l; r++) {
+                $this = data[r];
+                i++;
+                for (var key in $this) {
+                    if (skip_columns.indexOf("-" + key + "-") == -1) {
+                        tmp[i] = "<button class='btn btn-success btn-lg btn-shop form-control' onclick='select_shop_area(" + $this["id"] + ")'>" + $this[key] + "</button>";
+                        i++;
+                    }
+                }
+                i++;
+            }
+            $("#shops-table").empty().append(tmp.join(''));
+            $(".shops-container").show();
+        }
+    });
+}

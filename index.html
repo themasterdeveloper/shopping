@@ -121,13 +121,13 @@
             intro = true;
             setCookie("chosen-area", $(this).val());
             //$("#content").load(HOME);
-            $("#content").load('/map');
+            $("#content").load('/shops');
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
         });
 
         $(".glyphicon-home").parent().on("click", function() {
-            $("#content").load("/");
+            document.location = "/";
         });
 
         $(".glyphicon-fullscreen").parent().on("click", function() {
