@@ -1,0 +1,88 @@
+30-05-17 13:54:25
+user: 127.0.0.1
+action: login
+email: omar.melendrez@gmail.com
+password: master1*
+login
+-------------------------
+30-05-17 13:54:28
+user: 127.0.0.1
+action: adm_load_table_products
+search: 
+limit: 0
+rows: 10
+adm_load_table_products
+-------------------------
+30-05-17 13:54:28
+user: 127.0.0.1
+action: category_list
+category_list
+-------------------------
+30-05-17 13:54:31
+user: 127.0.0.1
+action: get_table_record
+table: products
+item_id: 26
+get_table_record
+-------------------------
+30-05-17 13:54:35
+user: 127.0.0.1
+action: get_table_record
+table: products
+item_id: 26
+get_table_record
+-------------------------
+30-05-17 13:54:45
+user: 127.0.0.1
+action: get_areas
+get_areas
+-------------------------
+30-05-17 13:54:45
+user: 127.0.0.1
+action: areas_list
+areas_list
+-------------------------
+30-05-17 13:54:45
+user: 127.0.0.1
+action: get_config_value
+name: Online
+get_config_value
+-------------------------
+30-05-17 13:54:45
+user: 127.0.0.1
+action: get_config_value
+name: Debug
+get_config_value
+-------------------------
+30-05-17 13:57:44
+user: 127.0.0.1
+action: get_area_coordinates
+area_id: 5
+get_area_coordinates
+-------------------------
+30-05-17 13:57:44
+user: 127.0.0.1
+action: shops_locations_list
+area_id: 0
+shops_locations_list
+-------------------------
+30-05-17 13:57:48
+user: 127.0.0.1
+action: products_search
+search: 
+token: 
+shop_area_id: 22
+products_search
+-------------------------
+30-05-17 13:57:48
+user: 127.0.0.1
+action: get_token
+area_id: 5
+get_token
+-------------------------
+30-05-17 13:57:48
+user: 127.0.0.1
+action: get_total_basket
+token: 
+get_total_basket
+-------------------------

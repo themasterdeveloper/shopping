@@ -161,13 +161,7 @@ body {
  * Main content
  */
 
-@media (min-width: 768px) {
-    .main {
-        padding-right: 40px;
-        padding-left: 40px;
-        padding-bottom: 60px;
-    }
-}
+
 
 .main, .page-header {
     margin-top: 0;
@@ -176,16 +170,6 @@ body {
 
 .pointer {
     cursor: pointer;
-}
-
-.popover {
-    background-color: #e74c3c;
-    color: #ecf0f1;
-    width: 120px;
-}
-
-.popover.right .arrow:after {
-    border-right-color: #e74c3c;
 }
 
 .input-group[class*="col-"] {
@@ -302,7 +286,7 @@ footer .glyphicon {
 .shop-logo {
     width: 90px;
     position: absolute;
-    top: 5px;
+    bottom: 24px;
     left: 5px;
 }
 
@@ -316,10 +300,11 @@ footer .glyphicon {
 
 .product {
     color: #000;
-    font-size: 26px;
+    font-size: 24px;
     position: absolute;
     top: 5px;
     right: 5px;
+    background-color: #fff;
 }
 
 .price {
@@ -568,4 +553,15 @@ div[class*="-form"] {
     /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%;
+}
+
+@media (min-width: 762px) {
+    .container  {
+        width: 762px;
+    }
+    div[class*="-form"] {
+        width: 762px;
+        margin: 10px;
+    }
+
 }

@@ -100,6 +100,7 @@
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <script src="/js/global.min.js"></script>
+    <script src="/js/maps.min.js"></script>
 
     <script>
         $(document).ready(function() {
@@ -109,7 +110,7 @@
                 $("#content").removeClass("hidden");
             } else {
                 load_dropdown("areas", true);
-                get_areas();
+                //get_areas();
                 get_config_value("Online");
                 get_config_value("Debug");
             }

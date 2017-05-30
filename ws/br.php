@@ -1,6 +1,5 @@
 <?php
 date_default_timezone_set('Africa/Lagos');
-ini_set('html_errors', false);
 // Debug area
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
@@ -441,11 +440,11 @@ switch ($action) {
 
         // Bind parameters
 
-        $stmt->bind_param("sii", $token, $product_id, $quantity);
+        $stmt->bind_param("sii", $token, $shop_product_id, $quantity);
 
         // Assign values
         $token = $_GET['token'];
-        $product_id = $_GET['product_id'];
+        $shop_product_id = $_GET['shop_product_id'];
         $quantity = $_GET['quantity'];
 
         break;
@@ -575,6 +574,27 @@ switch ($action) {
         $name = $_GET['name'];
         $password = $_GET['password'];
         $token = $_GET['token'];
+
+        break;
+
+    case "save_table_image":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL save_table_image(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("sis", $table, $item_id, $image_path);
+
+        // Assign values
+        $table = $_GET['table'];
+        $item_id = $_GET['item_id'];
+        $image_path = $_GET['image_path'];
 
         break;
 

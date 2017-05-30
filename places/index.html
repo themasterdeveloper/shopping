@@ -15,7 +15,7 @@
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Full screen for Safari under iOS --> 
+    <!-- Full screen for Safari under iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- Custom styles for this template -->
     <link href="/css/global.min.css" rel="stylesheet">
@@ -26,7 +26,7 @@
             display: none;
         }
     </style>
-</head>    
+</head>
 <body>
     <!-- Loading spin image -->
     <i class="fa fa-refresh fa-5x fa-spin"></i>
@@ -37,7 +37,7 @@
                     <div class="app-title">iyabasira <span class="grey">delivery</span></div>
                     <!-- The table area -->
 
-                    <div class="header">        
+                    <div class="header">
                         <!-- Area -->
                         <div class="form-group">
                             <select class="form-control selectpicker areas" id="area_id">
@@ -49,7 +49,7 @@
                             </select>
                         </div>
                         <div id="map">
-                            
+
                         </div>
                     </div>
                     <div class="button-area">
@@ -58,8 +58,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <span id="msg"></span>
-                        </div>                
-                        <div class="col offset-md-8 col-md-12">   
+                        </div>
+                        <div class="col offset-md-8 col-md-12">
                             <button type="button" class="btn btn-success save-location">Save Geolocation</button>
                         </div>
                     </div>
@@ -71,6 +71,7 @@
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <script src="/js/global.min.js"></script>
+    <script src="/js/maps.min.js"></script>
 
     <script>
         var map;
@@ -143,9 +144,9 @@
                 mapTypeControl: false,
                 streetViewControl: false
             }
-            
+
             map = new google.maps.Map(document.getElementById("map"), myOptions);
-            
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
                     initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
@@ -159,7 +160,7 @@
                     });
                 });
             }
-            
+
             load_shops_locations(0);
         }
 
@@ -169,7 +170,7 @@
                 navigator.geolocation.getCurrentPosition(function (position) {
                     lat = position.coords.latitude;
                     lng = position.coords.longitude;
-                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);                    
+                    initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                     //map.setCenter(initialLocation);
                     me_marker.setPosition(initialLocation);
                 });

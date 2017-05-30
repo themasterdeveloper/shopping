@@ -22,7 +22,7 @@ var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
     cur_page = 0;
-token = '',
+    token = '',
     error = false,
     intro = false,
     HOME = "/home.html",
@@ -285,7 +285,6 @@ load_products = function() {
     data.action = "products_search";
     data.search = $("#search_text").val();
     data.token = getCookie("token");
-    data.area_id = getCookie("chosen-area");
     data.shop_area_id = getCookie("shop-area-id");
     log("load_products", data);
 
@@ -328,7 +327,7 @@ load_products = function() {
                         if ($this["image"] == '') {
                             tmp[i] += "<img class='product-image' src='/img/no-image.jpg'>";
                         } else {
-                            tmp[i] += "<img class='product-image' src='/img/" + $this["image"] + "'>";
+                            tmp[i] += "<img class='product-image' src='" + $this["image"] + "'>";
                         }
                         tmp[i] += "<span class='price'>" + $this["price"] + "</span>";
                         tmp[i] += "<button class='buy-product-button btn btn-success btn-lg' onclick=buy_product(" + $this["id"] + ") >ORDER NOW</button>";
@@ -388,7 +387,7 @@ buy_product = function(product_id) {
     var pos = $("." + caller).position();
     $("#quantity").val(1);
     $(".order-form").css("top", pos.top + 32).show();
-    $(".order-form #product_id").val(product_id);
+    $(".order-form #shop_product_id").val(product_id);
     $(".shadow").show();
     event.preventDefault();
 }
@@ -397,7 +396,7 @@ add_product = function() {
     var data = {};
     data.action = "save_item";
     data.token = token;
-    data.product_id = $("#product_id").val();
+    data.shop_product_id = $("#shop_product_id").val();
     data.quantity = $("#quantity").val();
     log("add_product", data);
     $.ajax({
@@ -687,36 +686,6 @@ var submitForm = function(object) {
     });
 };
 
-var login = function() {
-    var data = {};
-
-    data.action = "login";
-    //Generate data items from form fields
-    $('#login').find(':input:not(button):not(reset)').each(function() {
-        var $this = $(this);
-        if ($this.attr("id"))
-            data[$this.attr("id")] = $this.val().trim();
-    });
-
-    log("login", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("login", data);
-            if (data[0].user_id) {
-                document.getElementById('id01').style.display = 'none';
-                $(".navbar").removeClass("hidden");
-                $this = data[0];
-                for (key in $this) {
-                    setCookie(key, $this[key]);
-                }
-            } else {
-                showErr("Email or password incorrect");
-            }
-        }
-    });
-};
-
 notify = function(order_id) {
 
     // Email & SMS notification
@@ -747,264 +716,6 @@ get_config_value = function(name) {
     });
 }
 
-save_area_location = function(area_id, lat, lng) {
-    var data = {};
-    data.action = "save_area_location";
-    data.area_id = area_id;
-    data.lat = lat;
-    data.lng = lng;
-    log("save_area_location", data);
-    $.ajax({
-        data: data,
-        dataType: 'json',
-        success: function(data) {
-            log("save_area_location", data);
-            if (data[0].error != 0) {
-                showErr(data[0].message);
-            } else {
-                showMsg(data[0].message);
-            }
-        }
-    });
-}
-
-save_shop_location = function(area_id, shop_id, lat, lng) {
-    var data = {};
-    data.action = "save_shop_location";
-    data.area_id = area_id;
-    data.shop_id = shop_id;
-    data.lat = lat;
-    data.lng = lng;
-    log("save_shop_location", data);
-    $.ajax({
-        data: data,
-        dataType: 'json',
-        success: function(data) {
-            log("save_shop_location", data);
-            if (data[0].error != 0) {
-                showErr(data[0].message);
-            } else {
-                showMsg(data[0].message);
-                update_markers();
-            }
-        }
-    });
-}
-
-load_shops_locations = function(area_id) {
-    var data = {};
-    data.action = "shops_locations_list";
-    data.area_id = 0;
-    log("load_shops_locations", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("load_shops_locations", data);
-            setMarkers(data, 'shop', '/img/rsz_fastfood-pin.png');
-        }
-    });
-}
-
-load_deliverers_locations = function(area_id) {
-    var data = {};
-    data.action = "deliverers_list";
-    log("deliverers_list", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("deliverers_list", data);
-            setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
-        }
-    });
-}
-
-setMarkers = function(list, field, image) {
-    for (var i = 0; i < list.length; i++) {
-        var item = list[i];
-        var siteLatLng = new google.maps.LatLng(item["lat"], item["lng"]);
-        createMarker(siteLatLng, field, image, item);
-    }
-}
-
-createMarker = function(latlng, field, image, data) {
-    var marker = new google.maps.Marker({
-        position: latlng,
-        map: map,
-        title: data[field],
-        icon: image
-    });
-    marker.set('id', data['id']);
-    marker.addListener('click', function() {
-        $('#item_id').val(data['id']);
-        showMarkerData(data);
-    });
-    markers.push(marker);
-}
-
-showMarkerData = function(data) {
-    var html = '';
-    $this = data[0];
-    var skip_columns = "-id-lat-lng-photo-available-";
-    for (var key in data) {
-        if (skip_columns.indexOf("-" + key + "-") == -1) {
-            html += '<span class="_data-value">';
-            html += data[key];
-            html += '</span></br>';
-        }
-    }
-    $('.marker-data').html(html);
-}
-
-remove_markers = function() {
-    for (i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-}
-
-close_infowindows = function() {
-    for (i = 0; i < infowindows.length; i++) {
-        infowindows[i].close();
-    }
-}
-
-relocateMap = function() {
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            lat = position.coords.latitude;
-            lng = position.coords.longitude;
-            initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            //map.setCenter(initialLocation);
-            me_marker.setPosition(initialLocation);
-        });
-    }
-}
-
-adm_load_table = function(table, read_only) {
-    read_only = (typeof read_only === 'undefined') ? false : read_only;
-    $(".table-name").html(table.replace('_', ' / '));
-    $(".alert").hide();
-    if (getCookie("cur_page")) {
-        cur_page = parseInt(getCookie("cur_page"));
-    }
-    if (getCookie("rows_per_page")) {
-        rows_per_page = parseInt(getCookie("rows_per_page"));
-    }
-    var data = {};
-    data.action = 'adm_load_table_' + table;
-    data.search = $("#search").val();
-    data.limit = cur_page;
-    data.rows = rows_per_page;
-    log("load_table", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("load_table", data);
-            if (data[0].error == 1) {
-                $("#" + table + "-table tbody").empty();
-                $("#" + table + "-table tbody").empty();
-                $("#" + table + "-table tfood").empty();
-                showErr(data[0].message);
-                return false;
-            }
-            var skip_columns = "-id-active-total_records-";
-
-            var l = data.length;
-            var cols = 0;
-            var tmp = [],
-                i = 0;
-            $this = data[0];
-            var total_records = $this["total_records"];
-            // thead
-            tmp[i] = "<tr>";
-            i++;
-            for (var key in $this) {
-                if (skip_columns.indexOf("-" + key + "-") == -1) {
-                    tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key + "</th>";
-                    i++;
-                    cols++;
-                }
-            }
-            if (!read_only) {
-                tmp[i] = '<th></th>';
-                i++;
-                cols++;
-            }
-            tmp[i] = "</tr>";
-            $("#" + table + "-table thead").empty().append(tmp.join(''));
-
-            // tbody
-            tmp = [];
-            i = 0;
-            for (r = 0; r < l; r++) {
-                $this = data[r];
-                tmp[i] = "<tr>";
-                i++;
-                for (var key in $this) {
-                    if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
-                        i++;
-                    }
-                }
-                if (!read_only) {
-                    tmp[i] = '<td class="button-group">';
-                    i++
-                    if ($this["active"] == 0) {
-                        tmp[i] = '<button class="btn btn-danger btn-sm delete-item" onclick="adm_delete_item(' + $this["id"] + ',\'' + table + '\')">Delete</button>';
-                        i++
-                    }
-                    tmp[i] = '<button class="btn btn-primary btn-sm edit-item" onclick="adm_edit_item(' + $this["id"] + ',\'' + table + '\')">Edit</button>';
-                    i++
-                    tmp[i] = '</td>';
-                    i++
-                }
-                tmp[i] = "</tr>";
-                i++;
-            }
-            $("#" + table + "-table tbody").empty().append(tmp.join(''));
-
-            var footer = '';
-            var span = parseInt(cols);
-            footer += '<tr><td colspan=' + span + '>';
-            if (cur_page > 0) {
-                footer += '<button class= "btn btn-success btn-md pull-left btn-prev table-button">Prev</button>';
-            } else {
-                footer += '<button class= "btn btn-success btn-md pull-left disabled table-button">Prev</button>';
-            }
-            var page = parseInt(cur_page) + 1
-            footer += "Page " + page;
-
-            if (cur_page < parseInt(total_records / rows_per_page)) {
-                footer += '<button class= "btn btn-success btn-md pull-right btn-next">Next</button>';
-            } else {
-                footer += '<button class= "btn btn-success btn-md pull-right disabled">Next</button>';
-            }
-            footer += '<br/>' + total_records + ' records';
-            footer += '</td></tr>';
-
-            $("#" + table + "-table tfoot").empty().append(footer);
-
-            $(".btn-prev").on("click", function(e) {
-                e.preventDefault();
-                setCookie("cur_page", cur_page - 1);
-                adm_load_table(table, read_only);
-            })
-
-            $(".btn-next").on("click", function(e) {
-                e.preventDefault();
-                setCookie("cur_page", cur_page + 1);
-                adm_load_table(table, read_only);
-            })
-
-        }
-    });
-}
-
-adm_edit_item = function(item_id, table) {
-    $("#item_id").val(item_id);
-    fillForm(item_id, table);
-}
-
 fillForm = function(item_id, table) {
     var data = {};
     data.action = 'get_table_record';
@@ -1017,9 +728,9 @@ fillForm = function(item_id, table) {
             log("get_table_record", data);
             $this = data[0];
             for (var key in $this) {
-                if (key == 'image' || key == 'logo') {
+                if (key == 'image') {
                     if ($this[key].length > 0) {
-                        $("#" + key).attr("src", "/img/" + $this[key]);
+                        $("#" + key).attr("src", $this[key]);
                     } else {
                         $("#" + key).attr("src", "/img/no-image.jpg");
                     }
@@ -1037,50 +748,3 @@ fillForm = function(item_id, table) {
         }
     });
 }
-
-var adm_delete_item = function(item_id, table) {
-    var data = {};
-    data.action = 'delete_table_record';
-    data.table = table;
-    data.item_id = item_id;
-    log("get_table_data", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("adm_delete_item", data);
-            if (data[0].error != 0) {
-                showErr(data[0].message);
-            } else {
-                adm_load_table(table);
-            }
-        }
-    });
-}
-
-var saveData = function(object) {
-    var action = object + "_save";
-    var form = object + "-form";
-    var data = {};
-    data.action = action;
-    $('#' + form).find(':input:not(button):not(reset)').each(function() {
-        var $this = $(this);
-        if ($this.attr("id"))
-            data[$this.attr("id")] = $this.val().trim();
-    });
-    log("saveData", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("saveData", data);
-            if (data[0].error != 0) {
-                showErr(data[0].message);
-            } else {
-                showMsg(data[0].message);
-                setCookie("record_id", data[0].record_id);
-                $("." + object + "-list").removeClass("hidden");
-                $("." + object + "-form").addClass("hidden");
-                adm_load_table(object);
-            }
-        }
-    });
-};
