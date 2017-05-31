@@ -241,12 +241,17 @@ table tfoot tr td {
     content: "\020\000025";
 }
 
-.__amount, .__total, .__price , .__delivery, .__service, .__fast_foods, .__mamaputs, .__fees {
+.__amount, .__total, .__price , .__delivery, .__service, .__fast_foods, .__mamaputs, .__fees, .__earnings {
     text-align: right;
 }
-
+.__earnings{
+    font-weight: bold;
+}
 .__status {
     text-align: center;
+}
+img.__status {
+    width: 32px;
 }
 
 .table-name {
@@ -277,12 +282,4 @@ div[class*="-form"] {
     font-size: 12pt;
     font-weight: bold;
     color: #ff0000;
-}
-
-.__status{
-    text-align: center;
-}
-img.__status {
-    width: 24px;
-
 }
