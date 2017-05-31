@@ -89,9 +89,11 @@
             $(".alert").hide();
             load_dropdown("areas", true);
             load_dropdown("shops", true);
+            /*
             setInterval(function() {
                 relocateMap();
             }, 5000);
+            */
             setInterval(function() {
                 update_markers();
             }, 60000);
@@ -137,29 +139,34 @@
         initialize = function () {
 
             var myOptions = {
-                zoom: 13,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                panControl: true,
-                zoomControl: true,
-                mapTypeControl: false,
+                zoom: 16,
+                mapTypeId: google.maps.MapTypeId.HYBRID,
                 streetViewControl: false
             }
 
             map = new google.maps.Map(document.getElementById("map"), myOptions);
 
+            initialLocation = new google.maps.LatLng(4.88246, 6.976786);
+
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function (position) {
                     initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                    var centerMap = new google.maps.LatLng(4.88246, 6.976786);
-                    initialLocation = centerMap;
-                    map.panTo(initialLocation);
-                    me_marker = new google.maps.Marker({
-                        position: initialLocation,
-                        map: map,
-                        title: 'You are here'
-                    });
                 });
+            } else {
             }
+
+            map.panTo(initialLocation);
+            me_marker = new google.maps.Marker({
+                position: initialLocation,
+                map: map,
+                title: 'You are here',
+                draggable: true
+            });
+
+            google.maps.event.addListener(me_marker, 'dragend', function(evt){
+                lat = evt.latLng.lat();
+                lng = evt.latLng.lng();
+            });
 
             load_shops_locations(0);
         }

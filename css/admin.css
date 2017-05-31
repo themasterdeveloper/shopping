@@ -245,7 +245,7 @@ table tfoot tr td {
     text-align: right;
 }
 
-.__available {
+.__status {
     text-align: center;
 }
 
@@ -277,4 +277,12 @@ div[class*="-form"] {
     font-size: 12pt;
     font-weight: bold;
     color: #ff0000;
+}
+
+.__status{
+    text-align: center;
+}
+img.__status {
+    width: 24px;
+
 }

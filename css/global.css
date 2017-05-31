@@ -296,6 +296,9 @@ footer .glyphicon {
     position: absolute;
     bottom: 5px;
     left: 5px;
+    background-color: #fff;
+    padding-left: 6px;
+    padding-right: 6px;
 }
 
 .product {
@@ -544,16 +547,17 @@ table tfoot tr td {
     border-radius: 3px;
     margin-bottom: 10px;
 }
-
+/*
 div[class*="-form"] {
     background-color: #fefefe;
     padding: 40px;
     border-radius: 6px;
     margin: 5% auto 15% auto;
-    /* 5% from the top, 15% from the bottom and centered */
+    // 5% from the top, 15% from the bottom and centered //
     border: 1px solid #888;
     width: 80%;
 }
+*/
 
 @media (min-width: 762px) {
     .container  {

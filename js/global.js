@@ -320,7 +320,9 @@ load_products = function() {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
                         tmp[i] = "<div href='#' class='list-group-item it-" + $this["id"] + "'>";
                         if ($this["logo"] != '') {
-                            tmp[i] += "<img src='/img/" + $this["logo"] + "' class='shop-logo'>";
+                            tmp[i] += "<img src='" + $this["logo"] + "' class='shop-logo'>";
+                        } else {
+                            tmp[i] += "<img class='shop-logo' src='/img/no-image.jpg'>";
                         }
                         tmp[i] += "<span class='area'>" + $this["area"] + "</span>";
                         tmp[i] += "<span class='product'>" + $this["product"] + "</span><br/>";

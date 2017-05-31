@@ -288,7 +288,11 @@ var adm_load_table = function(table, read_only) {
                 i++;
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
+                        if(key == 'status'){
+                            tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
+                        }else{
+                            tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
+                        }
                         i++;
                     }
                 }
