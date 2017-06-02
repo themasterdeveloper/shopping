@@ -8,13 +8,13 @@
                 <!-- Name -->
                 <div class="form-group">
                     <label for="name">Name:</label>
-                    <input class="form-control" id="name" type="text" placeholder="Enter your name">
+                    <input class="form-control" id="name" type="text" placeholder="Enter your name" required="required">
                 </div>
 
                 <!-- Mobile -->
                 <div class="form-group">
                     <label for="mobile">Mobile:</label>
-                    <input class="form-control" id="mobile" type="text" placeholder="Enter your mobile number">
+                    <input class="form-control" id="mobile" maxlength="11" type="tel"  placeholder="Enter your mobile number">
                 </div>
 
                 <!-- Email -->
@@ -24,34 +24,24 @@
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <hr>
+
                 <!-- Name 2-->
                 <div class="form-group">
-                    <label for="receiver">Receiver:</label>
-                    <input class="form-control" id="receiver" type="text" placeholder="Enter order receiver's name">
+                    <label for="receiver_name">Receiver name:</label>
+                    <input class="form-control" id="receiver_name" type="text" placeholder="Enter order receiver's name" required="required">
+                </div>
+
+                <!-- Mobile 2-->
+                <div class="form-group">
+                    <label for="receiver_mobile">Mobile:</label>
+                    <input class="form-control" id="receiver_mobile" maxlength="11" type="number" step="any" title="You must enter a nigerian phone number" placeholder="Enter receiver's mobile number" required="required">
                 </div>
 
                 <!-- Address -->
                 <div class="form-group">
                     <label for="address">Address:</label>
-                    <textarea class="form-control" rows="2" id="address" placeholder="Enter address for delivery"></textarea>
+                    <textarea class="form-control" rows="2" id="address" placeholder="Enter address for delivery" required="required"></textarea>
                 </div>
-                <!-- Area -->
-
-                <!--
-                <div class="form-group">
-                    <label for="area_id">Area:</label>
-                    <select class="form-control selectpicker areas" data-live-search="true" id="area_id" data-size="5" data-header="Choose your area">
-                    </select>
-                </div>
-                -->
-                <!-- City -->
-                <!--
-                <div class="form-group">
-                    <label for="city_id">City:</label>
-                    <select class="form-control selectpicker cities" data-live-search="true" id="city_id" data-size="5" data-header="Choose your city">
-                    </select>
-                </div>
-            -->
 
                 <!-- Buttons -->
                 <div class="form-group">
@@ -62,8 +52,8 @@
                         <span id="msg"></span>
                     </div>
                     <div>
-                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Back</button>
-                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Confirm</button>
+                        <button type="reset" class="btn btn-danger btn-lg cancel-action">Back</button>
+                        <button type="submit" class="btn btn-success btn-lg pull-right">Confirm</button>
                     </div>
                 </div>
 
@@ -80,14 +70,14 @@
         load_dropdown("cities");
     });
 
-    $("#cancel-action").on("click", function(d){
+    $(".cancel-action").on("click", function(d){
         d.preventDefault();
         $("#content").load("/basket");
     });
 
-    $("#submit-form").on("click", function(d){
+    $("#profile-form").on("submit", function(d){
         d.preventDefault();
-        submitForm("profile");
+//        submitForm("profile");
     });
 
 </script>
