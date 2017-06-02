@@ -535,7 +535,7 @@ switch ($action) {
         $stmt->bind_param("idd", $area_id, $lat, $lng);
 
         // Assign values
-        $_area_id = $_GET['area_id'];
+        $area_id = $_GET['area_id'];
         $lat = $_GET['lat'];
         $lng = $_GET['lng'];
 

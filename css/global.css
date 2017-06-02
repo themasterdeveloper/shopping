@@ -73,6 +73,14 @@
     display: none;
 }
 
+.alert {
+    margin-top: 18px;
+}
+
+.search-box {
+    margin-bottom: 18px;
+}
+
 .table-responsive {
     z-index: 99996;
 }
@@ -125,7 +133,7 @@ h1, h2, h3, h4 {
 body {
     color: #888;
     padding-top: 0px;
-    font-family: 'Roboto', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
+    font-family: 'Noto Sans', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
     margin: 0;
 }
 
@@ -161,8 +169,6 @@ body {
  * Main content
  */
 
-
-
 .main, .page-header {
     margin-top: 0;
     font-weight: bold;
@@ -175,44 +181,6 @@ body {
 .input-group[class*="col-"] {
     padding-right: 15px;
     padding-left: 15px;
-}
-
-
-/**
- *     Footer
- *
- */
-
-footer {
-    background-color: #44BBEE;
-    z-index: 99999;
-}
-
-footer .navbar-nav {
-    float: left;
-    margin: 0;
-}
-
-footer .navbar-nav>li {
-    float: left;
-}
-
-footer .navbar-nav>li>a {
-    color: #fff;
-}
-
-footer .navbar-nav>li>a:hover {
-    color: #44BBEE;
-    background-color: #fff;
-}
-
-footer .navbar-nav>li>a:focus {
-    color: #44BBEE;
-    background-color: #fff;
-}
-
-footer .glyphicon {
-    font-size: 18pt;
 }
 
 
@@ -253,11 +221,6 @@ footer .glyphicon {
 
 .__total {
     font-weight: bold;
-}
-
-.dashboard {
-    margin-top: 5px;
-    margin-right: 5px;
 }
 
 .app-title {
@@ -327,13 +290,6 @@ footer .glyphicon {
     content: "\0020A6\020";
 }
 
-#basket_button {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: 99998;
-}
-
 ._amount, ._total {
     text-align: right;
     padding: 6px;
@@ -356,6 +312,7 @@ footer .glyphicon {
     margin-top: 20px;
     width: 256px;
     vertical-align: top;
+    border-radius: 20px;
 }
 
 .shop-image {
@@ -547,6 +504,8 @@ table tfoot tr td {
     border-radius: 3px;
     margin-bottom: 10px;
 }
+
+
 /*
 div[class*="-form"] {
     background-color: #fefefe;
@@ -558,10 +517,21 @@ div[class*="-form"] {
     width: 80%;
 }
 */
-
+.dashboard {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 99999;
+}
 @media (min-width: 762px) {
-    .container  {
+    .container {
         width: 762px;
+    }
+    .dashboard {
+        position: fixed;
+        top: 18px;
+        left: 762px;
+        z-index: 99999;
     }
     div[class*="-form"] {
         width: 762px;
@@ -570,9 +540,13 @@ div[class*="-form"] {
 }
 
 .btn-shop {
-    height: 56px;
+    height: 48px;
     vertical-align: middle;
     padding: 10px;
     margin-bottom: 10px;
-    font-size: 24px;
+    font-size: 18px;
+}
+
+.align-center {
+    text-align: center;
 }

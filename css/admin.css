@@ -1,7 +1,7 @@
 /** Fonts **/
 
 @font-face {
-    font-family: 'Roboto';
+    font-family: 'Times New Roman';
     src: url('../fonts/Roboto-Regular.ttf') format('truetype');
 }
 
@@ -252,6 +252,14 @@ table tfoot tr td {
 }
 img.__status {
     width: 32px;
+}
+
+.__name {
+    width: 240px;
+}
+
+.__image {
+    width: 80px;
 }
 
 .table-name {

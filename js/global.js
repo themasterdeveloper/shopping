@@ -332,7 +332,7 @@ load_products = function() {
                             tmp[i] += "<img class='product-image' src='" + $this["image"] + "'>";
                         }
                         tmp[i] += "<span class='price'>" + $this["price"] + "</span>";
-                        tmp[i] += "<button class='buy-product-button btn btn-success btn-lg' onclick=buy_product(" + $this["id"] + ") >ORDER NOW</button>";
+                        tmp[i] += "<button class='buy-product-button btn btn-success btn-lg btn-order-now' onclick=buy_product(" + $this["id"] + ") >ORDER NOW</button>";
                         tmp[i] += "</div>";
                     }
                 }
@@ -357,7 +357,6 @@ load_products = function() {
 
         }
     });
-    updateBasket();
     log("listCookies", listCookies());
 };
 
@@ -784,3 +783,5 @@ load_shops_areas = function() {
         }
     });
 }
+
+updateBasket();

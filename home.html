@@ -1,9 +1,5 @@
 <div class="row">
     <div class="main">
-        <div class="pull-right dashboard">
-            <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket">0.00</span>
-                </button>
-        </div>
         <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
         <!-- Search box -->
         <div class="search-box input-group input-group-lg">
@@ -45,6 +41,7 @@
             </form>
             <div class="error_message "></div>
         </div>
+        <input type="button" class="btn btn-danger btn-lg dismiss" value="Back">
     </div>
 </div>
 <script type="text/javascript">
@@ -68,9 +65,9 @@
            add_product();
         });
 
-        $("#basket_button").on("click", function(e) {
+        $(".dismiss").on("click", function(e) {
            e.preventDefault();
-           $("#content").load("/basket")
+           $("#content").load("/shops")
         });
 
         $("#close").on("click", function(e) {
@@ -79,5 +76,4 @@
            $(".order-form").hide();
            $(".shadow").hide();
         })
-
 </script>
