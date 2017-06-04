@@ -763,16 +763,17 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?)");
+        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("iss", $item_id, $contact, $mobile);
+        $stmt->bind_param("isss", $item_id, $contact, $mobile, $email);
 
         // Assign values
         $item_id = $_GET['item_id'];
         $contact = $_GET['contact'];
         $mobile = $_GET['mobile'];
+        $email = $_GET['email'];
 
         break;
 

@@ -70,7 +70,7 @@ log_ajax_error = function(xhr, errorThrown) {
  */
 
 var log = function(name, value) {
-        console.debug(name, value);
+    console.debug(name, value);
 }
 
 /**
@@ -206,12 +206,32 @@ var saveData = function(object) {
         }
     });
 };
-
 var adm_delete_item = function(item_id, table) {
+    if (item_id == undefined)
+        return false;
+    record_id = item_id;
+    var _details = "";
+    var counter = 0;
+    var limit = getCookie("cols");
+    var sep = "";
+    $(".tr_" + item_id).find("td").each(function() {
+        if (counter < limit)
+            if ($(this).html().length > 0)
+                _details += sep + "<span class='data'>" + $(this).html() + "</span>";
+        sep = "<br/>";
+        counter++;
+    });
+    setCookie("item_id", item_id);
+    setCookie("table", table);
+    $("#confirm-body").html(_details);
+    $("#delete-confirmation").modal('show');
+}
+
+var commit_details_confirmed = function() {
     var data = {};
     data.action = 'delete_table_record';
-    data.table = table;
-    data.item_id = item_id;
+    data.table = getCookie("table");
+    data.item_id = getCookie("item_id");
     log("get_table_data", data);
     $.ajax({
         data: data,
@@ -220,7 +240,10 @@ var adm_delete_item = function(item_id, table) {
             if (data[0].error != 0) {
                 showErr(data[0].message);
             } else {
-                adm_load_table(table);
+                $("#delete-confirmation").modal('hide');
+                setTimeout(function(){
+                    adm_load_table(getCookie("table"));
+                }, 1000);
             }
         }
     });
@@ -271,6 +294,7 @@ var adm_load_table = function(table, read_only) {
                     cols++;
                 }
             }
+            setCookie("cols", cols);
             if (!read_only) {
                 tmp[i] = '<th></th>';
                 i++;
@@ -284,18 +308,19 @@ var adm_load_table = function(table, read_only) {
             i = 0;
             for (r = 0; r < l; r++) {
                 $this = data[r];
-                tmp[i] = "<tr>";
+                tmp[i] = "<tr class='tr_" + $this["id"] + "'>";
                 i++;
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        if(key == 'status' || key == 'image'){
+                        if (key == 'status' || key == 'image') {
                             tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
-                        }else{
+                        } else {
                             tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
                         }
                         i++;
                     }
                 }
+
                 if (!read_only) {
                     tmp[i] = '<td class="button-group">';
                     i++

@@ -14,7 +14,7 @@
                 <!-- Mobile -->
                 <div class="form-group">
                     <label for="mobile">Mobile:</label>
-                    <input class="form-control" id="mobile" maxlength="11" type="tel"  placeholder="Enter your mobile number">
+                    <input class="form-control" id="mobile" onKeyPress="if(this.value.length==11) return false;" type="number"  placeholder="Enter your mobile number">
                 </div>
 
                 <!-- Email -->
@@ -34,7 +34,7 @@
                 <!-- Mobile 2-->
                 <div class="form-group">
                     <label for="receiver_mobile">Mobile:</label>
-                    <input class="form-control" id="receiver_mobile" maxlength="11" type="number" step="any" title="You must enter a nigerian phone number" placeholder="Enter receiver's mobile number" required="required">
+                    <input class="form-control" id="receiver_mobile" onKeyPress="if(this.value.length==11) return false;" type="number"  title="You must enter a nigerian phone number" placeholder="Enter receiver's mobile number" required="required">
                 </div>
 
                 <!-- Address -->

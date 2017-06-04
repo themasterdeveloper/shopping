@@ -241,15 +241,18 @@ table tfoot tr td {
     content: "\020\000025";
 }
 
-.__amount, .__total, .__price , .__delivery, .__service, .__fast_foods, .__mamaputs, .__fees, .__earnings {
+.__amount, .__total, .__price, .__delivery, .__service, .__fast_foods, .__mamaputs, .__fees, .__earnings {
     text-align: right;
 }
-.__earnings{
+
+.__earnings {
     font-weight: bold;
 }
+
 .__status {
     text-align: center;
 }
+
 img.__status {
     width: 32px;
 }
@@ -282,7 +285,7 @@ div[class*="-form"] {
     /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
     width: 80%;
-    box-shadow:0px 0px 10px #aaa;
+    box-shadow: 0px 0px 10px #aaa;
     border: 5px solid #888;
 }
 
@@ -290,4 +293,28 @@ div[class*="-form"] {
     font-size: 12pt;
     font-weight: bold;
     color: #ff0000;
+}
+
+.modal {
+    background-color: #fff;
+}
+.modal-body{
+    font-size: 14pt;
+    font-weight: bold;
+    color: #444;
+}
+.modal-dialog {
+    max-width: 800px;
+}
+
+.modal-title {
+    color: #fff;
+    font-size: 1.4em;
+}
+
+.modal-dialog {
+    border: 1px solid #888;
+    box-shadow: 0px 0px 6px #aaa;
+    border-radius: 6px;
+    background-color: #fff;
 }
