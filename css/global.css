@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Roboto';
-    src: url('../fonts/Roboto-Regular.ttf') format('truetype');
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
 }
 
 [class^="glyphicon-"][disabled], [class*=" glyphicon-"][disabled], [class^="glyphicon-"].disabled, [class*=" glyphicon-"].disabled {

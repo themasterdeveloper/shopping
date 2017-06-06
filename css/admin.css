@@ -215,6 +215,11 @@ table thead tr th {
     color: #fff;
 }
 
+table tbody tr td {
+    font-size: .9em;
+    color: #000;
+}
+
 table tfoot tr td {
     text-align: center;
 }
@@ -245,8 +250,23 @@ table tfoot tr td {
     text-align: right;
 }
 
-.__earnings {
-    font-weight: bold;
+td.__earnings {
+     background-color: #d9534f;
+     color: #fff;
+ }
+ 
+ td.__amount {
+      background-color: #5bc0de;
+      color: #fff;
+  }
+  
+td.__total, td.__mobile {
+    background-color: #428bca;
+    color: #fff;
+}
+
+td.__mobile {
+    width: 100px;
 }
 
 .__status {
