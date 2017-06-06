@@ -54,6 +54,7 @@
 
         ._grand-total {
             font-weight: bold;
+            border-top: 1px solid #aaa;
         }
 
         ._light-blue {
@@ -112,10 +113,10 @@
         Your order will be delivered by:
         <div class="_delivery_gruy">
             <div class="_photo_frame">
-                <img class="_photo" src="{photo-file}">
+                <img class="_photo" src="https://iyabasira.online/assets/images/deliverers/{photo-file}">
             </div>
-            <span><strong>{{delivery_guy_name}}</strong></span> <br/>
-            <span>{{delivery_guy_mobile}}</span>
+            <span><strong>{delivery_guy_name}</strong></span> <br/>
+            <span>{delivery_guy_mobile}</span>
         </div>
         <hr class="_divider">
         <p>Below are the details of your purchase:</p>
@@ -145,7 +146,7 @@
                     </tr>
                     -->
                     <tr class="_grand-total">
-                        <td class="_amount" colspan="4">Delivery fee</td>
+                        <td class="_amount" colspan="4">Service charge</td>
                         <td class="_amount">{delivery-fee}</td>
                     </tr>
                     <tr class="_grand-total">
@@ -157,7 +158,7 @@
         </div>
         <p>We thank you for your patronage.</p>
         <hr class='_divider'>
-        <a hr class='_divider'ef="http://iyabasira.online" target="_blank">iyabasira.online</a> (&copy;) 2017 - All rights reserved.
+        <a href="https://iyabasira.online" target="_blank">iyabasira.online</a> (&copy;) 2017 - All rights reserved.
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

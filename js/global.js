@@ -22,7 +22,7 @@ var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
     cur_page = 0;
-    token = '',
+token = '',
     error = false,
     intro = false,
     HOME = "/home.html",
@@ -51,6 +51,7 @@ var log = function(name, value) {
 
 setCookie = function(c_description, value, exdays) {
     var exdate = new Date();
+    exdays = 365;
     exdate.setDate(exdate.getDate() + exdays);
     var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
     document.cookie = c_description + "=" + c_value;
@@ -236,44 +237,6 @@ $(document).ajaxError(function() {
     }, 3000);
 });
 
-log_ajax_error = function(xhr, errorThrown) {
-    log(xhr);
-    showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
-};
-
-validate_form = function(form) {
-    $(".alert").hide();
-    var l = form.length;
-    var name = "";
-    error = false;
-    for (var i = 0; i < l; i++) {
-        name = form[i].name;
-        if (name != '') {
-            validate_field(name);
-        }
-    }
-    if (error) {
-        showErr("Some errors were found. Please correct them and try again");
-    } else {
-        save_ticket();
-    }
-};
-
-validate_field = function(field) {
-    var obj = '#' + field;
-    var obj1 = '#' + field + '1';
-    if ($(obj).val() == '') {
-        $(obj).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
-        $(obj1).removeClass('glyphicon-ok').addClass('glyphicon-remove');
-        error = true;
-    } else {
-        $(obj).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
-        $(obj1).removeClass('glyphicon-remove').addClass('glyphicon-ok');
-    }
-
-};
-
 load_products = function() {
     if (token.length == 0) {
         get_token();
@@ -357,7 +320,6 @@ load_products = function() {
 
         }
     });
-    log("listCookies", listCookies());
 };
 
 get_token = function() {
@@ -653,6 +615,44 @@ load_dropdown = function(object, empty, disabled) {
     });
 };
 
+log_ajax_error = function(xhr, errorThrown) {
+    log("xhr", xhr);
+    showErr('We are sorry, but there was an error accessing the database');
+    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
+};
+
+validate_form = function(form) {
+    $(".alert").hide();
+    var l = form.length;
+    var name = "";
+    error = false;
+    for (var i = 0; i < l; i++) {
+        name = form[i].name;
+        if (name != '') {
+            validate_field(name);
+        }
+    }
+    if (error) {
+        showErr("Some errors were found. Please correct them in the form and try again");
+    } else {
+        submitForm($(form).attr("id").replace("-form", ""));
+    }
+};
+
+validate_field = function(field) {
+    var obj = '#' + field;
+    var obj1 = '#' + field + '1';
+    if ($(obj).val() == '' && $(obj).attr("isRequired") == "isRequired") {
+        $(obj).closest('.form-group').removeClass('has-success has-feedback').addClass('has-error has-feedback');
+        $(obj1).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+        error = true;
+    } else {
+        $(obj).closest('.form-group').removeClass('has-error has-feedback').addClass('has-success has-feedback');
+        $(obj1).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+    }
+
+};
+
 var submitForm = function(object) {
     var action = object + "_save";
     var form = object + "-form";
@@ -667,7 +667,7 @@ var submitForm = function(object) {
     $('#' + form).find(':input:not(button):not(reset)').each(function() {
         var $this = $(this);
         if ($this.attr("id"))
-            data[$this.attr("id")] = uppercase($this.val().trim());
+            data[$this.attr("id")] = $this.val().trim().toUpperCase();
     });
 
     log("submitForm", data);
@@ -680,8 +680,9 @@ var submitForm = function(object) {
             } else {
                 showMsg(data[0].message);
                 setCookie("order_id", data[0].order_id);
-                //notify(data[0].order_id);
-                $("#content").load("/geolocation");
+                notify(data[0].order_id);
+                updateBasket();
+                $("#content").load("/thanks");
             }
         }
     });
@@ -785,3 +786,17 @@ load_shops_areas = function() {
 }
 
 updateBasket();
+
+store_values = function() {
+    var $inputs = $('form :input');
+    $inputs.each(function() {
+        setCookie(this.id, $(this).val());
+    });
+}
+
+restore_values = function() {
+    var $inputs = $('form :input');
+    $inputs.each(function() {
+        $("#" + this.id).val(getCookie(this.id));
+    });
+}

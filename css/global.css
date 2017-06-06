@@ -551,3 +551,8 @@ div[class*="-form"] {
 .align-center {
     text-align: center;
 }
+
+.form-group.required label:after {
+  content:" *";
+  color:red;
+}

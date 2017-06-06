@@ -13,9 +13,34 @@
             </table>
             <div class="pagination"></div>
         </div>
+        <iframe id="hiddenFrame" name="hiddenFrame" class="hidden"></iframe>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span id="msg"></span>
+        </div>
+        <div class="upload-form hidden">
+            <form action="/ws/upload.php" method="post" enctype="multipart/form-data" target="hiddenFrame">
+                <input type="hidden" id="target_folder" name="target_folder" value="/../assets/images/deliverers/">
+                <input type="hidden" name="image_file_name" id="image_file_name" value="0">
+                <div class="form-group">
+                    Select image to upload:
+                    <input type="file" class="btn btn-info" name="fileToUpload" id="fileToUpload">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger">Upload image</button>
+                </div>
+            </form>
+        </div>
         <div class="deliverers-form hidden">
             <form id="deliverers-form" class="form-horizontal">
                 <input type="hidden" name="item_id" id="item_id">
+
+                <div class="form-group">
+                    <label for="image">Image:</label>
+                    <img class="shop-image image-button" id="image">
+                </div>
 
                 <!-- Name -->
                 <div class="form-group">
@@ -86,4 +111,35 @@
             adm_load_table('deliverers');
         }
     });
+
+    $(".image-button").on("click", function(e) {
+        e.preventDefault();
+        $(".upload-form").removeClass("hidden");
+        $(".shops-form").addClass("hidden");
+    })
+
+    var confirm_upload = function(ext) {
+        showMsg("Saved!");
+        var data = {};
+        data.action = 'save_table_image';
+        data.table = 'deliverers';
+        data.item_id = $('#item_id').val();
+        data.image_path = '/assets/images/deliverers/' + $("#image_file_name").val() + "." + ext;
+        log("save_table_image", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                log("save_table_image", data);
+                if (data[0].error != 0) {
+                    showErr(data[0].message);
+                } else {
+                    fillForm($('#item_id').val(), "deliverers");
+                    $(".upload-form").addClass("hidden");
+                    $(".shops-form").removeClass("hidden");
+                    $('.close').click();
+                    $(".image-button").focus();
+                }
+            }
+        });
+    }
 </script>

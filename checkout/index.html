@@ -3,48 +3,71 @@
         <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
         <!-- The table area -->
         <div class="profile-form">
-            <form id="profile-form" class="form-horizontal">
+            <form id="profile-form" role="form" class="form-horizontal">
+
+                <p class="form-group required text-right"><label>Mandatory fields</label></p>
 
                 <!-- Name -->
-                <div class="form-group">
+                <div class="form-group required">
                     <label for="name">Name:</label>
-                    <input class="form-control" id="name" type="text" placeholder="Enter your name" required="required">
+                    <input class="form-control" id="name" name="name" type="text" placeholder="Enter your name" isRequired="isRequired">
+                    <span class="glyphicon form-control-feedback" id="name1"></span>
                 </div>
 
                 <!-- Mobile -->
                 <div class="form-group">
                     <label for="mobile">Mobile:</label>
-                    <input class="form-control" id="mobile" onKeyPress="if(this.value.length==11) return false;" type="number"  placeholder="Enter your mobile number">
+                    <input class="form-control" id="mobile" name="mobile" onKeyPress="if(this.value.length==11) return false;" type="number" title="You must enter a nigerian phone number" type="number" placeholder="Enter your mobile number">
+                    <span class="glyphicon form-control-feedback" id="mobile1"></span>
                 </div>
 
                 <!-- Email -->
-                <div class="form-group">
+                <div class="form-group required">
                     <label for="email">Email:</label>
-                    <input class="form-control" id="email" type="email" placeholder="Enter your email address">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email address" isRequired="isRequired">
+                    <span class="glyphicon form-control-feedback" id="email1"></span>
                 </div>
                 <hr>
 
-                <!-- Name 2-->
+                <!-- Address -->
+                <div class="form-group required">
+                    <label for="receiver_address">Address:</label>
+                    <textarea class="form-control" rows="3" id="receiver_address" name="receiver_address" placeholder="Enter address for delivery" isRequired="isRequired"></textarea>
+                    <span class="glyphicon form-control-feedback" id="receiver_address1"></span>
+                </div>
+
+                <!-- Same as buyer -->
                 <div class="form-group">
+                    <label class="control-label col-xs-7" for="copy_buyer">Receiver and buyer are the same person:</label>
+                    <div class="col-xs-5 make-switch">
+                        <input id="copy_buyer" name="copy_buyer" type="checkbox">
+                    </div>
+                </div>
+
+                <!-- Name 2-->
+                <div class="form-group required">
                     <label for="receiver_name">Receiver name:</label>
-                    <input class="form-control" id="receiver_name" type="text" placeholder="Enter order receiver's name" required="required">
+                    <input class="form-control" preval="" id="receiver_name" name="receiver_name" type="text" placeholder="Enter order receiver's name" isRequired="isRequired">
+                    <span class="glyphicon form-control-feedback" id="receiver_name1"></span>
                 </div>
 
                 <!-- Mobile 2-->
-                <div class="form-group">
+                <div class="form-group required">
                     <label for="receiver_mobile">Mobile:</label>
-                    <input class="form-control" id="receiver_mobile" onKeyPress="if(this.value.length==11) return false;" type="number"  title="You must enter a nigerian phone number" placeholder="Enter receiver's mobile number" required="required">
+                    <input class="form-control" preval="" id="receiver_mobile" name="receiver_mobile" onKeyPress="if(this.value.length==11) return false;" type="number" title="You must enter a nigerian phone number" placeholder="Enter receiver's mobile number" isRequired="isRequired">
+                    <span class="glyphicon form-control-feedback" id="receiver_mobile1"></span>
                 </div>
 
-                <!-- Address -->
+                <!-- Email 2 -->
                 <div class="form-group">
-                    <label for="address">Address:</label>
-                    <textarea class="form-control" rows="2" id="address" placeholder="Enter address for delivery" required="required"></textarea>
+                    <label for="receiver_email">Email:</label>
+                    <input class="form-control" preval="" id="receiver_email" name="receiver_email" type="email" placeholder="Enter receiver's email address">
+                    <span class="glyphicon form-control-feedback" id="receiver_email1"></span>
                 </div>
 
                 <!-- Buttons -->
                 <div class="form-group">
+
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -63,21 +86,40 @@
 </div>
 
 <script type="text/javascript">
-
     $(document).ready(function() {
+        $("[id='copy_buyer']").bootstrapSwitch();
         $(".alert").hide();
-        //load_dropdown("areas");
-        load_dropdown("cities");
+        restore_values();
     });
 
-    $(".cancel-action").on("click", function(d){
+    $(".cancel-action").on("click", function(d) {
         d.preventDefault();
         $("#content").load("/basket");
     });
 
-    $("#profile-form").on("submit", function(d){
-        d.preventDefault();
-//        submitForm("profile");
+    $('#copy_buyer').on('switchChange.bootstrapSwitch', function(event, state) {
+        if (state) {
+
+            $("#receiver_name").data("preval", $("#receiver_name").val());
+            $("#receiver_mobile").data("preval", $("#receiver_mobile").val());
+            $("#receiver_email").data("preval", $("#receiver_email").val());
+
+            $("#receiver_name").val($("#name").val());
+            $("#receiver_mobile").val($("#mobile").val());
+            $("#receiver_email").val($("#email").val());
+
+        } else {
+
+            $("#receiver_name").val($("#receiver_name").data("preval"));
+            $("#receiver_mobile").val($("#receiver_mobile").data("preval"));
+            $("#receiver_email").val($("#receiver_email").data("preval"));
+
+        }
     });
 
+    $("#profile-form").on("submit", function(d) {
+        d.preventDefault();
+        store_values();
+        error = validate_form(this);
+    });
 </script>

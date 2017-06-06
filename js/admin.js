@@ -13,7 +13,7 @@
 window.onerror = function(message, filename, linenumber) {
     log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
 };
-
+var col_names = [];
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
@@ -212,13 +212,11 @@ var adm_delete_item = function(item_id, table) {
     record_id = item_id;
     var _details = "";
     var counter = 0;
-    var limit = getCookie("cols");
-    var sep = "";
+    var limit = col_names.length;
     $(".tr_" + item_id).find("td").each(function() {
         if (counter < limit)
             if ($(this).html().length > 0)
-                _details += sep + "<span class='data'>" + $(this).html() + "</span>";
-        sep = "<br/>";
+                _details += "<div class='delete-data'>" + col_names[counter] + ": <span class='data'>" + $(this).html() + "</span></div>";
         counter++;
     });
     setCookie("item_id", item_id);
@@ -241,7 +239,7 @@ var commit_details_confirmed = function() {
                 showErr(data[0].message);
             } else {
                 $("#delete-confirmation").modal('hide');
-                setTimeout(function(){
+                setTimeout(function() {
                     adm_load_table(getCookie("table"));
                 }, 1000);
             }
@@ -276,7 +274,7 @@ var adm_load_table = function(table, read_only) {
                 showErr(data[0].message);
                 return false;
             }
-            var skip_columns = "-id-active-total_records-";
+            var skip_columns = "-id-active-status_name-total_records-";
 
             var l = data.length;
             var cols = 0;
@@ -287,14 +285,16 @@ var adm_load_table = function(table, read_only) {
             // thead
             tmp[i] = "<tr>";
             i++;
+            col_names.length = 0;
             for (var key in $this) {
                 if (skip_columns.indexOf("-" + key + "-") == -1) {
+                    col_names[cols] = key;
                     tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key + "</th>";
                     i++;
                     cols++;
                 }
             }
-            setCookie("cols", cols);
+
             if (!read_only) {
                 tmp[i] = '<th></th>';
                 i++;
@@ -312,10 +312,15 @@ var adm_load_table = function(table, read_only) {
                 i++;
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        if (key == 'status' || key == 'image') {
-                            tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
-                        } else {
-                            tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
+                        switch (key) {
+                            case 'status':
+                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' title='" + $this["status_name"] + "' src='" + $this[key] + "'></td>";
+                                break;
+                            case 'image':
+                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
+                                break;
+                            default:
+                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
                         }
                         i++;
                     }

@@ -156,6 +156,20 @@ switch ($action) {
 
         break;
 
+    case "adm_load_table_receivers":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_receivers_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
     case "adm_load_table_orders":
 
         // It's gonna be a query
@@ -256,6 +270,32 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "get_area_coordinates('" . $area_id . "')";
+
+        break;
+
+    case "get_shop_coordinates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+
+        // Fill the query parameters
+        $query = "get_shop_coordinates('" . $order_id . "')";
+
+        break;
+
+    case "get_deliverer_coordinates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+
+        // Fill the query parameters
+        $query = "get_deliverer_coordinates('" . $order_id . "')";
 
         break;
 
@@ -571,21 +611,22 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL order_save(?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("CALL order_save(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("siisssss", $address, $area_id, $city_id, $email, $mobile, $name, $password, $token);
+        $stmt->bind_param("ssssssssi", $token, $name, $mobile, $email, $receiver_name, $receiver_mobile, $receiver_email, $receiver_address, $area_id);
 
         // Assign values
-        $address = $_GET['address'];
-        $area_id = $_GET['area_id'];
-        $city_id = $_GET['city_id'];
-        $email = $_GET['email'];
-        $mobile = $_GET['mobile'];
-        $name = $_GET['name'];
-        $password = $_GET['password'];
         $token = $_GET['token'];
+        $name = $_GET['name'];
+        $mobile = $_GET['mobile'];
+        $email = $_GET['email'];
+        $receiver_name = $_GET['receiver_name'];
+        $receiver_mobile = $_GET['receiver_mobile'];
+        $receiver_email = $_GET['receiver_email'];
+        $receiver_address = $_GET['receiver_address'];
+        $area_id = $_GET['area_id'];
 
         break;
 
@@ -854,28 +895,20 @@ switch ($action) {
         $query = 'get_order_details(' . $order_id . ')';
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $template = file_get_contents('../assets/templates/order_confirmation.html');
-        $sms_template = file_get_contents('../assets/templates/order_confirmation.txt');
+        //$sms_template = file_get_contents('../assets/templates/order_confirmation.txt');
         $data = '';
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             if($pass == 0){
+                foreach($row as $key => $value) {
+                    $template = str_replace('{'.$key.'}',  $row[$key], $template);
+                }
                 $email = $row['email'];
-                $mobile = $row['mobile'];
+                //$mobile = $row['mobile'];
                 $subject = 'iyabasira - Order Confirmation # ' . $row['order-number'];
-                $sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
-                $sms_template = str_replace('{order-total}', $row['order-total'], $sms_template);
-                $sms_template = str_replace('{order-number}', $row['order-number'], $sms_template);
-                $template = str_replace('{customer-name}', $row['customer-name'], $template);
-                $template = str_replace('{address}', $row['address'], $template);
-                $template = str_replace('{customer-area}', $row['customer-area'], $template);
-                $template = str_replace('{customer-city}', $row['customer-city'], $template);
-                $template = str_replace('{customer-mobile}', $row['mobile'], $template);
-                $template = str_replace('{order-number}', $row['order-number'], $template);
-                $template = str_replace('{date}', $row['date'], $template);
-                $template = str_replace('{order-total}', $row['order-total'], $template);
-                //$template = str_replace('{service-charge}', $row['service-charge'], $template);
-                $template = str_replace('{delivery-fee}', $row['delivery-fee'], $template);
-                $template = str_replace('{grand-total}', $row['grand-total'], $template);
+                //$sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
+                //$sms_template = str_replace('{order-total}', $row['order-total'], $sms_template);
+                //$sms_template = str_replace('{order-number}', $row['order-number'], $sms_template);
                 $pass=1;
             }
             $data .= "<tr>";
@@ -889,7 +922,7 @@ switch ($action) {
         $template = str_replace('{data}', $data, $template);
         $result->free();
 
-        $URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
+        //$URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
 
         break;
 
@@ -946,8 +979,9 @@ switch ($action_type) {
                 mail($email, $subject, $body, $headers);
         else
             log_this($email . ": " . $subject);
-            log_this($body);
-
+            log_this($headers);
+            log_this($body, "email");
+        /*
         if($mobile != '') {
             $ch = curl_init($URL);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -957,6 +991,7 @@ switch ($action_type) {
             log_this($return_value);
             curl_close($ch);
         }
+        */
 
         $rows = array("error"=>0, "message"=>"Order Completed");
         break;

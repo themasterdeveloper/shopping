@@ -300,8 +300,13 @@ div[class*="-form"] {
 }
 .modal-body{
     font-size: 14pt;
-    font-weight: bold;
     color: #444;
+}
+.delete-data{
+    text-transform: capitalize;
+}
+.delete-data span.data{
+    font-weight: bold;
 }
 .modal-dialog {
     max-width: 800px;
