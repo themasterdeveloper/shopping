@@ -741,17 +741,19 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL deliverers_save(?, ?, ?, ?)");
+        $stmt = $conn->prepare("CALL deliverers_save(?, ?, ?, ?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("isss", $item_id, $name, $mobile, $email);
+        $stmt->bind_param("issssi", $item_id, $name, $mobile, $email, $password, $active);
 
         // Assign values
         $item_id = $_GET['item_id'];
         $name = $_GET['name'];
         $mobile = $_GET['mobile'];
         $email = $_GET['email'];
+        $password = $_GET['password'];
+        $active = $_GET['active'];
 
         break;
 
@@ -804,18 +806,18 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?, ?)");
+        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("isss", $item_id, $contact, $mobile, $email);
+        $stmt->bind_param("isssi", $item_id, $contact, $mobile, $email, $email_notify);
 
         // Assign values
         $item_id = $_GET['item_id'];
         $contact = $_GET['contact'];
         $mobile = $_GET['mobile'];
         $email = $_GET['email'];
-
+        $email_notify = $_GET['email_notify'];
         break;
 
     case "delivery_rates_save":

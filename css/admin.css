@@ -251,15 +251,15 @@ table tfoot tr td {
 }
 
 td.__earnings {
-     background-color: #d9534f;
-     color: #fff;
- }
- 
- td.__amount {
-      background-color: #5bc0de;
-      color: #fff;
-  }
-  
+    background-color: #d9534f;
+    color: #fff;
+}
+
+td.__amount {
+    background-color: #5bc0de;
+    color: #fff;
+}
+
 td.__total, td.__mobile {
     background-color: #428bca;
     color: #fff;
@@ -269,11 +269,11 @@ td.__mobile {
     width: 100px;
 }
 
-.__status {
+.__status, .__notify, .__is_active {
     text-align: center;
 }
 
-img.__status {
+img.__status, img.__notify, img.__is_active {
     width: 32px;
 }
 
@@ -318,16 +318,20 @@ div[class*="-form"] {
 .modal {
     background-color: #fff;
 }
-.modal-body{
+
+.modal-body {
     font-size: 14pt;
     color: #444;
 }
-.delete-data{
+
+.delete-data {
     text-transform: capitalize;
 }
-.delete-data span.data{
+
+.delete-data span.data {
     font-weight: bold;
 }
+
 .modal-dialog {
     max-width: 800px;
 }

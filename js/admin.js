@@ -289,7 +289,7 @@ var adm_load_table = function(table, read_only) {
             for (var key in $this) {
                 if (skip_columns.indexOf("-" + key + "-") == -1) {
                     col_names[cols] = key;
-                    tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key + "</th>";
+                    tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key.replace('_', ' ') + "</th>";
                     i++;
                     cols++;
                 }
@@ -314,6 +314,10 @@ var adm_load_table = function(table, read_only) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
                         switch (key) {
                             case 'status':
+                            case 'is_active':
+                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
+                                break;
+                            case 'notify':
                                 tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' title='" + $this["status_name"] + "' src='" + $this[key] + "'></td>";
                                 break;
                             case 'image':
