@@ -44,6 +44,21 @@ switch ($action) {
         $query = "login('" . $email . "','" . $password . "')";
 
         break;
+    case "deliverer_login":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        // Fill the variable with value from ui
+
+        $email = $_GET['email'];
+        $password = $_GET['password'];
+
+        // Fill the query parameters
+        $query = "deliverer_login('" . $email . "','" . $password . "')";
+
+        break;
     case "adm_load_table_products":
 
         // It's gonna be a query
