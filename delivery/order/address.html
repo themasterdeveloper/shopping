@@ -1,0 +1,20 @@
+<div class="container">
+    <div class="row buttons">
+        <button class="btn btn-lg btn-success go-order">Order</button>
+        <button class="btn btn-lg btn-primary pull-right go-items">Items</button>
+    </div>
+    <div class="row data"></div>
+</div>
+<script>
+    $(document).ready(function() {
+        get_address();
+    });
+    $('.go-order').on("click", function(e) {
+        e.preventDefault();
+        load('order');
+    })
+    $('.go-items').on("click", function(e) {
+        e.preventDefault();
+        load('order/items.html');
+    })
+</script>

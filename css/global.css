@@ -73,6 +73,12 @@
     display: none;
 }
 
+.alert-area {
+    position: absolute;
+    padding: 18px;
+    z-index: 99999;
+}
+
 .alert {
     margin-top: 18px;
 }
@@ -104,7 +110,7 @@
 }
 
 .shadow {
-    background: #444;
+    background: #000;
     position: fixed;
     top: 0;
     left: 0;
@@ -518,20 +524,27 @@ div[class*="-form"] {
     width: 80%;
 }
 */
+
 .dashboard {
+    /*
     position: fixed;
     top: 18px;
     right: 18px;
+    */
+    margin-top: 18px;
     z-index: 99999;
 }
+
 @media (min-width: 762px) {
     .container {
         width: 762px;
     }
     .dashboard {
+        /*
         position: fixed;
         top: 18px;
         left: 762px;
+        */
         z-index: 99999;
     }
     div[class*="-form"] {
@@ -553,6 +566,6 @@ div[class*="-form"] {
 }
 
 .form-group.required label:after {
-  content:" *";
-  color:red;
+    content: " *";
+    color: red;
 }

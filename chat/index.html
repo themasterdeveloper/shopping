@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
+    <meta name="google-site-verification" content="rUQGy7uVvtoqDq5FR3OHW81IMFQl-hDLQtvD7ccokX0" />
+    <meta name="description" content="iyabasira - a new way to shop for Naija">
+    <meta name="author" content="www.escng.com">
+    <link rel="icon" href="/img/favicon.ico">
+    <title>iyabasira - delivery services</title>
+    <!-- Bootstrap core CSS -->
+    <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Full screen for Safari under iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Custom styles for this template -->
+    <link href="/css/chat.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container bootstrap snippet">
+        <div class="row">
+            <div>
+                <div class="portlet portlet-default">
+                    <div class="portlet-heading">
+                        <div class="portlet-title">
+                            <h4><i class="fa fa-circle text-green"></i><span class="user-name"></span></h4>
+                        </div>
+                        <div class="portlet-widgets">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-white dropdown-toggle btn-xs" data-toggle="dropdown">
+                                <i class="fa fa-circle text-green"></i> Status
+                                <span class="caret"></span>
+                            </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#"><i class="fa fa-circle text-green"></i> Online</a>
+                                    </li>
+                                    <li><a href="#"><i class="fa fa-circle text-orange"></i> Away</a>
+                                    </li>
+                                    <li><a href="#"><i class="fa fa-circle text-red"></i> Offline</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <span class="divider"></span>
+                            <a data-toggle="collapse" data-parent="#accordion" href="#chat"><i class="fa fa-chevron-down"></i></a>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div id="chat" class="panel-collapse collapse in">
+                        <div>
+                            <div class="portlet-body chat-widget">
+                            </div>
+                        </div>
+                        <div class="portlet-footer">
+                            <form role="form">
+                                <div class="form-group">
+                                    <textarea class="form-control" id="chat-message" placeholder="Enter message..."></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-danger pull-left back-button">Back</button>
+                                    <button type="button" class="btn btn-default pull-right send-button">Send</button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.col-md-4 -->
+        </div>
+    </div>
+    <script src="/libs/jquery/js/jquery.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/chat.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            get_messages();
+            log("cookies", listCookies());
+        });
+
+        $('.back-button').on("click", function(e) {
+            e.preventDefault();
+            location.href = "/";
+        })
+
+        $('.send-button').on("click", function(e) {
+            e.preventDefault();
+            send_message($('#chat-message').val());
+        })
+    </script>
+</body>
+
+</html>

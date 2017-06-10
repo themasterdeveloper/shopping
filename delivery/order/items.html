@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="row buttons">
+        <button class="btn btn-lg btn-success go-order">Order</button>
+        <button class="btn btn-lg btn-primary pull-right go-address">Addess</button>
+    </div>
+    <div class="row data items-data"></div>
+    <div class="table-responsive">
+        <table class="table table-condensed items">
+            <thead></thead>
+            <tbody></tbody>
+            <tfoot></tfoot>
+        </table>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        get_shops();
+    });
+    $('.go-order').on("click", function(e) {
+        e.preventDefault();
+        load('order');
+    })
+    $('.go-address').on("click", function(e) {
+        e.preventDefault();
+        load('order/address.html');
+    })
+</script>

@@ -29,6 +29,16 @@ $action = $_GET['action'];
 log_this($action);
 
 switch ($action) {
+    case "get_messages":
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+        // Fill the query parameters
+        $query = $action . "('" . $order_id . "')";
+
+        break;
     case "login":
 
         // It's gonna be a query
@@ -44,21 +54,18 @@ switch ($action) {
         $query = "login('" . $email . "','" . $password . "')";
 
         break;
-    case "deliverer_login":
+    case "get_order_alerts":
 
         // It's gonna be a query
 
         $action_type = $_query;
 
-        // Fill the variable with value from ui
-
-        $email = $_GET['email'];
-        $password = $_GET['password'];
-
+        $order_id = $_GET['order_id'];
         // Fill the query parameters
-        $query = "deliverer_login('" . $email . "','" . $password . "')";
+        $query = $action . "('" . $order_id . "')";
 
         break;
+
     case "adm_load_table_products":
 
         // It's gonna be a query
@@ -475,6 +482,26 @@ switch ($action) {
 
         break;
 
+    case "send_message":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL send_message(?,?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("is", $order_id, $message);
+
+        // Assign values
+        $order_id = $_GET['order_id'];
+        $message = $_GET['message'];
+
+        break;
+
     case "delete_table_record":
 
         // It's gonna be a database update
@@ -492,6 +519,25 @@ switch ($action) {
         // Assign values
         $table = $_GET['table'];
         $item_id = $_GET['item_id'];
+
+        break;
+
+    case "update_order_alert_read":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL update_order_alert_read(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $alert_id);
+
+        // Assign values
+        $alert_id = $_GET['alert_id'];
 
         break;
 

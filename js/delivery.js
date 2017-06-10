@@ -15,7 +15,7 @@ window.onerror = function(message, filename, linenumber) {
 };
 var col_names = [];
 var d = "d=" + new Date().toJSON();
-var webservice_path = "/ws/br.php",
+var webservice_path = "/ws/delivery.php",
     record_id,
     cur_page = 0;
 error = false,
@@ -81,7 +81,7 @@ var log = function(name, value) {
  * @param {Object} exdays
  */
 
-setCookie = function(c_description, value, exdays) {
+var setCookie = function(c_description, value, exdays) {
     var exdate = new Date();
     exdate.setDate(exdate.getDate() + exdays);
     var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
@@ -94,7 +94,7 @@ setCookie = function(c_description, value, exdays) {
  * @param {Object} c_description
  */
 
-getCookie = function(c_description) {
+var getCookie = function(c_description) {
     var c_value = document.cookie;
     //    log("getCookie.document.cookie: " + c_description);
 
@@ -115,7 +115,7 @@ getCookie = function(c_description) {
     return c_value;
 };
 
-deleteAllCookies = function() {
+var deleteAllCookies = function() {
     var cookies = document.cookie.split(";");
 
     for (var i = 0; i < cookies.length; i++) {
@@ -137,13 +137,13 @@ jQuery.fn.center = function() {
     return this;
 };
 
-showMsg = function(text) {
+var showMsg = function(text) {
     $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
     $(".alert #msg").html(text);
     $(".alert").show();
 };
 
-showErr = function(text) {
+var showErr = function(text) {
     $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
     $(".alert #msg").html(text);
     $(".alert").show();
@@ -179,313 +179,137 @@ var deliverer_login = function() {
     });
 };
 
-var saveData = function(object) {
-    var action = object + "_save";
-    var form = object + "-form";
-    var data = {};
-    data.action = action;
-    $('#' + form).find(':input:not(button):not(reset)').each(function() {
-        var $this = $(this);
-        if ($this.attr("id"))
-            data[$this.attr("id")] = $this.val().trim();
-    });
-    log("saveData", data);
+var get_orders = function() {
+    var params = {};
+    params.action = "delivery_get_orders";
+    params.deliverer_id = getCookie("user_id");
+    log("get_orders", params);
     $.ajax({
-        data: data,
+        data: params,
         success: function(data) {
-            log("saveData", data);
-            if (data[0].error != 0) {
-                showErr(data[0].message);
-            } else {
-                showMsg(data[0].message);
-                setCookie("record_id", data[0].record_id);
-                $("." + object + "-list").removeClass("hidden");
-                $("." + object + "-form").addClass("hidden");
-                adm_load_table(object);
-            }
-        }
-    });
-};
-var adm_delete_item = function(item_id, table) {
-    if (item_id == undefined)
-        return false;
-    record_id = item_id;
-    var _details = "";
-    var counter = 0;
-    var limit = col_names.length;
-    $(".tr_" + item_id).find("td").each(function() {
-        if (counter < limit)
-            if ($(this).html().length > 0)
-                _details += "<div class='delete-data'>" + col_names[counter] + ": <span class='data'>" + $(this).html() + "</span></div>";
-        counter++;
-    });
-    setCookie("item_id", item_id);
-    setCookie("table", table);
-    $("#confirm-body").html(_details);
-    $("#delete-confirmation").modal('show');
-}
-
-var commit_details_confirmed = function() {
-    var data = {};
-    data.action = 'delete_table_record';
-    data.table = getCookie("table");
-    data.item_id = getCookie("item_id");
-    log("get_table_data", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("adm_delete_item", data);
-            if (data[0].error != 0) {
-                showErr(data[0].message);
-            } else {
-                $("#delete-confirmation").modal('hide');
-                setTimeout(function() {
-                    adm_load_table(getCookie("table"));
-                }, 1000);
+            log("get_orders", data);
+            for (var i = 0; i < data.length; i++) {
+                $this = data[i];
+                add_orders_buttons($this);
             }
         }
     });
 }
 
-var adm_load_table = function(table, read_only) {
-    read_only = (typeof read_only === 'undefined') ? false : read_only;
-    $(".table-name").html(table.replace('_', ' / '));
-    $(".alert").hide();
-    if (getCookie("cur_page")) {
-        cur_page = parseInt(getCookie("cur_page"));
-    }
-    if (getCookie("rows_per_page")) {
-        rows_per_page = parseInt(getCookie("rows_per_page"));
-    }
-    var data = {};
-    data.action = 'adm_load_table_' + table;
-    data.search = $("#search").val();
-    data.limit = cur_page;
-    data.rows = rows_per_page;
-    log("load_table", data);
+var add_orders_buttons = function(row) {
+    var button = '<a href="javascript:void(0)" class="form-control btn btn-primary btn-lg btn-options" onclick="load_order(' + row["id"] + ')">';
+    button += '<span class="glyphicon glyphicon-pencil"></span>';
+    button += row["number"];
+    button += '</a>';
+    $('.data').append(button);
+}
+
+var get_order = function() {
+    var params = {};
+    params.action = "delivery_get_order";
+    params.order_id = getCookie("order_id");
+    log("get_order", params);
     $.ajax({
-        data: data,
+        data: params,
         success: function(data) {
-            log("load_table", data);
-            if (data[0].error == 1) {
-                $("#" + table + "-table tbody").empty();
-                $("#" + table + "-table tbody").empty();
-                $("#" + table + "-table tfood").empty();
-                showErr(data[0].message);
-                return false;
-            }
-            var skip_columns = "-id-active-status_name-total_records-";
-
-            var l = data.length;
-            var cols = 0;
-            var tmp = [],
-                i = 0;
-            $this = data[0];
-            var total_records = $this["total_records"];
-            // thead
-            tmp[i] = "<tr>";
-            i++;
-            col_names.length = 0;
-            for (var key in $this) {
-                if (skip_columns.indexOf("-" + key + "-") == -1) {
-                    col_names[cols] = key;
-                    tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key.replace('_', ' ') + "</th>";
-                    i++;
-                    cols++;
-                }
-            }
-
-            if (!read_only) {
-                tmp[i] = '<th></th>';
-                i++;
-                cols++;
-            }
-            tmp[i] = "</tr>";
-            $("#" + table + "-table thead").empty().append(tmp.join(''));
-
-            // tbody
-            tmp = [];
-            i = 0;
-            for (r = 0; r < l; r++) {
-                $this = data[r];
-                tmp[i] = "<tr class='tr_" + $this["id"] + "'>";
-                i++;
-                for (var key in $this) {
-                    if (skip_columns.indexOf("-" + key + "-") == -1) {
-                        switch (key) {
-                            case 'status':
-                            case 'is_active':
-                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
-                                break;
-                            case 'notify':
-                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' title='" + $this["status_name"] + "' src='" + $this[key] + "'></td>";
-                                break;
-                            case 'image':
-                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
-                                break;
-                            default:
-                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'>" + $this[key] + "</td>";
-                        }
-                        i++;
-                    }
-                }
-
-                if (!read_only) {
-                    tmp[i] = '<td class="button-group">';
-                    i++
-                    if ($this["active"] == 0) {
-                        tmp[i] = '<button class="btn btn-danger btn-sm delete-item" onclick="adm_delete_item(' + $this["id"] + ',\'' + table + '\')">Delete</button>';
-                        i++
-                    }
-                    tmp[i] = '<button class="btn btn-primary btn-sm edit-item" onclick="adm_edit_item(' + $this["id"] + ',\'' + table + '\')">Edit</button>';
-                    i++
-                    tmp[i] = '</td>';
-                    i++
-                }
-                tmp[i] = "</tr>";
-                i++;
-            }
-            $("#" + table + "-table tbody").empty().append(tmp.join(''));
-
-            var footer = '';
-            var span = parseInt(cols);
-            footer += '<tr><td colspan=' + span + '>';
-            if (cur_page > 0) {
-                footer += '<button class= "btn btn-success btn-md pull-left btn-prev table-button">Prev</button>';
-            } else {
-                footer += '<button class= "btn btn-success btn-md pull-left disabled table-button">Prev</button>';
-            }
-            var page = parseInt(cur_page) + 1
-            footer += "Page " + page;
-
-            if (cur_page < parseInt(total_records / rows_per_page)) {
-                footer += '<button class= "btn btn-success btn-md pull-right btn-next">Next</button>';
-            } else {
-                footer += '<button class= "btn btn-success btn-md pull-right disabled">Next</button>';
-            }
-            footer += '<br/>' + total_records + ' records';
-            footer += '</td></tr>';
-
-            $("#" + table + "-table tfoot").empty().append(footer);
-
-            $(".btn-prev").on("click", function(e) {
-                e.preventDefault();
-                setCookie("cur_page", cur_page - 1);
-                adm_load_table(table, read_only);
-            })
-
-            $(".btn-next").on("click", function(e) {
-                e.preventDefault();
-                setCookie("cur_page", cur_page + 1);
-                adm_load_table(table, read_only);
-            })
-
+            log("get_order", data);
+            add_order_data(data[0]);
         }
     });
 }
 
-var adm_edit_item = function(item_id, table) {
-    $("#item_id").val(item_id);
-    fillForm(item_id, table);
-}
-
-
-var remove_markers = function() {
-    for (i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
-    }
-}
-
-var close_infowindows = function() {
-    for (i = 0; i < infowindows.length; i++) {
-        infowindows[i].close();
-    }
-}
-
-var relocateMap = function() {
-
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function(position) {
-            lat = position.coords.latitude;
-            lng = position.coords.longitude;
-            initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-            //map.setCenter(initialLocation);
-            me_marker.setPosition(initialLocation);
-        });
-    }
-}
-
-
-var fillForm = function(item_id, table) {
-    var data = {};
-    data.action = 'get_table_record';
-    data.table = table;
-    data.item_id = item_id;
-    log("get_table_record", data);
+var get_address = function() {
+    var params = {};
+    params.action = "delivery_get_address";
+    params.order_id = getCookie("order_id");
+    log("get_address", params);
     $.ajax({
-        data: data,
+        data: params,
         success: function(data) {
-            log("get_table_record", data);
-            $this = data[0];
-            for (var key in $this) {
-                if (key == 'image') {
-                    if ($this[key].length > 0) {
-                        $("#" + key).attr("src", $this[key]);
-                    } else {
-                        $("#" + key).attr("src", "/img/no-image.jpg");
-                    }
-                } else {
-                    $("#" + key).val($this[key]);
-                }
-                log(key, $this[key]);
-            }
-            if (table == 'shop_product') {
-                $(".selectpicker").prop('disabled', true);
-                $("#availability").prop('disabled', false);
-            }
-            $('.selectpicker').selectpicker('refresh');
-            $("." + table + "-list").addClass("hidden");
-            $("." + table + "-form").removeClass("hidden");
+            log("get_address", data);
+            add_order_data(data[0]);
         }
     });
 }
 
-load_dropdown = function(object, empty, disabled) {
-    empty = (typeof empty === 'undefined') ? false : empty;
-    disabled = (typeof disabled === 'undefined') ? false : disabled;
-    var data = {};
-    data.action = object + "_list";
-    log("load_" + object, data);
-    var msg = 'Nothing selected';
-    switch (object) {
-        case "areas":
-            msg = 'Select an area';
-            break;
-        case "category":
-            msg = 'Select a category';
-            break;
-    }
+var get_shops = function() {
+    var params = {};
+    params.action = "delivery_get_shops";
+    params.order_id = getCookie("order_id");
+    log("get_shops", params);
     $.ajax({
-        data: data,
+        data: params,
         success: function(data) {
-            log("load_" + object, data);
+            log("get_shops", data);
+            for (var i = 0; i < data.length; i++) {
+                $this = data[i];
+                add_shops($this);
+            }
+        }
+    });
+}
+
+var add_order_data = function(row) {
+    var field = [];
+    var i = 0;
+    var template = '<div class="order-data-key">{key}:';
+    template += '<div class="order-data-value"><strong>{value}</strong></div>';
+    for (key in row) {
+        field[i] = template.replace('{key}', key).replace('{value}', row[key]);
+        i++;
+    }
+    $('.data').html(field.join(''));
+}
+
+var add_shops = function(row) {
+    var button = '<a href="javascript:void(0)" class="btn btn-success btn-md shops" onclick="load_shop_data(' + row["id"] + ')">';
+    button += row["name"];
+    button += '</a>';
+    $('.data').append(button);
+}
+
+var load_shop_data = function(shop_id) {
+    $('.items tbody').empty();
+    var params = {};
+    params.action = "delivery_get_shop_items";
+    params.order_id = getCookie("order_id");
+    params.shop_id = shop_id;
+    log("load_shop_data", params);
+    $.ajax({
+        data: params,
+        success: function(data) {
+            log("load_shop_data", data);
             var tmp = [];
-            var l = data.length;
-            if (empty == 1) {
-                var tmpEmpty = "<option></option>";
+            var i = 0;
+            tmp[i] = '<tr>';
+            i++;
+            for (key in data[0]) {
+                tmp[i] = '<th>' + key + '</th>';
+                i++;
             }
-            for (r = 0; r < l; r++) {
-                $this = data[r];
-                tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
-                tmpEmpty = "";
+            tmp[i] = '</tr>';
+            $('.items thead').html(tmp.join(''));
+            var total = 0;
+            for (var i = 0; i < data.length; i++) {
+                $this = data[i];
+                total += parseFloat(data[i].total.replace(',',''));
+                add_shop_items($this);
             }
-            $("." + object).html(tmp.join('')).selectpicker({
-                noneSelectedText: msg
-            }).selectpicker('refresh');
-            if (disabled) {
-                $("." + object).prop('disabled', true);
-                $("." + object).selectpicker('refresh');
-            }
+            $('.items tfoot').html('<tr><td colspan=3></td><td>' + total.toFixed(2) + '</td></tr>');
+            $('.table-responsive').show();
         }
     });
-};
+}
+
+var add_shop_items = function(row) {
+    var tmp = [];
+    var i = 0;
+    tmp[i] = '<tr>';
+    i++;
+    for (key in row) {
+        tmp[i] = '<td>' + row[key] + '</td>';
+        i++;
+    }
+    tmp[i] = '</tr>';
+    $('.items tbody').append(tmp.join(''));
+}

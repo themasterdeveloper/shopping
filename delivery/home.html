@@ -1,13 +1,17 @@
 <div class="container">
     <div class="row">
-        <a href="javascript:void(0)" class="form-control btn btn-success btn-lg btn-options">
+        <a href="javascript:void(0)" class="form-control btn btn-primary btn-lg btn-options orders">
             <span class="glyphicon glyphicon-cutlery"></span> Orders
         </a>
-        <a href="javascript:void(0)" class="form-control btn btn-info btn-lg btn-options">
+        <a href="javascript:void(0)" class="form-control btn btn-success btn-lg btn-options messages">
             <span class="glyphicon glyphicon-envelope"></span> Messages
-        </a>
-        <a href="javascript:void(0)" class="form-control btn btn-warning btn-lg btn-options">
-            <span class="glyphicon glyphicon-pencil"></span> Reports
         </a>
     </div>
 </div>
+
+<script>
+    $('.orders').on("click", function(e) {
+        e.preventDefault();
+        load('orders');
+    })
+</script>

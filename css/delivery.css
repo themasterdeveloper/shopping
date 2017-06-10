@@ -3,11 +3,6 @@
     src: url('/fonts/Roboto-Regular.ttf') format('truetype');
 }
 
-[class^="glyphicon-"][disabled], [class*=" glyphicon-"][disabled], [class^="glyphicon-"].disabled, [class*=" glyphicon-"].disabled {
-    cursor: default;
-    opacity: 0.25;
-}
-
 /*
  * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
  *
@@ -26,15 +21,6 @@
 
 .alert, .order-form, .table-responsive {
     display: none;
-}
-
-.table-responsive {
-    z-index: 99996;
-}
-
-.error_message {
-    color: #ff0000;
-    font-size: 24px;
 }
 
 h1, h2, h3, h4 {
@@ -80,130 +66,9 @@ body {
     }
 }
 
-.pointer {
-    cursor: pointer;
-}
-
-.input-group[class*="col-"] {
-    padding-right: 15px;
-    padding-left: 15px;
-}
-
-.product-image {
-    margin-top: 20px;
-    width: 256px;
-    vertical-align: top;
-}
-
-.shop-image {
-    margin-top: 20px;
-    width: 256px;
-    vertical-align: top;
-}
-
-input[type=range] {
-    -webkit-appearance: none;
-    margin: 18px 0;
-    width: 100%;
-}
-
-input[type=range]:focus {
-    outline: none;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 8.4px;
-    cursor: pointer;
-    animate: 0.2s;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    background: #3071a9;
-    border-radius: 1.3px;
-    border: 0.2px solid #010101;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
-    border-radius: 3px;
-    background: #ffffff;
-    cursor: pointer;
-    -webkit-appearance: none;
-    margin-top: -14px;
-}
-
-input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #367ebd;
-}
-
-input[type=range]::-moz-range-track {
-    width: 100%;
-    height: 8.4px;
-    cursor: pointer;
-    animate: 0.2s;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    background: #3071a9;
-    border-radius: 1.3px;
-    border: 0.2px solid #010101;
-}
-
-input[type=range]::-moz-range-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
-    border-radius: 3px;
-    background: #ffffff;
-    cursor: pointer;
-}
-
-input[type=range]::-ms-track {
-    width: 100%;
-    height: 8.4px;
-    cursor: pointer;
-    animate: 0.2s;
-    background: transparent;
-    border-color: transparent;
-    border-width: 16px 0;
-    color: transparent;
-}
-
-input[type=range]::-ms-fill-lower {
-    background: #2a6495;
-    border: 0.2px solid #010101;
-    border-radius: 2.6px;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-}
-
-input[type=range]::-ms-fill-upper {
-    background: #3071a9;
-    border: 0.2px solid #010101;
-    border-radius: 2.6px;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-}
-
-input[type=range]::-ms-thumb {
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
-    border-radius: 3px;
-    background: #ffffff;
-    cursor: pointer;
-}
-
-input[type=range]:focus::-ms-fill-lower {
-    background: #3071a9;
-}
-
-input[type=range]:focus::-ms-fill-upper {
-    background: #367ebd;
-}
-
 table {
     background-color: #fff;
+    padding: 4px;
 }
 
 table thead tr th {
@@ -213,63 +78,13 @@ table thead tr th {
 }
 
 table tbody tr td {
-    font-size: .9em;
     color: #000;
 }
 
 table tfoot tr td {
-    text-align: center;
-}
-
-div[class*="-form"] {
-    background-color: #e8e9ff;
-    padding: 40px;
-    border-radius: 6px;
-    margin: 0 auto 15% auto;
-    /* 5% from the top, 15% from the bottom and centered */
-    border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0px 0px 10px #aaa;
-    border: 5px solid #888;
-}
-
-.image-size-text {
-    font-size: 12pt;
+    color: #000;
     font-weight: bold;
-    color: #ff0000;
-}
-
-.modal {
-    background-color: #fff;
-}
-
-.modal-body {
-    font-size: 14pt;
-    color: #444;
-}
-
-.delete-data {
-    text-transform: capitalize;
-}
-
-.delete-data span.data {
-    font-weight: bold;
-}
-
-.modal-dialog {
-    max-width: 800px;
-}
-
-.modal-title {
-    color: #fff;
-    font-size: 1.4em;
-}
-
-.modal-dialog {
-    border: 1px solid #888;
-    box-shadow: 0px 0px 6px #aaa;
-    border-radius: 6px;
-    background-color: #fff;
+    padding-right: 20px;
 }
 
 .btn-options {
@@ -284,4 +99,34 @@ div[class*="-form"] {
 .btn-options .glyphicon {
     margin-left: 30px;
     margin-right: 30px;
+}
+
+.order {
+    color: #000;
+}
+
+.data {
+    font-size: 22px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    color: #000;
+}
+
+.order-data-key {
+    text-transform: capitalize;
+}
+
+.order-data-value {
+    margin-bottom: 18px;
+    font-weight: bold;
+    padding: 3px;
+    background-color: #fdfdfd;
+}
+
+.shops {
+    margin-bottom: 10px;
+}
+
+.items-data{
+    text-align: center;
 }

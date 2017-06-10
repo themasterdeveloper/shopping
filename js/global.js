@@ -21,15 +21,16 @@ window.onerror = function(message, filename, linenumber) {
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
-    cur_page = 0;
-token = '',
+    cur_page = 0,
+    token = '',
     error = false,
     intro = false,
     HOME = "/home.html",
     sms_url = "https://www.bulksmsnigeria.net/components/com_spc/smsapi.php",
     sms_user = "nwabuezestephen27@gmail.com",
     sms_password = "Foot27ball",
-    sms_sender = "iyabasira";
+    sms_sender = "iyabasira",
+    received_alerts = '';
 
 
 /**
@@ -38,7 +39,11 @@ token = '',
 
 var log = function(name, value) {
     if (getCookie("Debug") == "True")
-        console.debug(name, value);
+        if (value === undefined) {
+            console.log(name);
+        } else {
+            console.debug(name, value);
+        }
 }
 
 /**
