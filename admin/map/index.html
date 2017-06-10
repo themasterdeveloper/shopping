@@ -38,9 +38,11 @@
 
         $(document).ready(function() {
             $(".alert").hide();
+            /*
             setInterval(function() {
                 relocateMap();
             }, 60000);
+            */
             setInterval(function() {
                 update_markers();
             }, 30000);
@@ -70,11 +72,13 @@
             var centerMap = new google.maps.LatLng(4.8156, 7.0498);
             initialLocation = centerMap;
             map.panTo(initialLocation);
+            /*
             me_marker = new google.maps.Marker({
                 position: initialLocation,
                 map: map,
                 title: 'You are here'
             });
+            */
 
             load_shops_locations(0);
             load_deliverers_locations(0);

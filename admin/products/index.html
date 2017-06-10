@@ -13,14 +13,36 @@
             </table>
             <div class="pagination"></div>
         </div>
+        <iframe id="hiddenFrame" name="hiddenFrame" class="hidden"></iframe>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span id="msg"></span>
+        </div>
+        <div class="upload-form hidden">
+            <form action="/ws/upload.php" method="post" enctype="multipart/form-data" target="hiddenFrame">
+                <p class="image-size-text">Image size shall be 256x168</p>
+                <input type="hidden" id="target_folder" name="target_folder" value="/../assets/images/products/">
+                <input type="hidden" name="image_file_name" id="image_file_name" value="0">
+                <div class="form-group">
+                    Select image to upload:
+                    <input type="file" class="btn btn-info" name="fileToUpload" id="fileToUpload">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger">Upload image</button>
+                </div>
+            </form>
+        </div>
         <div class="products-form hidden">
             <form id="products-form" class="form-horizontal">
                 <input type="hidden" name="item_id" id="item_id">
 
                 <div class="form-group">
                     <label for="image">Image:</label>
-                    <img class="product-image" id="image">
+                    <img class="product-image image-button" id="image">
                 </div>
+
                 <!-- Name -->
                 <div class="form-group">
                     <label for="name">Name:</label>
@@ -36,15 +58,9 @@
 
                 <!-- Buttons -->
                 <div class="form-group">
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <span id="msg"></span>
-                    </div>
                     <div>
-                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel</button>
-                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Save</button>
+                        <button type="reset" class="btn btn-danger btn-md" id="cancel-action">Cancel</button>
+                        <button type="button" class="btn btn-success btn-md pull-right" id="submit-form">Save</button>
                     </div>
                 </div>
 
@@ -53,22 +69,21 @@
     </div>
 </div>
 <script type="text/javascript">
-
     $(document).ready(function() {
         $(".alert").hide();
         setCookie("cur_page", 0);
-        setCookie("rows_per_page", 5);
+        setCookie("rows_per_page", 10);
         adm_load_table('products');
         load_dropdown("category");
     });
 
-    $("#cancel-action").on("click", function(d){
+    $("#cancel-action").on("click", function(d) {
         d.preventDefault();
         $(".products-list").removeClass("hidden");
         $(".products-form").addClass("hidden");
     });
 
-    $("#submit-form").on("click", function(d){
+    $("#submit-form").on("click", function(d) {
         d.preventDefault();
         saveData("products");
     });
@@ -80,10 +95,41 @@
         $(".products-form").removeClass("hidden");
     });
 
-    $("#search" ).keypress(function( event ) {
-        if ( event.which == 13 ) {
+    $("#search").keypress(function(event) {
+        if (event.which == 13) {
             event.preventDefault();
             adm_load_table('products');
         }
     });
+
+    $(".image-button").on("click", function(e) {
+        e.preventDefault();
+        $(".upload-form").removeClass("hidden");
+        $(".products-form").addClass("hidden");
+    })
+
+    var confirm_upload = function(ext) {
+        showMsg("Saved!");
+        var data = {};
+        data.action = 'save_table_image';
+        data.table = 'products';
+        data.item_id = $('#item_id').val();
+        data.image_path = '/assets/images/products/' + $("#image_file_name").val() + "." + ext;
+        log("save_table_image", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                log("save_table_image", data);
+                if (data[0].error != 0) {
+                    showErr(data[0].message);
+                } else {
+                    fillForm($('#item_id').val(), "products");
+                    $(".upload-form").addClass("hidden");
+                    $(".products-form").removeClass("hidden");
+                    $('.close').click();
+                    $(".image-button").focus();
+                }
+            }
+        });
+    }
 </script>

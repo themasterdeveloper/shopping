@@ -1,0 +1,132 @@
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto-Regular.ttf') format('truetype');
+}
+
+/*
+ * Firefox has some awkward fieldset styling involving width that interferes with the responsive table. This cannot be overriden without a Firefox-specific hack that we don't provide in Bootstrap:
+ *
+ */
+
+@-moz-document url-prefix() {
+    fieldset {
+        display: table-cell;
+    }
+}
+
+
+/*
+ * Base structure
+ */
+
+.alert, .order-form, .table-responsive {
+    display: none;
+}
+
+h1, h2, h3, h4 {
+    color: #44BBEE;
+}
+
+
+/* Move down content because we have a fixed navbar that is 50px tall */
+
+body {
+    color: #888;
+    font-family: 'Roboto', 'Segoe UI', 'Lucida Grande', 'Ubuntu', sans-serif;
+}
+
+
+/*
+ * Global add-ons
+ */
+
+.fa {
+    display: none;
+    font-size: 48pt;
+    color: #44BBEE;
+    z-index: 99999;
+}
+
+
+/*
+ * Top navigation
+ * Hide default border to remove 1px line.
+ */
+
+
+/*
+ * Main content
+ */
+
+@media (min-width: 768px) {
+    .main {
+        padding-right: 18px;
+        padding-left: 18px;
+        padding-bottom: 18px;
+    }
+}
+
+table {
+    background-color: #fff;
+    padding: 4px;
+}
+
+table thead tr th {
+    text-transform: uppercase;
+    background-color: #44BBEE;
+    color: #fff;
+}
+
+table tbody tr td {
+    color: #000;
+}
+
+table tfoot tr td {
+    color: #000;
+    font-weight: bold;
+    padding-right: 20px;
+}
+
+.btn-options {
+    height: 56px;
+    vertical-align: middle;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-align: left;
+}
+
+.btn-options .glyphicon {
+    margin-left: 30px;
+    margin-right: 30px;
+}
+
+.order {
+    color: #000;
+}
+
+.data {
+    font-size: 22px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+    color: #000;
+}
+
+.order-data-key {
+    text-transform: capitalize;
+}
+
+.order-data-value {
+    margin-bottom: 18px;
+    font-weight: bold;
+    padding: 3px;
+    background-color: #fdfdfd;
+}
+
+.shops {
+    margin-bottom: 10px;
+}
+
+.items-data{
+    text-align: center;
+}

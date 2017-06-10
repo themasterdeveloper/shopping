@@ -10,6 +10,8 @@ $sms_user ="nwabuezestephen27@gmail.com";
 $sms_password = "Foot27ball";
 $sms_sender = "iyabasira";
 
+ini_set('html_errors', false);
+
 //GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON `escng_shopping`.* TO 'shopping_webuser'@'localhost';
 
 function stmt_bind_assoc(&$stmt, &$bound_assoc)
@@ -70,4 +72,3 @@ function log_this($content = '', $type = "log"){
 
 
 ?>
-

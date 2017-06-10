@@ -1,32 +1,30 @@
 <div class="row">
     <div class="main">
-        <div class="pull-right dashboard">
-            <button class="btn btn-danger hidden" type="button">Basket <span class="badge basket"></span>
-                </button>
-        </div>
         <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
-        <hr>
         <!-- The table area -->
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <span id="msg"></span>
-        </div>
         <div class="basket-container">
             <!-- List of products -->
             <table id="basket-table" class="table-hover table-striped table-responsive">
-                <thead></thead>        
+                <thead></thead>
                 <tbody></tbody>
                 <tfoot></tfoot>
             </table>
         </div>
-        <button type="button" class="btn btn-lg btn-danger dismiss">
-            Empty basket
-        </button>
-        <button type="button" id="checkout_button" class="btn btn-lg btn-success checkout pull-right">
-            Checkout
-        </button>
+        <div class="form-group">
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <span id="msg"></span>
+            </div>
+        </div>
+        <div class="form-group col-xs-12">
+            <button type="button" class="btn btn-lg btn-primary pull-left exit">Buy more</button>
+            <button type="button" class="btn btn-lg btn-success pull-right checkout">Checkout</button>
+        </div>
+        <div class="form-group col-xs-12">
+            <button type="button" class="btn btn-lg btn-danger pull-right dismiss">Empty basket</button>
+        </div>
     </div>
 </div>
 <script>
@@ -40,9 +38,13 @@
         removeAll();
     });
 
-    $("#checkout_button").on("click", function(e) {
+    $(".exit").on("click", function(e) {
+        e.preventDefault();
+        $("#content").load(HOME);
+    });
+
+    $(".checkout").on("click", function(e) {
         e.preventDefault();
         $("#content").load("/checkout");
     });
-
 </script>

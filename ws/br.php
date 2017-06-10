@@ -1,6 +1,5 @@
 <?php
 date_default_timezone_set('Africa/Lagos');
-ini_set('html_errors', false);
 // Debug area
 //ini_set('display_errors', 1);
 //ini_set('display_startup_errors', 1);
@@ -30,6 +29,16 @@ $action = $_GET['action'];
 log_this($action);
 
 switch ($action) {
+    case "get_messages":
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+        // Fill the query parameters
+        $query = $action . "('" . $order_id . "')";
+
+        break;
     case "login":
 
         // It's gonna be a query
@@ -45,6 +54,18 @@ switch ($action) {
         $query = "login('" . $email . "','" . $password . "')";
 
         break;
+    case "get_order_alerts":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+        // Fill the query parameters
+        $query = $action . "('" . $order_id . "')";
+
+        break;
+
     case "adm_load_table_products":
 
         // It's gonna be a query
@@ -59,6 +80,90 @@ switch ($action) {
 
         break;
 
+    case "adm_load_table_orders_fees":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_orders_fees_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_deliverers":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_deliverers_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_shop_types":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_shop_types_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_areas":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_areas_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_cities":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_cities_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_delivery_rates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_delivery_rates_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
     case "adm_load_table_customers":
 
         // It's gonna be a query
@@ -70,6 +175,20 @@ switch ($action) {
         $rows = $_GET['rows'];
         // Fill the query parameters
         $query = "adm_customers_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
+
+        break;
+
+    case "adm_load_table_receivers":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $search = $_GET['search'];
+        $limit = $_GET['limit'];
+        $rows = $_GET['rows'];
+        // Fill the query parameters
+        $query = "adm_receivers_list('" . $search . "', '" . $limit . "', '" . $rows . "')";
 
         break;
 
@@ -173,6 +292,32 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "get_area_coordinates('" . $area_id . "')";
+
+        break;
+
+    case "get_shop_coordinates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+
+        // Fill the query parameters
+        $query = "get_shop_coordinates('" . $order_id . "')";
+
+        break;
+
+    case "get_deliverer_coordinates":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $order_id = $_GET['order_id'];
+
+        // Fill the query parameters
+        $query = "get_deliverer_coordinates('" . $order_id . "')";
 
         break;
 
@@ -289,6 +434,18 @@ switch ($action) {
 
         break;
 
+    case "get_shops_areas":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $area_id = $_GET['area_id'];
+
+        // Fill the query parameters
+        $query = "get_shops_areas('" . $area_id . "')";
+
+        break;
+
     case "get_total_basket":
 
         // It's gonna be a query
@@ -325,6 +482,26 @@ switch ($action) {
 
         break;
 
+    case "send_message":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL send_message(?,?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("is", $order_id, $message);
+
+        // Assign values
+        $order_id = $_GET['order_id'];
+        $message = $_GET['message'];
+
+        break;
+
     case "delete_table_record":
 
         // It's gonna be a database update
@@ -345,6 +522,25 @@ switch ($action) {
 
         break;
 
+    case "update_order_alert_read":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL update_order_alert_read(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $alert_id);
+
+        // Assign values
+        $alert_id = $_GET['alert_id'];
+
+        break;
+
     case "save_item":
 
         // It's gonna be a database update
@@ -357,11 +553,11 @@ switch ($action) {
 
         // Bind parameters
 
-        $stmt->bind_param("sii", $token, $product_id, $quantity);
+        $stmt->bind_param("sii", $token, $shop_product_id, $quantity);
 
         // Assign values
         $token = $_GET['token'];
-        $product_id = $_GET['product_id'];
+        $shop_product_id = $_GET['shop_product_id'];
         $quantity = $_GET['quantity'];
 
         break;
@@ -440,7 +636,7 @@ switch ($action) {
         $stmt->bind_param("idd", $area_id, $lat, $lng);
 
         // Assign values
-        $_area_id = $_GET['area_id'];
+        $area_id = $_GET['area_id'];
         $lat = $_GET['lat'];
         $lng = $_GET['lng'];
 
@@ -476,21 +672,43 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL order_save(?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("CALL order_save(?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("siisssss", $address, $area_id, $city_id, $email, $mobile, $name, $password, $token);
+        $stmt->bind_param("ssssssssi", $token, $name, $mobile, $email, $receiver_name, $receiver_mobile, $receiver_email, $receiver_address, $area_id);
 
         // Assign values
-        $address = $_GET['address'];
-        $area_id = $_GET['area_id'];
-        $city_id = $_GET['city_id'];
-        $email = $_GET['email'];
-        $mobile = $_GET['mobile'];
-        $name = $_GET['name'];
-        $password = $_GET['password'];
         $token = $_GET['token'];
+        $name = $_GET['name'];
+        $mobile = $_GET['mobile'];
+        $email = $_GET['email'];
+        $receiver_name = $_GET['receiver_name'];
+        $receiver_mobile = $_GET['receiver_mobile'];
+        $receiver_email = $_GET['receiver_email'];
+        $receiver_address = $_GET['receiver_address'];
+        $area_id = $_GET['area_id'];
+
+        break;
+
+    case "save_table_image":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL save_table_image(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("sis", $table, $item_id, $image_path);
+
+        // Assign values
+        $table = $_GET['table'];
+        $item_id = $_GET['item_id'];
+        $image_path = $_GET['image_path'];
 
         break;
 
@@ -536,6 +754,111 @@ switch ($action) {
 
         break;
 
+    case "orders_fees_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL orders_fees_save(?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("id", $item_id, $fees);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $fees = $_GET['fees'];
+
+        break;
+
+    case "shop_types_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL shop_types_save(?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("is", $item_id, $name);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+
+        break;
+
+    case "deliverers_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL deliverers_save(?, ?, ?, ?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("issssi", $item_id, $name, $mobile, $email, $password, $active);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $mobile = $_GET['mobile'];
+        $email = $_GET['email'];
+        $password = $_GET['password'];
+        $active = $_GET['active'];
+
+        break;
+
+    case "areas_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL areas_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("isi", $item_id, $name, $city_id);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+        $city_id = $_GET['city_id'];
+
+        break;
+
+    case "cities_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL cities_save(?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("is", $item_id, $name);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $name = $_GET['name'];
+
+        break;
+
     case "shops_areas_save":
 
         // It's gonna be a database update
@@ -544,16 +867,38 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?)");
+        $stmt = $conn->prepare("CALL shops_areas_save(?, ?, ?, ?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("iss", $item_id, $contact, $mobile);
+        $stmt->bind_param("isssi", $item_id, $contact, $mobile, $email, $email_notify);
 
         // Assign values
         $item_id = $_GET['item_id'];
         $contact = $_GET['contact'];
         $mobile = $_GET['mobile'];
+        $email = $_GET['email'];
+        $email_notify = $_GET['email_notify'];
+        break;
+
+    case "delivery_rates_save":
+
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL delivery_rates_save(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("idd", $item_id, $value, $value2);
+
+        // Assign values
+        $item_id = $_GET['item_id'];
+        $value = $_GET['value'];
+        $value2 = $_GET['value2'];
 
         break;
 
@@ -612,29 +957,21 @@ switch ($action) {
         // Set the procedure we are going to use
         $query = 'get_order_details(' . $order_id . ')';
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
-        $template = file_get_contents('../templates/order_confirmation.html');
-        $sms_template = file_get_contents('../templates/order_confirmation.txt');
+        $template = file_get_contents('../assets/templates/order_confirmation.html');
+        //$sms_template = file_get_contents('../assets/templates/order_confirmation.txt');
         $data = '';
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
             if($pass == 0){
+                foreach($row as $key => $value) {
+                    $template = str_replace('{'.$key.'}',  $row[$key], $template);
+                }
                 $email = $row['email'];
-                $mobile = $row['mobile'];
+                //$mobile = $row['mobile'];
                 $subject = 'iyabasira - Order Confirmation # ' . $row['order-number'];
-                $sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
-                $sms_template = str_replace('{order-total}', $row['order-total'], $sms_template);
-                $sms_template = str_replace('{order-number}', $row['order-number'], $sms_template);
-                $template = str_replace('{customer-name}', $row['customer-name'], $template);
-                $template = str_replace('{address}', $row['address'], $template);
-                $template = str_replace('{customer-area}', $row['customer-area'], $template);
-                $template = str_replace('{customer-city}', $row['customer-city'], $template);
-                $template = str_replace('{customer-mobile}', $row['mobile'], $template);
-                $template = str_replace('{order-number}', $row['order-number'], $template);
-                $template = str_replace('{date}', $row['date'], $template);
-                $template = str_replace('{order-total}', $row['order-total'], $template);
-                //$template = str_replace('{service-charge}', $row['service-charge'], $template);
-                $template = str_replace('{delivery-fee}', $row['delivery-fee'], $template);
-                $template = str_replace('{grand-total}', $row['grand-total'], $template);
+                //$sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
+                //$sms_template = str_replace('{order-total}', $row['order-total'], $sms_template);
+                //$sms_template = str_replace('{order-number}', $row['order-number'], $sms_template);
                 $pass=1;
             }
             $data .= "<tr>";
@@ -648,7 +985,7 @@ switch ($action) {
         $template = str_replace('{data}', $data, $template);
         $result->free();
 
-        $URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
+        //$URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
 
         break;
 
@@ -705,8 +1042,9 @@ switch ($action_type) {
                 mail($email, $subject, $body, $headers);
         else
             log_this($email . ": " . $subject);
-            log_this($body);
-
+            log_this($headers);
+            log_this($body, "email");
+        /*
         if($mobile != '') {
             $ch = curl_init($URL);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -716,6 +1054,7 @@ switch ($action_type) {
             log_this($return_value);
             curl_close($ch);
         }
+        */
 
         $rows = array("error"=>0, "message"=>"Order Completed");
         break;

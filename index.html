@@ -12,8 +12,10 @@
     <link rel="icon" href="/img/favicon.ico">
     <title>iyabasira - delivery services</title>
     <!-- Bootstrap core CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="/libs/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <!-- Full screen for Safari under iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,7 +24,35 @@
     <style>
         .alert,
         .error_message,
+        .shadow,
         .table-responsive {
+            display: none;
+        }
+
+        .bootstrap-select .btn {
+            background-color: #5cb85c;
+            border-style: solid;
+            border-left-width: 5px;
+            border-left-color: #5bc0de;
+            border-top: none;
+            border-bottom: none;
+            border-right: none;
+            color: white;
+            font-weight: 200;
+            padding: 12px 12px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        .bootstrap-select .dropdown-menu {
+            margin: 15px 0 0;
+        }
+
+        select::-ms-expand {
+            /* for IE 11 */
             display: none;
         }
     </style>
@@ -47,16 +77,28 @@
     <!-- Loading spin image -->
     <i class="fa fa-refresh fa-5x fa-spin"></i>
     <div class="shadow"></div>
+    <div class="alert-area hidden">
+    </div>
     <div class="container">
+        <div class="pull-right dashboard">
+            <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket"></span>
+                </button>
+        </div>
+        <button class="btn btn-danger pull-left dashboard alerts-button" type="button">
+          <i class="glyphicon glyphicon-envelope"></i> <span class="badge unread-messsages">4</span>
+        </button>
+
         <div id="content" class="content hidden">
         </div>
         <div class="intro" id="intro">
             <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
             <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
             <hr>
-            <p>Buy your meals from your preferred fast food and get it delivered wherever and whenever you want it as easy as 1-2-3:</p>
+            <p>Buy your meals from your preferred fast food and get it delivered as easy as 1-2-3:</p>
             <ul>
-                <li>Select an item from the list and click <buton class="btn btn-xs btn-success">ORDER NOW</buton></li>
+                <li>Select an item from the list and click
+                    <buton class="btn btn-xs btn-success">ORDER NOW</buton>
+                </li>
                 <li>Click on the <button class="btn btn-xs btn-danger">Basket</button> at the top of the page to checkout</li>
                 <li>Choose one of the delivery guys available in the same app</li>
                 <li>Rub your belly, the food is coming</li>
@@ -66,72 +108,66 @@
                 <select class="form-control areas">
                 </select>
             </div>
-            <!--
-            <p>
-            Now click <button type="button" class="btn btn-success btn-lg start" >Start</button>
-            </p>
-            <span class="bottom-message">Delivery service available in <span class="areas"></span> in Port Harcourt Only. Coming soon to other areas.</span>
-            -->
-
-            <hr>
             <p class="copyright">
-            The fast food brands and logos showed here are property of their respective companies.<br/>
-            <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved.
+                The fast food brands and logos showed here are property of their respective companies.<br/>
+                <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved.
             </p>
-
         </div>
     </div>
 
-    <footer class="navbar navbar-fixed-bottom">
-        <ul class="nav navbar-nav">
-            <li class="active">
-                <a href="javascript:void(0)"><span class="glyphicon glyphicon-home" data-toggle="tooltip" data-placement="top" title="Home"></span></a>
-            </li>
-            <li>
-                <a href="javascript:void(0)"><span class="glyphicon glyphicon glyphicon-fullscreen" data-toggle="tooltip" data-placement="top" title="Toggle full screen"></span></a>
-            </li>
-        </ul>
-        <img src="/img/comodo_secure_seal_76x26_transp.png" class="pull-right">
-    </footer>
     <!-- Bootstrap core JavaScript ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap-switch.min.js"></script>
     <script src="/js/global.min.js"></script>
+    <script src="/js/maps.min.js"></script>
+    <script src="/js/chat.min.js"></script>
 
     <script>
         $(document).ready(function() {
-            if(intro) {
+            if (intro) {
                 $("#content").load(HOME);
                 $(".intro").addClass("hidden");
                 $("#content").removeClass("hidden");
             } else {
                 load_dropdown("areas", true);
-                get_areas();
+                //get_areas();
                 get_config_value("Online");
                 get_config_value("Debug");
             }
         });
 
-        $(".areas").on("change", function(e){
+        $(".areas").on("change", function(e) {
             e.preventDefault();
             intro = true;
             setCookie("chosen-area", $(this).val());
             //$("#content").load(HOME);
-            $("#content").load('/map');
+            $("#content").load('/shops');
+            //$("#content").load("/thanks")
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
+
         });
 
-        $(".glyphicon-home").parent().on("click", function() {
-            $("#content").load(HOME);
+        $("#basket_button").on("click", function(e) {
+            e.preventDefault();
+            $(".intro").addClass("hidden");
+            $("#content").removeClass("hidden");
+            $("#content").load("/basket")
         });
 
-        $(".glyphicon-fullscreen").parent().on("click", function() {
-            toggleFullScreen();
-        });
+        $(".alerts-button").on("click", function(e){
+            e.preventDefault();
+            $(".intro").addClass("hidden");
+            $("#content").removeClass("hidden");
+            location.href = "/chat";
+        })
+
+        log("listCookies", listCookies());
+        //get_alerts();
     </script>
 </body>
 

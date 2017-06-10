@@ -1,0 +1,160 @@
+<div class="row">
+    <div class="main">
+        <div class="deliverers-list table-container">
+            <div class="table-name pull-left"></div>
+            <button class="btn btn-primary add-item pull-right">Add deliverer</button>
+            <div class="form-group">
+                <input class="form-control" id="search" type="text" placeholder="Enter search">
+            </div>
+            <table class="table table-hover" id="deliverers-table">
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+            <div class="pagination"></div>
+        </div>
+        <iframe id="hiddenFrame" name="hiddenFrame" class="hidden"></iframe>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span id="msg"></span>
+        </div>
+        <div class="upload-form hidden">
+            <form action="/ws/upload.php" method="post" enctype="multipart/form-data" target="hiddenFrame">
+                <input type="hidden" id="target_folder" name="target_folder" value="/../assets/images/deliverers/">
+                <input type="hidden" name="image_file_name" id="image_file_name" value="0">
+                <div class="form-group">
+                    Select image to upload:
+                    <input type="file" class="btn btn-info" name="fileToUpload" id="fileToUpload">
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-danger">Upload image</button>
+                </div>
+            </form>
+        </div>
+        <div class="deliverers-form hidden">
+            <form id="deliverers-form" class="form-horizontal">
+                <input type="hidden" name="item_id" id="item_id">
+
+                <div class="form-group">
+                    <label for="image">Image:</label>
+                    <img class="shop-image image-button" id="image">
+                </div>
+
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input class="form-control" id="name" type="text" placeholder="Enter area name">
+                </div>
+
+                <!-- Mobile -->
+                <div class="form-group">
+                    <label for="mobile">Mobile:</label>
+                    <input class="form-control" id="mobile" type="text" placeholder="Enter deliverer name">
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input class="form-control" id="email" type="text" placeholder="Enter email">
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input class="form-control" id="password" type="password" placeholder="Enter password">
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="active">Status:</label>
+                    <select class="form-control selectpicker" id="active">
+                        <option value="0">INACTIVE</option>
+                        <option value="1">ACTIVE</option>
+                    </select>
+                </div>
+
+                <!-- Buttons -->
+                <div class="form-group">
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <span id="msg"></span>
+                    </div>
+                    <div>
+                        <button type="reset" class="btn btn-danger btn-md" id="cancel-action">Cancel</button>
+                        <button type="button" class="btn btn-success btn-md pull-right" id="submit-form">Save</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".alert").hide();
+        setCookie("cur_page", 0);
+        setCookie("rows_per_page", 10);
+        adm_load_table('deliverers');
+    });
+
+    $("#cancel-action").on("click", function(d){
+        d.preventDefault();
+        $(".deliverers-list").removeClass("hidden");
+        $(".deliverers-form").addClass("hidden");
+    });
+
+    $("#submit-form").on("click", function(d){
+        d.preventDefault();
+        saveData("deliverers");
+    });
+
+    $(".add-item").on("click", function() {
+        $(".deliverers-form").find("input[type=text], textarea").val("");
+        $("#item_id").val(0);
+        $(".deliverers-list").addClass("hidden");
+        $(".deliverers-form").removeClass("hidden");
+    });
+
+    $("#search" ).keypress(function( event ) {
+        if ( event.which == 13 ) {
+            event.preventDefault();
+            adm_load_table('deliverers');
+        }
+    });
+
+    $(".image-button").on("click", function(e) {
+        e.preventDefault();
+        $(".upload-form").removeClass("hidden");
+        $(".shops-form").addClass("hidden");
+    })
+
+    var confirm_upload = function(ext) {
+        showMsg("Saved!");
+        var data = {};
+        data.action = 'save_table_image';
+        data.table = 'deliverers';
+        data.item_id = $('#item_id').val();
+        data.image_path = '/assets/images/deliverers/' + $("#image_file_name").val() + "." + ext;
+        log("save_table_image", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                log("save_table_image", data);
+                if (data[0].error != 0) {
+                    showErr(data[0].message);
+                } else {
+                    fillForm($('#item_id').val(), "deliverers");
+                    $(".upload-form").addClass("hidden");
+                    $(".shops-form").removeClass("hidden");
+                    $('.close').click();
+                    $(".image-button").focus();
+                }
+            }
+        });
+    }
+</script>

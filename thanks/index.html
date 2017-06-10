@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="main">
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <!-- The table area -->
+        <div id="map">
+
+        </div>
+        <div class="button-area">
+            <p>Your order has been submitted</b>
+                <p>You can monitor the delivery process here</b>
+            <p>Thank you for your patronage!</b>
+            <button type="button" class="btn btn-md btn-primary pull-right exit">Buy more</button>
+        </div>
+        <div class="marker-data align-center"></div>
+
+    </div>
+</div>
+<script>
+    var map;
+    var lat = 0;
+    var lng = 0;
+    var markers = [];
+    var infowindows = [];
+    var zoom = 15;
+
+    $(document).ready(function() {
+        $(".alert").hide();
+    });
+
+    initialize = function() {
+        var myOptions = {
+            zoom: zoom,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            });
+        }
+        set_shop_coordinates(getCookie('order_id'));
+        set_deliverer_coordinates(getCookie('order_id'));
+    }
+
+    set_shop_coordinates = function(order_id) {
+        var data = {};
+        data.action = "get_shop_coordinates";
+        data.order_id = order_id;
+        log("get_shop_coordinates", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                log("get_shop_coordinates", data);
+                setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
+                var initialLocation = new google.maps.LatLng(data[0].lat, data[0].lng);
+                map.panTo(initialLocation);
+            }
+        });
+    }
+
+    set_deliverer_coordinates = function(order_id) {
+        var data = {};
+        data.action = "get_deliverer_coordinates";
+        data.order_id = order_id;
+        log("get_deliverer_coordinates", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                log("get_deliverer_coordinates", data);
+                setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
+                var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
+                map.panTo(centerMap);
+            }
+        });
+    }
+
+    $(".exit").on("click", function(e) {
+        e.preventDefault();
+        $("#content").load(HOME);
+    });
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">
+</script>

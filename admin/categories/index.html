@@ -38,8 +38,8 @@
                         <span id="msg"></span>
                     </div>
                     <div>
-                        <button type="reset" class="btn btn-danger btn-lg" id="cancel-action">Cancel</button>
-                        <button type="button" class="btn btn-success btn-lg pull-right" id="submit-form">Save</button>
+                        <button type="reset" class="btn btn-danger btn-md" id="cancel-action">Cancel</button>
+                        <button type="button" class="btn btn-success btn-md pull-right" id="submit-form">Save</button>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
     $(document).ready(function() {
         $(".alert").hide();
         setCookie("cur_page", 0);
-        setCookie("rows_per_page", 5);
+        setCookie("rows_per_page", 10);
         adm_load_table('categories');
         load_dropdown("shop_types");
     });
