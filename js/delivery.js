@@ -72,60 +72,6 @@ log_ajax_error = function(xhr, errorThrown) {
 var log = function(name, value) {
     console.debug(name, value);
 }
-
-/**
- * Save cookie on users' computer
- *
- * @param {Object} c_description
- * @param {Object} value
- * @param {Object} exdays
- */
-
-var setCookie = function(c_description, value, exdays) {
-    var exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
-    document.cookie = c_description + "=" + c_value;
-};
-
-/**
- * Reads cookie from users' computer
- *
- * @param {Object} c_description
- */
-
-var getCookie = function(c_description) {
-    var c_value = document.cookie;
-    //    log("getCookie.document.cookie: " + c_description);
-
-    var c_start = c_value.indexOf(" " + c_description + "=");
-    if (c_start == -1) {
-        c_start = c_value.indexOf(c_description + "=");
-    }
-    if (c_start == -1) {
-        c_value = null;
-    } else {
-        c_start = c_value.indexOf("=", c_start) + 1;
-        var c_end = c_value.indexOf(";", c_start);
-        if (c_end == -1) {
-            c_end = c_value.length;
-        }
-        c_value = unescape(c_value.substring(c_start, c_end));
-    }
-    return c_value;
-};
-
-var deleteAllCookies = function() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-};
-
 /**
  * Centers divs on screen
  */
@@ -292,7 +238,7 @@ var load_shop_data = function(shop_id) {
             var total = 0;
             for (var i = 0; i < data.length; i++) {
                 $this = data[i];
-                total += parseFloat(data[i].total.replace(',',''));
+                total += parseFloat(data[i].total.replace(',', ''));
                 add_shop_items($this);
             }
             $('.items tfoot').html('<tr><td colspan=3></td><td>' + total.toFixed(2) + '</td></tr>');

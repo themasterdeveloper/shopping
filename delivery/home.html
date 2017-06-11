@@ -14,4 +14,10 @@
         e.preventDefault();
         load('orders');
     })
+    $('.messages').on("click", function(e) {
+        e.preventDefault();
+        //deleteCookie("sender");
+        setCookie("sender", 4);
+        location.href = "/chat";
+    })
 </script>

@@ -39,6 +39,14 @@ switch ($action) {
         $query = $action . "('" . $order_id . "')";
 
         break;
+    case "get_latest_messages":
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $query = "adm_get_messages()";
+
+        break;
     case "login":
 
         // It's gonna be a query
@@ -490,14 +498,15 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL send_message(?,?)");
+        $stmt = $conn->prepare("CALL send_message(?,?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("is", $order_id, $message);
+        $stmt->bind_param("iis", $order_id, $sender_type, $message);
 
         // Assign values
         $order_id = $_GET['order_id'];
+        $sender_type = $_GET['sender_type'];
         $message = $_GET['message'];
 
         break;

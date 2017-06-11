@@ -74,59 +74,6 @@ var log = function(name, value) {
 }
 
 /**
- * Save cookie on users' computer
- *
- * @param {Object} c_description
- * @param {Object} value
- * @param {Object} exdays
- */
-
-setCookie = function(c_description, value, exdays) {
-    var exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
-    document.cookie = c_description + "=" + c_value;
-};
-
-/**
- * Reads cookie from users' computer
- *
- * @param {Object} c_description
- */
-
-getCookie = function(c_description) {
-    var c_value = document.cookie;
-    //    log("getCookie.document.cookie: " + c_description);
-
-    var c_start = c_value.indexOf(" " + c_description + "=");
-    if (c_start == -1) {
-        c_start = c_value.indexOf(c_description + "=");
-    }
-    if (c_start == -1) {
-        c_value = null;
-    } else {
-        c_start = c_value.indexOf("=", c_start) + 1;
-        var c_end = c_value.indexOf(";", c_start);
-        if (c_end == -1) {
-            c_end = c_value.length;
-        }
-        c_value = unescape(c_value.substring(c_start, c_end));
-    }
-    return c_value;
-};
-
-deleteAllCookies = function() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-};
-
-/**
  * Centers divs on screen
  */
 
@@ -172,8 +119,10 @@ var login = function() {
                 for (key in $this) {
                     setCookie(key, $this[key]);
                 }
+                setCookie("login", 1);
             } else {
                 showErr("Email or password incorrect");
+                setCookie("login", 0);
             }
         }
     });
@@ -489,3 +438,28 @@ load_dropdown = function(object, empty, disabled) {
         }
     });
 };
+
+var get_latest_messages = function() {
+    var data = {};
+    data.action = 'get_latest_messages';
+    log("send_message", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("get_latest_messages", data);
+            if(data.length>0 && !data[0].error) {
+                var tmp = [];
+                var i = 0;
+                tmp[i] = '<ul class="nav nav-tabs">';
+                i++
+                for(var r=0; r<data.length; r++) {
+                    $this = data[r];
+                    tmp[i] = '<li><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '</a></li>';
+                    i++;
+                }
+                tmp[i] = '</ul>';
+                $(".data").empty().append(tmp.join(''));
+            }
+        }
+    });
+}

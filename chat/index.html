@@ -74,6 +74,7 @@
     </div>
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
     <script src="/js/chat.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -83,7 +84,17 @@
 
         $('.back-button').on("click", function(e) {
             e.preventDefault();
-            location.href = "/";
+            switch (getCookie("sender")) {
+                case "1":
+                    //location.href = "/admin";
+                    window.close();
+                    break;
+                case "4":
+                    location.href = "/delivery";
+                    break;
+                default:
+                    location.href = "/";
+            }
         })
 
         $('.send-button').on("click", function(e) {

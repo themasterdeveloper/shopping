@@ -46,60 +46,6 @@ var log = function(name, value) {
         }
 }
 
-/**
- * Save cookie on users' computer
- *
- * @param {Object} c_description
- * @param {Object} value
- * @param {Object} exdays
- */
-
-setCookie = function(c_description, value, exdays) {
-    var exdate = new Date();
-    exdays = 365;
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
-    document.cookie = c_description + "=" + c_value;
-};
-
-/**
- * Reads cookie from users' computer
- *
- * @param {Object} c_description
- */
-
-getCookie = function(c_description) {
-    var c_value = document.cookie;
-    //    log("getCookie.document.cookie: " + c_description);
-
-    var c_start = c_value.indexOf(" " + c_description + "=");
-    if (c_start == -1) {
-        c_start = c_value.indexOf(c_description + "=");
-    }
-    if (c_start == -1) {
-        c_value = null;
-    } else {
-        c_start = c_value.indexOf("=", c_start) + 1;
-        var c_end = c_value.indexOf(";", c_start);
-        if (c_end == -1) {
-            c_end = c_value.length;
-        }
-        c_value = unescape(c_value.substring(c_start, c_end));
-    }
-    return c_value;
-};
-
-deleteAllCookies = function() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-};
-
 showMsg = function(text) {
     $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
     $(".alert #msg").html(text);
@@ -170,39 +116,6 @@ function GetParameterValues(param) {
         }
     }
 }
-
-function toggleFullScreen() {
-    if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-
-        if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else
-        if (document.documentElement.msRequestFullscreen) {
-            document.documentElement.msRequestFullscreen();
-        } else
-        if (document.documentElement.mozRequestFullScreen) {
-            document.documentElement.mozRequestFullScreen();
-        } else
-        if (document.documentElement.webkitRequestFullscreen) {
-            document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-        }
-    } else {
-
-        if (document.exitFullscreen) {
-            document.exitFullscreen();
-        } else
-        if (document.msExitFullscreen) {
-            document.msExitFullscreen();
-        } else
-        if (document.mozCancelFullScreen) {
-            document.mozCancelFullScreen();
-        } else
-        if (document.webkitExitFullscreen) {
-            document.webkitExitFullscreen();
-        }
-    }
-}
-
 /**
  * Global setup for Ajax calls
  *
@@ -411,25 +324,6 @@ updateBasket = function() {
             }
         }
     });
-}
-
-function listCookies() {
-    var theCookies = document.cookie.split(';');
-    var o = {};
-    for (var i = 0; i < theCookies.length; i++) {
-        var name_value = theCookies[i].split("=");
-        var name = name_value[0].replace(/^ /, '');
-        var value = name_value[1];
-        if (o[name] !== undefined) {
-            if (!o[name].push) {
-                o[name] = [o[name]];
-            }
-            o[name].push(value || '');
-        } else {
-            o[name] = value || '';
-        }
-    }
-    return o;
 }
 
 load_basket_products = function() {
