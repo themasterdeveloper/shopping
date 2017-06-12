@@ -217,6 +217,12 @@
     }
 }
 
+@media(min-width:768px) {
+    .chat-widget {
+        height: 440px;
+    }
+}
+
 img {
     height: 40px;
 }

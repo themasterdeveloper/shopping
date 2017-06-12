@@ -106,6 +106,11 @@ var get_messages = function() {
                     i++
                 }
                 $('.chat-widget').empty().append(tmp.join(''));
+
+                $('.chat-widget').animate({
+                    scrollTop: $('.chat-widget').height()
+                }, 500);
+
                 setTimeout(function() {
                     get_messages();
                 }, 5000);
