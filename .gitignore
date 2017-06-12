@@ -1,0 +1,7 @@
+logs
+assets/images
+fonts
+*.min.*
+libs
+.idea
+.vscode
