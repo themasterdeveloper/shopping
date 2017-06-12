@@ -64,10 +64,12 @@ var get_messages = function() {
     if (!order_id) {
         return;
     }
+
     var sender = getCookie("sender");
     if (!sender) {
         return;
     }
+
     var data = {};
     data.action = 'get_messages';
     data.order_id = order_id;
@@ -84,11 +86,13 @@ var get_messages = function() {
                     $this = data[r];
                     var date_template = DATE_ROW;
                     var message_template = MESSAGE_ROW;
+
                     if (cur_date != $this['sent']) {
                         cur_date = $this['sent'];
                         tmp[i] = date_template.replace('{sent}', cur_date);
                         i++;
                     }
+
                     for (key in $this) {
                         var msg_sender = parseInt($this["sender"]);
                         if (msg_sender == sender && key == 'name') {
@@ -96,6 +100,7 @@ var get_messages = function() {
                         }
                         message_template = message_template.replace('{' + key + '}', $this[key]);
                     }
+
                     if (msg_sender == sender) {
                         message_template = message_template.replace('{align}', 'right');
                         $('.user-name').html($this["name"]);
@@ -108,13 +113,63 @@ var get_messages = function() {
                 $('.chat-widget').empty().append(tmp.join(''));
 
                 $('.chat-widget').animate({
-                    scrollTop: $('.chat-widget').height()
-                }, 500);
+                    scrollTop: $('.chat-widget')[0].scrollHeight
+                }, 800);
+
+                if(sender == 2) {
+                    mark_as_read(order_id);
+                }
 
                 setTimeout(function() {
                     get_messages();
                 }, 5000);
             }
+        }
+    });
+}
+
+var check_messages = function() {
+    var order_id = getCookie("order_id");
+    if (!order_id) {
+        $('.alerts-button').addClass("hidden");
+        return;
+    }
+
+    var data = {};
+    data.action = 'check_messages';
+    data.order_id = order_id;
+    log("get_messages", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("check_messages", data);
+            var unread = data[0].undread;
+            if(unread==0){
+                $('.unread-messsages').html('');
+                $('.alerts-button').removeClass("btn-danger").addClass("btn-info");
+                $('.unread-messsages').addClass("hidden");
+            } else {
+                $('.unread-messsages').html(unread);
+                $('.alerts-button').removeClass("btn-info").addClass("btn-danger");
+                $('.unread-messsages').removeClass("hidden");
+            }
+            $('.alerts-button').removeClass("hidden");
+            setTimeout(function() {
+                check_messages();
+            }, 20000);
+        }
+    });
+}
+
+var mark_as_read = function(order_id) {
+    var data = {};
+    data.action = 'mark_as_read';
+    data.order_id = order_id;
+    log("mark_as_read", data);
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("mark_as_read", data);
         }
     });
 }

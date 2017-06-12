@@ -84,8 +84,8 @@
             <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket"></span>
                 </button>
         </div>
-        <button class="btn btn-danger pull-left dashboard alerts-button" type="button">
-          <i class="glyphicon glyphicon-envelope"></i> <span class="badge unread-messsages">4</span>
+        <button class="btn btn-info pull-left dashboard alerts-button" type="button">
+          <i class="glyphicon glyphicon-envelope"></i> <span class="badge unread-messsages"></span>
         </button>
 
         <div id="content" class="content hidden">
@@ -129,6 +129,7 @@
 
     <script>
         $(document).ready(function() {
+            check_messages();
             setCookie("sender", 2);
             if (intro) {
                 $("#content").load(HOME);

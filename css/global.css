@@ -569,3 +569,13 @@ div[class*="-form"] {
     content: " *";
     color: red;
 }
+
+.red-background {
+    background-color: red;
+    color: #fff;
+}
+
+.white-background {
+    background-color: #fff;
+    color: #000;
+}

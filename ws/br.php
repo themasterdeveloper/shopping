@@ -29,6 +29,7 @@ $action = $_GET['action'];
 log_this($action);
 
 switch ($action) {
+    case "check_messages":
     case "get_messages":
         // It's gonna be a query
 
@@ -490,6 +491,23 @@ switch ($action) {
 
         break;
 
+    case "mark_as_read":
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL mark_as_read(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $order_id);
+
+        // Assign values
+        $order_id = $_GET['order_id'];
+
+        break;
     case "send_message":
 
         // It's gonna be a database update
