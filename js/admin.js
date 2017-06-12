@@ -454,7 +454,7 @@ var get_latest_messages = function() {
                 i++
                 for (var r = 0; r < data.length; r++) {
                     $this = data[r];
-                    tmp[i] = '<li><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '</a></li>';
+                    tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '<br><span class="message-sent">' + $this["sent"] + '</span></a></li>';
                     i++;
                 }
                 tmp[i] = '</ul>';

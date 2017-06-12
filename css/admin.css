@@ -347,3 +347,11 @@ div[class*="-form"] {
     border-radius: 6px;
     background-color: #fff;
 }
+
+.message-sent {
+    font-size: 10px;
+}
+
+.message-option {
+    text-align: center;
+}
