@@ -10,91 +10,12 @@
  *
  */
 
-window.onerror = function(message, filename, linenumber) {
-    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
-};
 var col_names = [];
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
-    cur_page = 0;
-error = false,
-
-    /**
-     * Global setup for Ajax calls
-     *
-     */
-    $.ajaxSetup({
-        type: 'GET',
-        url: webservice_path,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        cache: true,
-        async: true,
-        timeout: 0, // Timeout of 60 seconds
-        error: function(xhr, errorThrown) {
-            log_ajax_error(xhr, errorThrown);
-        }
-    });
-// Close $.ajaxSetup()
-
-/**
- * Shows/hides loading gif based on
- * Ajax status
- *
- */
-
-$(document).ajaxStart(function() {
-    $('.fa').show().center();
-});
-
-$(document).ajaxStop(function() {
-    $('.fa').fadeOut('slow');
-});
-
-$(document).ajaxError(function() {
-    setTimeout(function() {
-        $('.fa').fadeOut('slow');
-        //        location.href = location.href;
-    }, 3000);
-});
-
-log_ajax_error = function(xhr, errorThrown) {
-    log(xhr);
-    showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
-};
-
-/**
- * Logs javascript trace
- */
-
-var log = function(name, value) {
-    console.debug(name, value);
-}
-
-/**
- * Centers divs on screen
- */
-
-jQuery.fn.center = function() {
-    this.css("position", "absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 3) + $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
-    return this;
-};
-
-showMsg = function(text) {
-    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
+    cur_page = 0,
+    error = false;
 
 var login = function() {
     var data = {};

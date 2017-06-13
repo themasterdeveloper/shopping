@@ -10,15 +10,11 @@
  *
  */
 
-window.onerror = function(message, filename, linenumber) {
-    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
-};
-
 /**
  * Global variables definition
  */
 
-var d = "d=" + new Date().toJSON();
+
 var webservice_path = "/ws/br.php",
     record_id,
     cur_page = 0,
@@ -31,129 +27,6 @@ var webservice_path = "/ws/br.php",
     sms_password = "Foot27ball",
     sms_sender = "iyabasira",
     received_alerts = '';
-
-
-/**
- * Logs javascript trace
- */
-
-var log = function(name, value) {
-    if (getCookie("Debug") == "True")
-        if (value === undefined) {
-            console.log(name);
-        } else {
-            console.debug(name, value);
-        }
-}
-
-showMsg = function(text) {
-    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-pad = function(val, len) {
-    val = String(val);
-    len = len || 2;
-    while (val.length < len)
-        val = "0" + val;
-    return val;
-};
-
-/*
-$(function() {
-    var nua = navigator.userAgent;
-    var isAndroid = (nua.indexOf('Mozilla/5.0') > -1 && nua.indexOf('Android ') > -1 && nua.indexOf('AppleWebKit') > -1 && nua.indexOf('Chrome') === -1);
-    if (isAndroid) {
-        $('select.form-control').removeClass('form-control').css('width', '100%');
-    }
-});
-*/
-
-/**
- * Centers divs on screen
- */
-
-jQuery.fn.center = function() {
-    this.css("position", "absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 3) + $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
-    return this;
-};
-
-/**
- * Converts any form into a JSON object
- */
-
-$.fn.serializeObject = function() {
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-
-function GetParameterValues(param) {
-    var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (var i = 0; i < url.length; i++) {
-        var urlparam = url[i].split('=');
-        if (urlparam[0] == param) {
-            return urlparam[1];
-        }
-    }
-}
-/**
- * Global setup for Ajax calls
- *
- */
-$.ajaxSetup({
-    type: 'GET',
-    url: webservice_path,
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    cache: true,
-    async: true,
-    timeout: 0, // Timeout of 60 seconds
-    error: function(xhr, errorThrown) {
-        log_ajax_error(xhr, errorThrown);
-    }
-});
-// Close $.ajaxSetup()
-
-/**
- * Shows/hides loading gif based on
- * Ajax status
- *
- */
-
-$(document).ajaxStart(function() {
-    $('.fa').show().center();
-});
-
-$(document).ajaxStop(function() {
-    $('.fa').fadeOut('slow');
-});
-
-$(document).ajaxError(function() {
-    setTimeout(function() {
-        $('.fa').fadeOut('slow');
-        //        location.href = location.href;
-    }, 3000);
-});
 
 load_products = function() {
     if (token.length == 0) {
@@ -512,12 +385,6 @@ load_dropdown = function(object, empty, disabled) {
             }
         }
     });
-};
-
-log_ajax_error = function(xhr, errorThrown) {
-    log("xhr", xhr);
-    showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
 
 validate_form = function(form) {

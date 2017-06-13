@@ -1,4 +1,3 @@
-
 /**
  * Save cookie on users' computer
  *
@@ -25,7 +24,7 @@ getCookie = function(c_description) {
     var name = c_description + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
+    for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') {
             c = c.substring(1);
@@ -40,7 +39,7 @@ getCookie = function(c_description) {
 /**
  * Deletes cookie from users' computer
  *
-  * @param {Object} c_description
+ * @param {Object} c_description
  */
 
 deleteCookie = function(c_description) {
