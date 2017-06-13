@@ -12,6 +12,7 @@
 <script>
     $('.orders').on("click", function(e) {
         e.preventDefault();
+        deleteCookie("order_id");
         load('orders');
     })
     $('.messages').on("click", function(e) {

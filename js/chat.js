@@ -2,10 +2,6 @@ var webservice_path = "/ws/br.php"
 var DATE_ROW = '<div class="row"><div class="col-lg-12"><p class="text-center text-muted small">{sent}</p></div></div>';
 var MESSAGE_ROW = '<div class="row"><div class="col-lg-12"><div class="media-body"><h4 class="media-heading">{name}<span class="small pull-right">{time}</span></h4><div class="media"><a class="pull-{align}" href="#"><img class="media-object img-circle" src="{image}" alt=""></a><p>{message}</p></div></div></div></div>';
 
-/**
- * Global setup for Ajax calls
- *
- */
 $.ajaxSetup({
     url: webservice_path
 });

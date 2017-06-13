@@ -4,9 +4,15 @@
         <button class="btn btn-lg btn-primary pull-right go-items">Items</button>
     </div>
     <div class="row data"></div>
+    <div class="row buttons">
+        <button class="btn btn-lg btn-danger pull-right go-delivered hidden">Order delivered</button>
+    </div>
 </div>
 <script>
     $(document).ready(function() {
+        if(getCookie("order_status")=="3") {
+            $('.go-delivered').removeClass("hidden");
+        }
         get_address();
     });
     $('.go-order').on("click", function(e) {
@@ -16,5 +22,9 @@
     $('.go-items').on("click", function(e) {
         e.preventDefault();
         load('order/items.html');
+    })
+    $('.go-delivered').on("click", function(e) {
+        e.preventDefault();
+        order_delivered();
     })
 </script>

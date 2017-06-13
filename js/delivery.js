@@ -86,6 +86,7 @@ var get_order = function() {
         success: function(data) {
             log("get_order", data);
             add_order_data(data[0]);
+            setCookie("order_status", data[0].status);
         }
     });
 }
@@ -184,4 +185,34 @@ var add_shop_items = function(row) {
     }
     tmp[i] = '</tr>';
     $('.items tbody').append(tmp.join(''));
+}
+
+var order_picked = function(row) {
+    var params = {};
+    params.action = "delivery_order_picked";
+    params.order_id = getCookie("order_id");
+    log("delivery_order_picked", params);
+    $.ajax({
+        data: params,
+        success: function(data) {
+            log("order_picked", data);
+            $('.go-picked').addClass("hidden");
+            load('order');
+        }
+    });
+}
+
+var order_delivered = function(row) {
+    var params = {};
+    params.action = "delivery_order_delivered";
+    params.order_id = getCookie("order_id");
+    log("delivery_order_delivered", params);
+    $.ajax({
+        data: params,
+        success: function(data) {
+            log("delivery_order_delivered", data);
+            $('.go-delivered').addClass("hidden");
+            load('order');
+        }
+    });
 }

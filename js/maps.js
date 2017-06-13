@@ -1,3 +1,6 @@
+const FAST_FOOD = '/img/rsz_fastfood-pin-2.png';
+const DELIVERY_MAN = '/img/fastfood-worker-64-255355.png';
+
 save_area_location = function(area_id, lat, lng) {
     var data = {};
     data.action = "save_area_location";
@@ -51,7 +54,7 @@ load_shops_locations = function(area_id) {
         data: data,
         success: function(data) {
             log("load_shops_locations", data);
-            setMarkers(data, 'shop', '/img/rsz_fastfood-pin.png');
+            setMarkers(data, 'shop', FAST_FOOD);
         }
     });
 }
@@ -64,7 +67,7 @@ load_deliverers_locations = function(area_id) {
         data: data,
         success: function(data) {
             log("deliverers_list", data);
-            setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
+            setMarkers(data, 'name', DELIVERY_MAN);
         }
     });
 }

@@ -79,6 +79,24 @@ switch ($action) {
 
         break;
 
+    case "delivery_order_picked":
+    case "delivery_order_delivered":
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL " . $action . "(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $order_id);
+
+        // Assign values
+        $order_id = $_GET['order_id'];
+
+        break;
 }
 
 switch ($action_type) {

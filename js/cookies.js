@@ -43,7 +43,7 @@ getCookie = function(c_description) {
  */
 
 deleteCookie = function(c_description) {
-    document.cookie = c_description + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    document.cookie = c_description + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
 };
 
 /**
