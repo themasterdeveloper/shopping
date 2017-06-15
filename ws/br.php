@@ -36,8 +36,9 @@ switch ($action) {
         $action_type = $_query;
 
         $order_id = $_GET['order_id'];
+        $lastID = $_GET['lastID'];
         // Fill the query parameters
-        $query = $action . "('" . $order_id . "')";
+        $query = $action . "('" . $order_id . "','" . $lastID . "')";
 
         break;
     case "get_latest_messages":
@@ -45,7 +46,9 @@ switch ($action) {
 
         $action_type = $_query;
 
-        $query = "adm_get_messages()";
+        $lastID = $_GET['lastID'];
+
+        $query = "adm_get_messages('" . $lastID . "')";
 
         break;
     case "login":

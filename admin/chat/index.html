@@ -6,7 +6,8 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        get_latest_messages();
+        chat.init();
+        chat.get_latest_messages();
     });
 
     var open_chat_room = function(order_id) {

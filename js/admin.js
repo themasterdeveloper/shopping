@@ -359,31 +359,3 @@ load_dropdown = function(object, empty, disabled) {
         }
     });
 };
-
-var get_latest_messages = function() {
-    var data = {};
-    data.action = 'get_latest_messages';
-    log("send_message", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("get_latest_messages", data);
-            if (data.length > 0 && !data[0].error) {
-                var tmp = [];
-                var i = 0;
-                tmp[i] = '<ul class="nav nav-tabs">';
-                i++
-                for (var r = 0; r < data.length; r++) {
-                    $this = data[r];
-                    tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '<br><span class="message-sent">' + $this["sent"] + '</span></a></li>';
-                    i++;
-                }
-                tmp[i] = '</ul>';
-                $(".data").empty().append(tmp.join(''));
-                setTimeout(function() {
-                    get_latest_messages();
-                }, 30000);
-            }
-        }
-    });
-}

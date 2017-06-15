@@ -1,12 +1,16 @@
 var chat = {
 
-	webservice_path: "/ws/br.php",
-    DATE_ROW : '<div class="row"><div class="col-lg-12"><p class="text-center text-muted small">{sent}</p></div></div>',
-    MESSAGE_ROW : '<div class="row"><div class="col-lg-12"><div class="media-body"><h4 class="media-heading">{name}<span class="small pull-right">{time}</span></h4><div class="media"><a class="pull-{align}" href="#"><img class="media-object img-circle" src="{image}" alt=""></a><p>{message}</p></div></div></div></div>',
+	data: {
+		lastID: 0
+	},
+
+	url: "/ws/br.php",
+	DATE_ROW: '<div class="row"><div class="col-lg-12"><p class="text-center text-muted small">{sent}</p></div></div>',
+	MESSAGE_ROW: '<div class="row"><div class="col-lg-12"><div class="media-body"><h4 class="media-heading">{name}<span class="small pull-right">{time}</span></h4><div class="media"><a class="pull-{align}" href="#"><img class="media-object img-circle" src="{image}" alt=""></a><p>{message}</p></div></div></div></div>',
 
 	init: function() {
 		$.ajaxSetup({
-			url: webservice_path
+			url: chat.url
 		});
 	},
 
@@ -24,7 +28,10 @@ var chat = {
 		var data = {};
 		data.action = 'get_messages';
 		data.order_id = order_id;
+		data.lastID = chat.data.lastID;
+
 		log("get_messages", data);
+
 		$.ajax({
 			data: data,
 			success: function(data) {
@@ -35,6 +42,7 @@ var chat = {
 					var cur_date = ''
 					for (var r = 0; r < data.length; r++) {
 						$this = data[r];
+						chat.data.lastID = $this['id'];
 						var date_template = chat.DATE_ROW;
 						var message_template = chat.MESSAGE_ROW;
 
@@ -61,7 +69,7 @@ var chat = {
 						tmp[i] = message_template;
 						i++
 					}
-					$('.chat-widget').empty().append(tmp.join(''));
+					$('.chat-widget').append(tmp.join(''));
 
 					$('.chat-widget').animate({
 						scrollTop: $('.chat-widget')[0].scrollHeight
@@ -71,10 +79,10 @@ var chat = {
 						chat.mark_as_read(order_id);
 					}
 
-					setTimeout(function() {
-						chat.get_messages();
-					}, 5000);
 				}
+				setTimeout(function() {
+					chat.get_messages();
+				}, 5000);
 			}
 		});
 	},
@@ -149,6 +157,36 @@ var chat = {
 				log("send_message", data);
 				$('#chat-message').val('');
 				//get_messages();
+			}
+		});
+	},
+
+
+	get_latest_messages: function() {
+		var data = {};
+		data.action = 'get_latest_messages';
+		data.lastID = chat.data.lastID;
+		log("send_message", data);
+		$.ajax({
+			data: data,
+			success: function(data) {
+				log("get_latest_messages", data);
+				if (data.length > 0 && !data[0].error) {
+					var tmp = [];
+					var i = 0;
+					tmp[i] = '<ul class="nav nav-tabs">';
+					i++
+					for (var r = 0; r < data.length; r++) {
+						$this = data[r];
+						tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '<br><span class="message-sent">' + $this["sent"] + '</span></a></li>';
+						i++;
+					}
+					tmp[i] = '</ul>';
+					$(".data").empty().append(tmp.join(''));
+					setTimeout(function() {
+						get_latest_messages();
+					}, 30000);
+				}
 			}
 		});
 	}

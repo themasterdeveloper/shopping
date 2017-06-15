@@ -81,6 +81,7 @@
     <script src="/js/chat.min.js"></script>
     <script>
         $(document).ready(function() {
+            chat.init();
             chat.get_messages();
             log("cookies", cookies.listCookies());
         });
