@@ -12,13 +12,13 @@
 <script>
     $('.orders').on("click", function(e) {
         e.preventDefault();
-        deleteCookie("order_id");
+        cookies.deleteCookie("order_id");
         load('orders');
     })
     $('.messages').on("click", function(e) {
         e.preventDefault();
-        //deleteCookie("sender");
-        setCookie("sender", 4);
+        //cookies.deleteCookie("sender");
+        cookies.setCookie("sender", 4);
         location.href = "/chat";
     })
 </script>

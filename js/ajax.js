@@ -1,9 +1,5 @@
 var webservice_path = "/ws/br.php";
 
-/**
- * Global setup for Ajax calls
- *
- */
 $.ajaxSetup({
     type: 'GET',
     url: webservice_path,
@@ -16,13 +12,12 @@ $.ajaxSetup({
         log_ajax_error(xhr, errorThrown);
     }
 });
-// Close $.ajaxSetup()
 
-/**
- * Shows/hides loading gif based on
- * Ajax status
- *
- */
+log_ajax_error = function(xhr, errorThrown) {
+    log("xhr", xhr);
+    showErr('We are sorry, but there was an error accessing the database');
+    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
+};
 
 $(document).ajaxStart(function() {
     $('.fa').show().center();
@@ -38,9 +33,3 @@ $(document).ajaxError(function() {
         //        location.href = location.href;
     }, 3000);
 });
-
-log_ajax_error = function(xhr, errorThrown) {
-    log("xhr", xhr);
-    showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
-};

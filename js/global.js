@@ -38,8 +38,8 @@ load_products = function() {
     var data = {};
     data.action = "products_search";
     data.search = $("#search_text").val();
-    data.token = getCookie("token");
-    data.shop_area_id = getCookie("shop-area-id");
+    data.token = cookies.getCookie("token");
+    data.shop_area_id = cookies.getCookie("shop-area-id");
     log("load_products", data);
 
     $(".alert").hide();
@@ -114,14 +114,14 @@ load_products = function() {
 };
 
 get_token = function() {
-    if (getCookie("token")) {
-        token = getCookie("token");
+    if (cookies.getCookie("token")) {
+        token = cookies.getCookie("token");
         $("#token").val(token);
         return;
     }
     var data = {};
     data.action = "get_token";
-    data.area_id = getCookie("chosen-area");
+    data.area_id = cookies.getCookie("chosen-area");
 
     log("get_token", data);
 
@@ -131,7 +131,7 @@ get_token = function() {
             log("get_token", data);
             token = data[0].token;
             $("#token").val(token);
-            setCookie('token', token);
+            cookies.setCookie('token', token);
         }
     });
 }
@@ -177,7 +177,7 @@ add_product = function() {
 updateBasket = function() {
     var data = {};
     data.action = "get_total_basket";
-    data.token = getCookie("token");
+    data.token = cookies.getCookie("token");
     log("updateBasket", data);
     $.ajax({
         data: data,
@@ -186,10 +186,10 @@ updateBasket = function() {
             var results = data[0];
             var total_basket = results.grand_total;
             $(".basket").html(total_basket);
-            setCookie("total_basket", results.total_basket);
-            setCookie("total_fees", results.total_fees);
-            setCookie("delivery_fees", results.delivery_fees);
-            setCookie("grand_total", results.grand_total);
+            cookies.setCookie("total_basket", results.total_basket);
+            cookies.setCookie("total_fees", results.total_fees);
+            cookies.setCookie("delivery_fees", results.delivery_fees);
+            cookies.setCookie("grand_total", results.grand_total);
             if (parseFloat(total_basket) > 0) {
                 $(".basket").parent().removeClass("hidden");
             } else {
@@ -204,7 +204,7 @@ load_basket_products = function() {
     var data = {};
     user_id = 0;
     data.action = "basket_list";
-    data.token = getCookie("token");
+    data.token = cookies.getCookie("token");
 
     log("load_basket_products", data);
     updateBasket();
@@ -260,13 +260,13 @@ load_basket_products = function() {
             $("#basket-table tbody").empty().append(tmp.join(''));
             i = 0;
             tmp.length = 0;
-            tmp[i] = "<tr><td colspan=3  class='_amount _top_line'>TOTAL BASKET</td><td class='_amount _top_line'>" + getCookie("total_basket") + "</td><td  class='_top_line'></td></tr>";
+            tmp[i] = "<tr><td colspan=3  class='_amount _top_line'>TOTAL BASKET</td><td class='_amount _top_line'>" + cookies.getCookie("total_basket") + "</td><td  class='_top_line'></td></tr>";
             i++;
-            //tmp[i] = "<tr><td colspan=3  class='_amount'>10% FEES</td><td class='_amount'>" + getCookie("total_fees") + "</td><td></td></tr>";
+            //tmp[i] = "<tr><td colspan=3  class='_amount'>10% FEES</td><td class='_amount'>" + cookies.getCookie("total_fees") + "</td><td></td></tr>";
             //i++;
-            tmp[i] = "<tr><td colspan=3  class='_amount'>DELIVERY</td><td class='_amount'>" + getCookie("delivery_fees") + "</td><td></td></tr>";
+            tmp[i] = "<tr><td colspan=3  class='_amount'>DELIVERY</td><td class='_amount'>" + cookies.getCookie("delivery_fees") + "</td><td></td></tr>";
             i++;
-            tmp[i] = "<tr><td colspan=3  class='_amount _grand_total'>TOTAL ORDER</td><td class='_amount  _grand_total'>" + getCookie("grand_total") + "</td><td class='_amount  _grand_total'></td></tr>";
+            tmp[i] = "<tr><td colspan=3  class='_amount _grand_total'>TOTAL ORDER</td><td class='_amount  _grand_total'>" + cookies.getCookie("grand_total") + "</td><td class='_amount  _grand_total'></td></tr>";
 
             $("#basket-table tfoot").empty().append(tmp.join(''));
 
@@ -294,7 +294,7 @@ removeItem = function(item_id) {
 removeAll = function() {
     var data = {};
     data.action = "remove_all";
-    data.token = getCookie("token");
+    data.token = cookies.getCookie("token");
 
     log("removeAll", data);
 
@@ -332,7 +332,7 @@ get_areas = function() {
 save_location = function(pos) {
     var data = {};
     data.action = "save_location";
-    data.token = getCookie("token");
+    data.token = cookies.getCookie("token");
     data.lat = pos.lat;
     data.lng = pos.lng;
     log("save_location", data);
@@ -425,9 +425,9 @@ var submitForm = function(object) {
     var data = {};
 
     data.action = action;
-    data.token = getCookie("token");
+    data.token = cookies.getCookie("token");
 
-    data.area_id = getCookie("chosen-area");
+    data.area_id = cookies.getCookie("chosen-area");
     //Generate data items from form fields
 
     $('#' + form).find(':input:not(button):not(reset)').each(function() {
@@ -445,7 +445,7 @@ var submitForm = function(object) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);
-                setCookie("order_id", data[0].order_id);
+                cookies.setCookie("order_id", data[0].order_id);
                 notify(data[0].order_id);
                 updateBasket();
                 $("#content").load("/thanks");
@@ -479,7 +479,7 @@ get_config_value = function(name) {
         dataType: 'json',
         success: function(data) {
             log("get_config_value", data);
-            setCookie(name, data[0].value);
+            cookies.setCookie(name, data[0].value);
         }
     });
 }
@@ -520,7 +520,7 @@ fillForm = function(item_id, table) {
 load_shops_areas = function() {
     var data = {};
     data.action = 'get_shops_areas';
-    data.area_id = getCookie('chosen-area');
+    data.area_id = cookies.getCookie('chosen-area');
     log("get_shops_areas", data);
     $.ajax({
         data: data,
@@ -556,13 +556,13 @@ updateBasket();
 store_values = function() {
     var $inputs = $('form :input');
     $inputs.each(function() {
-        setCookie(this.id, $(this).val());
+        cookies.setCookie(this.id, $(this).val());
     });
 }
 
 restore_values = function() {
     var $inputs = $('form :input');
     $inputs.each(function() {
-        $("#" + this.id).val(getCookie(this.id));
+        $("#" + this.id).val(cookies.getCookie(this.id));
     });
 }

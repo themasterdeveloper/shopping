@@ -81,12 +81,12 @@
     <script>
         $(document).ready(function() {
             get_messages();
-            log("cookies", listCookies());
+            log("cookies", cookies.listCookies());
         });
 
         $('.back-button').on("click", function(e) {
             e.preventDefault();
-            switch (getCookie("sender")) {
+            switch (cookies.getCookie("sender")) {
                 case "1":
                     //location.href = "/admin";
                     window.close();

@@ -10,7 +10,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        if(getCookie("order_status")=="3") {
+        if(cookies.getCookie("order_status")=="3") {
             $('.go-delivered').removeClass("hidden");
         }
         get_address();

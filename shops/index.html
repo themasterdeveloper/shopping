@@ -39,7 +39,7 @@
     });
 
     select_shop_area = function(shop_area_id) {
-        setCookie('shop-area-id', shop_area_id);
+        cookies.setCookie('shop-area-id', shop_area_id);
         $("#content").load(HOME);
     }
 

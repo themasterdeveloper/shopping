@@ -7,12 +7,12 @@ $.ajaxSetup({
 });
 
 var get_messages = function() {
-    var order_id = getCookie("order_id");
+    var order_id = cookies.getCookie("order_id");
     if (!order_id) {
         return;
     }
 
-    var sender = getCookie("sender");
+    var sender = cookies.getCookie("sender");
     if (!sender) {
         return;
     }
@@ -76,7 +76,7 @@ var get_messages = function() {
 }
 
 var check_messages = function() {
-    var order_id = getCookie("order_id");
+    var order_id = cookies.getCookie("order_id");
     if (!order_id) {
         $('.alerts-button').addClass("hidden");
         return;
@@ -122,11 +122,11 @@ var mark_as_read = function(order_id) {
 }
 
 var send_message = function(message) {
-    var order_id = getCookie("order_id");
+    var order_id = cookies.getCookie("order_id");
     if (!order_id) {
         return;
     }
-    var sender = getCookie("sender");
+    var sender = cookies.getCookie("sender");
     if (!sender) {
         return;
     }

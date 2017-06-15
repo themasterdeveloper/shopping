@@ -132,7 +132,7 @@
     <script>
         $(document).ready(function() {
             check_messages();
-            setCookie("sender", 2);
+            cookies.setCookie("sender", 2);
             if (intro) {
                 $("#content").load(HOME);
                 $(".intro").addClass("hidden");
@@ -148,7 +148,7 @@
         $(".areas").on("change", function(e) {
             e.preventDefault();
             intro = true;
-            setCookie("chosen-area", $(this).val());
+            cookies.setCookie("chosen-area", $(this).val());
             //$("#content").load(HOME);
             $("#content").load('/shops');
             //$("#content").load("/thanks")
@@ -171,7 +171,7 @@
             location.href = "/chat";
         })
 
-        log("listCookies", listCookies());
+        log("listCookies", cookies.listCookies());
         //get_alerts();
     </script>
 </body>

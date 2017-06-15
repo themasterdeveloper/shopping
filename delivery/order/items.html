@@ -17,7 +17,7 @@
 </div>
 <script>
     $(document).ready(function() {
-        if(getCookie("order_status")=="2") {
+        if(cookies.getCookie("order_status")=="2") {
             $('.go-picked').removeClass("hidden");
         }
         get_shops();

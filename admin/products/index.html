@@ -71,8 +71,8 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $(".alert").hide();
-        setCookie("cur_page", 0);
-        setCookie("rows_per_page", 10);
+        cookies.setCookie("cur_page", 0);
+        cookies.setCookie("rows_per_page", 10);
         adm_load_table('products');
         load_dropdown("category");
     });

@@ -10,8 +10,8 @@
     });
 
     var open_chat_room = function(order_id) {
-        setCookie("sender", 1);
-        setCookie("order_id", order_id);
+        cookies.setCookie("sender", 1);
+        cookies.setCookie("order_id", order_id);
         window.open("/chat");
     }
 </script>

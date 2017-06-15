@@ -58,7 +58,7 @@
                 initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             });
         }
-        set_area_coordinates(getCookie('chosen-area'));
+        set_area_coordinates(cookies.getCookie('chosen-area'));
     }
 
     set_area_coordinates = function(area_id) {
@@ -74,7 +74,7 @@
                 $('#area_id').val(area_id);
                 initialLocation = centerMap;
                 map.panTo(initialLocation);
-                load_shops_locations(getCookie("chosen-area"));
+                load_shops_locations(cookies.getCookie("chosen-area"));
             }
         });
     }
@@ -86,7 +86,7 @@
             showErr("Please select a shop")
             return false;
         }
-        setCookie('shop-area-id', $('#item_id').val());
+        cookies.setCookie('shop-area-id', $('#item_id').val());
         $("#content").load(HOME);
     })
 </script>

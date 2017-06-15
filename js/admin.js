@@ -38,12 +38,12 @@ var login = function() {
                 $(".navbar").removeClass("hidden");
                 $this = data[0];
                 for (key in $this) {
-                    setCookie(key, $this[key]);
+                    cookies.setCookie(key, $this[key]);
                 }
-                setCookie("login", 1);
+                cookies.setCookie("login", 1);
             } else {
                 showErr("Email or password incorrect");
-                setCookie("login", 0);
+                cookies.setCookie("login", 0);
             }
         }
     });
@@ -68,7 +68,7 @@ var saveData = function(object) {
                 showErr(data[0].message);
             } else {
                 showMsg(data[0].message);
-                setCookie("record_id", data[0].record_id);
+                cookies.setCookie("record_id", data[0].record_id);
                 $("." + object + "-list").removeClass("hidden");
                 $("." + object + "-form").addClass("hidden");
                 adm_load_table(object);
@@ -89,8 +89,8 @@ var adm_delete_item = function(item_id, table) {
                 _details += "<div class='delete-data'>" + col_names[counter] + ": <span class='data'>" + $(this).html() + "</span></div>";
         counter++;
     });
-    setCookie("item_id", item_id);
-    setCookie("table", table);
+    cookies.setCookie("item_id", item_id);
+    cookies.setCookie("table", table);
     $("#confirm-body").html(_details);
     $("#delete-confirmation").modal('show');
 }
@@ -98,8 +98,8 @@ var adm_delete_item = function(item_id, table) {
 var commit_details_confirmed = function() {
     var data = {};
     data.action = 'delete_table_record';
-    data.table = getCookie("table");
-    data.item_id = getCookie("item_id");
+    data.table = cookies.getCookie("table");
+    data.item_id = cookies.getCookie("item_id");
     log("get_table_data", data);
     $.ajax({
         data: data,
@@ -110,7 +110,7 @@ var commit_details_confirmed = function() {
             } else {
                 $("#delete-confirmation").modal('hide');
                 setTimeout(function() {
-                    adm_load_table(getCookie("table"));
+                    adm_load_table(cookies.getCookie("table"));
                 }, 1000);
             }
         }
@@ -121,11 +121,11 @@ var adm_load_table = function(table, read_only) {
     read_only = (typeof read_only === 'undefined') ? false : read_only;
     $(".table-name").html(table.replace('_', ' / '));
     $(".alert").hide();
-    if (getCookie("cur_page")) {
-        cur_page = parseInt(getCookie("cur_page"));
+    if (cookies.getCookie("cur_page")) {
+        cur_page = parseInt(cookies.getCookie("cur_page"));
     }
-    if (getCookie("rows_per_page")) {
-        rows_per_page = parseInt(getCookie("rows_per_page"));
+    if (cookies.getCookie("rows_per_page")) {
+        rows_per_page = parseInt(cookies.getCookie("rows_per_page"));
     }
     var data = {};
     data.action = 'adm_load_table_' + table;
@@ -240,13 +240,13 @@ var adm_load_table = function(table, read_only) {
 
             $(".btn-prev").on("click", function(e) {
                 e.preventDefault();
-                setCookie("cur_page", cur_page - 1);
+                cookies.setCookie("cur_page", cur_page - 1);
                 adm_load_table(table, read_only);
             })
 
             $(".btn-next").on("click", function(e) {
                 e.preventDefault();
-                setCookie("cur_page", cur_page + 1);
+                cookies.setCookie("cur_page", cur_page + 1);
                 adm_load_table(table, read_only);
             })
 

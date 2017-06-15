@@ -3,7 +3,7 @@ window.onerror = function(message, filename, linenumber) {
 };
 
 var log = function(name, value) {
-    if (getCookie("Debug") == "True") {
+    if (cookies.getCookie("Debug") == "True") {
         if (value === undefined) {
             console.log(name);
         } else {

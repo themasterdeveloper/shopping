@@ -38,8 +38,8 @@
                 initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             });
         }
-        set_shop_coordinates(getCookie('order_id'));
-        set_deliverer_coordinates(getCookie('order_id'));
+        set_shop_coordinates(cookies.getCookie('order_id'));
+        set_deliverer_coordinates(cookies.getCookie('order_id'));
     }
 
     set_shop_coordinates = function(order_id) {

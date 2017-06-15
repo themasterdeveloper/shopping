@@ -79,8 +79,8 @@
 
     $(document).ready(function() {
         $(".alert").hide();
-        setCookie("cur_page", 0);
-        setCookie("rows_per_page", 10);
+        cookies.setCookie("cur_page", 0);
+        cookies.setCookie("rows_per_page", 10);
         adm_load_table('shops_areas');
         load_dropdown("shops", false, true);
         load_dropdown("areas", false, true);

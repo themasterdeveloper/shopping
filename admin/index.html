@@ -149,13 +149,13 @@
     <script>
         $(document).ready(function() {
             $(".alert").hide();
-            if (getCookie("login") == 0) {
+            if (cookies.getCookie("login") == 0) {
                 $('.master-container').load("login");
             } else {
                 $(".navbar").removeClass("hidden");
             }
-            deleteCookie("sender");
-            deleteCookie("order_id");
+            cookies.deleteCookie("sender");
+            cookies.deleteCookie("order_id");
         });
 
         var load = function(folder) {

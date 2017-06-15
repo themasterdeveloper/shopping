@@ -42,7 +42,7 @@ var deliverer_login = function() {
                 load("home.html");
                 $this = data[0];
                 for (key in $this) {
-                    setCookie(key, $this[key]);
+                    cookies.setCookie(key, $this[key]);
                 }
             } else {
                 showErr("Email or password incorrect");
@@ -54,7 +54,7 @@ var deliverer_login = function() {
 var get_orders = function() {
     var params = {};
     params.action = "delivery_get_orders";
-    params.deliverer_id = getCookie("user_id");
+    params.deliverer_id = cookies.getCookie("user_id");
     log("get_orders", params);
     $.ajax({
         data: params,
@@ -79,14 +79,14 @@ var add_orders_buttons = function(row) {
 var get_order = function() {
     var params = {};
     params.action = "delivery_get_order";
-    params.order_id = getCookie("order_id");
+    params.order_id = cookies.getCookie("order_id");
     log("get_order", params);
     $.ajax({
         data: params,
         success: function(data) {
             log("get_order", data);
             add_order_data(data[0]);
-            setCookie("order_status", data[0].status);
+            cookies.setCookie("order_status", data[0].status);
         }
     });
 }
@@ -94,7 +94,7 @@ var get_order = function() {
 var get_address = function() {
     var params = {};
     params.action = "delivery_get_address";
-    params.order_id = getCookie("order_id");
+    params.order_id = cookies.getCookie("order_id");
     log("get_address", params);
     $.ajax({
         data: params,
@@ -108,7 +108,7 @@ var get_address = function() {
 var get_shops = function() {
     var params = {};
     params.action = "delivery_get_shops";
-    params.order_id = getCookie("order_id");
+    params.order_id = cookies.getCookie("order_id");
     log("get_shops", params);
     $.ajax({
         data: params,
@@ -145,7 +145,7 @@ var load_shop_data = function(shop_id) {
     $('.items tbody').empty();
     var params = {};
     params.action = "delivery_get_shop_items";
-    params.order_id = getCookie("order_id");
+    params.order_id = cookies.getCookie("order_id");
     params.shop_id = shop_id;
     log("load_shop_data", params);
     $.ajax({
@@ -190,7 +190,7 @@ var add_shop_items = function(row) {
 var order_picked = function(row) {
     var params = {};
     params.action = "delivery_order_picked";
-    params.order_id = getCookie("order_id");
+    params.order_id = cookies.getCookie("order_id");
     log("delivery_order_picked", params);
     $.ajax({
         data: params,
@@ -205,7 +205,7 @@ var order_picked = function(row) {
 var order_delivered = function(row) {
     var params = {};
     params.action = "delivery_order_delivered";
-    params.order_id = getCookie("order_id");
+    params.order_id = cookies.getCookie("order_id");
     log("delivery_order_delivered", params);
     $.ajax({
         data: params,
