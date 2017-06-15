@@ -131,7 +131,7 @@
 
     <script>
         $(document).ready(function() {
-            check_messages();
+            chat.check_messages();
             cookies.setCookie("sender", 2);
             if (intro) {
                 $("#content").load(HOME);
@@ -143,6 +143,7 @@
                 get_config_value("Online");
                 get_config_value("Debug");
             }
+            log("listCookies", cookies.listCookies());
         });
 
         $(".areas").on("change", function(e) {
@@ -171,8 +172,6 @@
             location.href = "/chat";
         })
 
-        log("listCookies", cookies.listCookies());
-        //get_alerts();
     </script>
 </body>
 

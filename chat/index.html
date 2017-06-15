@@ -21,6 +21,7 @@
 </head>
 
 <body>
+    <i class="fa fa-refresh fa-5x fa-spin"></i>
     <div class="container bootstrap snippet">
         <div class="row">
             <div>
@@ -80,7 +81,7 @@
     <script src="/js/chat.min.js"></script>
     <script>
         $(document).ready(function() {
-            get_messages();
+            chat.get_messages();
             log("cookies", cookies.listCookies());
         });
 
@@ -101,7 +102,7 @@
 
         $('.send-button').on("click", function(e) {
             e.preventDefault();
-            send_message($('#chat-message').val());
+            chat.send_message($('#chat-message').val());
         })
     </script>
 </body>

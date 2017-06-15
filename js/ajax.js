@@ -20,16 +20,16 @@ log_ajax_error = function(xhr, errorThrown) {
 };
 
 $(document).ajaxStart(function() {
-    $('.fa').show().center();
+    $('.fa-refresh').show().center();
 });
 
 $(document).ajaxStop(function() {
-    $('.fa').fadeOut('slow');
+    $('.fa-refresh').fadeOut('slow');
 });
 
 $(document).ajaxError(function() {
     setTimeout(function() {
-        $('.fa').fadeOut('slow');
+        $('.fa-refresh').fadeOut('slow');
         //        location.href = location.href;
     }, 3000);
 });
