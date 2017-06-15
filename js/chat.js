@@ -25,10 +25,11 @@ var chat = {
 			return;
 		}
 
-		var data = {};
-		data.action = 'get_messages';
-		data.order_id = order_id;
-		data.lastID = chat.data.lastID;
+		var data = {
+			action: 'get_messages',
+			order_id: order_id,
+			lastID: chat.data.lastID
+		}
 
 		log("get_messages", data);
 
@@ -37,9 +38,10 @@ var chat = {
 			success: function(data) {
 				log("get_messages", data);
 				if (data.length > 0 && !data[0].error) {
-					var tmp = [];
-					var i = 0;
-					var cur_date = ''
+					var tmp = [],
+						i = 0,
+						cur_date = '';
+
 					for (var r = 0; r < data.length; r++) {
 						$this = data[r];
 						chat.data.lastID = $this['id'];
@@ -94,10 +96,13 @@ var chat = {
 			return;
 		}
 
-		var data = {};
-		data.action = 'check_messages';
-		data.order_id = order_id;
+		var data = {
+			action: 'check_messages',
+			order_id: order_id
+		}
+
 		log("get_messages", data);
+
 		$.ajax({
 			data: data,
 			success: function(data) {
@@ -121,9 +126,12 @@ var chat = {
 	},
 
 	mark_as_read: function(order_id) {
-		var data = {};
-		data.action = 'mark_as_read';
-		data.order_id = order_id;
+
+		var data = {
+			action: 'mark_as_read',
+			order_id: order_id
+		};
+
 		log("mark_as_read", data);
 		$.ajax({
 			data: data,
@@ -145,11 +153,12 @@ var chat = {
 		if (!message) {
 			return;
 		}
-		var data = {};
-		data.action = 'send_message';
-		data.order_id = order_id;
-		data.sender_type = sender;
-		data.message = message;
+		var data = {
+			action: 'send_message',
+			order_id: order_id,
+			sender_type: sender,
+			message: message
+		}
 		log("send_message", data);
 		$.ajax({
 			data: data,
@@ -163,9 +172,10 @@ var chat = {
 
 
 	get_latest_messages: function() {
-		var data = {};
-		data.action = 'get_latest_messages';
-		data.lastID = chat.data.lastID;
+		var data = {
+			action: 'get_latest_messages',
+			lastID: chat.data.lastID
+		}
 		log("send_message", data);
 		$.ajax({
 			data: data,
