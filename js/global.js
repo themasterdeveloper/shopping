@@ -310,7 +310,7 @@ removeAll = function() {
 resetToken = function() {
     token = "";
     $("#token").val(token);
-    deleteAllCookies();
+    cookies.deleteAllCookies();
     get_token();
 }
 

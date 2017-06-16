@@ -51,7 +51,7 @@
             data: data,
             success: function(data) {
                 log("get_shop_coordinates", data);
-                setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
+                maps.setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
                 var initialLocation = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(initialLocation);
             }
@@ -67,7 +67,7 @@
             data: data,
             success: function(data) {
                 log("get_deliverer_coordinates", data);
-                setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
+                maps.setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
                 var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(centerMap);
             }
