@@ -1,218 +1,237 @@
-/**
- * @summary     Shopping web app
- * @description Functionalities for the user interface and management
- * @version     1.0.0
- * @file        global.js
- * @author      Omar Melendrez (www.escng.com)
- * @contact     omar.melendrez@gmail.com
- *
- * @copyright Copyright 2017 Omar Melendrez, all rights reserved.
- *
- */
+var delivery = {
 
-var col_names = [];
+	BUTTON: '<a href="javascript:void(0)" class="form-control btn btn-primary btn-lg btn-options" onclick="load_order({id})"><span class="glyphicon glyphicon-pencil"></span>{number}</a>',
 
-var webservice_path = "/ws/delivery.php",
-    record_id,
-    cur_page = 0,
-    error = false;
+	BUTTON2: '<a href="javascript:void(0)" class="btn btn-success btn-md shops" onclick="delivery.load_shop_data({id})">{name}</a>',
 
-$.ajaxSetup({
-    url: webservice_path
-});
+	TEMPLATE: '<div class="order-data-key">{key}:<div class="order-data-value"><strong>{value}</strong></div>',
 
-var deliverer_login = function() {
-    var data = {};
+	init: function() {
 
-    data.action = "deliverer_login";
-    //Generate data items from form fields
-    $('#login').find(':input:not(button):not(reset)').each(function() {
-        var $this = $(this);
-        if ($this.attr("id"))
-            data[$this.attr("id")] = $this.val().trim();
-    });
+		$.ajaxSetup({
+			url: delivery.url
+		});
 
-    log("deliverer_login", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("deliverer_login", data);
-            if (data[0].user_id) {
-                document.getElementById('id01').style.display = 'none';
-                load("home.html");
-                $this = data[0];
-                for (key in $this) {
-                    cookies.setCookie(key, $this[key]);
-                }
-            } else {
-                showErr("Email or password incorrect");
-            }
-        }
-    });
-};
+	},
 
-var get_orders = function() {
-    var params = {};
-    params.action = "delivery_get_orders";
-    params.deliverer_id = cookies.getCookie("user_id");
-    log("get_orders", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("get_orders", data);
-            for (var i = 0; i < data.length; i++) {
-                $this = data[i];
-                add_orders_buttons($this);
-            }
-        }
-    });
-}
+	url: "/ws/delivery.php",
 
-var add_orders_buttons = function(row) {
-    var button = '<a href="javascript:void(0)" class="form-control btn btn-primary btn-lg btn-options" onclick="load_order(' + row["id"] + ')">';
-    button += '<span class="glyphicon glyphicon-pencil"></span>';
-    button += row["number"];
-    button += '</a>';
-    $('.data').append(button);
-}
+	deliverer_login: function() {
+		var data = {
+			action: "deliverer_login"
+		}
 
-var get_order = function() {
-    var params = {};
-    params.action = "delivery_get_order";
-    params.order_id = cookies.getCookie("order_id");
-    log("get_order", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("get_order", data);
-            add_order_data(data[0]);
-            cookies.setCookie("order_status", data[0].status);
-        }
-    });
-}
+		//Generate data items from form fields
+		$('#login').find(':input:not(button):not(reset)').each(function() {
+			var $this = $(this);
+			if ($this.attr("id"))
+				data[$this.attr("id")] = $this.val().trim();
+		});
 
-var get_address = function() {
-    var params = {};
-    params.action = "delivery_get_address";
-    params.order_id = cookies.getCookie("order_id");
-    log("get_address", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("get_address", data);
-            add_order_data(data[0]);
-        }
-    });
-}
+		log("deliverer_login", data);
 
-var get_shops = function() {
-    var params = {};
-    params.action = "delivery_get_shops";
-    params.order_id = cookies.getCookie("order_id");
-    log("get_shops", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("get_shops", data);
-            for (var i = 0; i < data.length; i++) {
-                $this = data[i];
-                add_shops($this);
-            }
-        }
-    });
-}
+		$.ajax({
+			data: data,
+			success: function(data) {
+				log("deliverer_login", data);
 
-var add_order_data = function(row) {
-    var field = [];
-    var i = 0;
-    var template = '<div class="order-data-key">{key}:';
-    template += '<div class="order-data-value"><strong>{value}</strong></div>';
-    for (key in row) {
-        field[i] = template.replace('{key}', key).replace('{value}', row[key]);
-        i++;
-    }
-    $('.data').html(field.join(''));
-}
+				if (data[0].user_id) {
+					document.getElementById('id01').style.display = 'none';
+					load("home.html");
+					$this = data[0];
+					for (key in $this) {
+						cookies.setCookie(key, $this[key]);
+					}
+				} else {
+					showErr("Email or password incorrect");
+				}
+			}
+		});
+	},
 
-var add_shops = function(row) {
-    var button = '<a href="javascript:void(0)" class="btn btn-success btn-md shops" onclick="load_shop_data(' + row["id"] + ')">';
-    button += row["name"];
-    button += '</a>';
-    $('.data').append(button);
-}
+	get_orders: function() {
 
-var load_shop_data = function(shop_id) {
-    $('.items tbody').empty();
-    var params = {};
-    params.action = "delivery_get_shop_items";
-    params.order_id = cookies.getCookie("order_id");
-    params.shop_id = shop_id;
-    log("load_shop_data", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("load_shop_data", data);
-            var tmp = [];
-            var i = 0;
-            tmp[i] = '<tr>';
-            i++;
-            for (key in data[0]) {
-                tmp[i] = '<th>' + key + '</th>';
-                i++;
-            }
-            tmp[i] = '</tr>';
-            $('.items thead').html(tmp.join(''));
-            var total = 0;
-            for (var i = 0; i < data.length; i++) {
-                $this = data[i];
-                total += parseFloat(data[i].total.replace(',', ''));
-                add_shop_items($this);
-            }
-            $('.items tfoot').html('<tr><td colspan=3></td><td>' + total.toFixed(2) + '</td></tr>');
-            $('.table-responsive').show();
-        }
-    });
-}
+		var params = {
+			action: "delivery_get_orders",
+			deliverer_id: cookies.getCookie("user_id")
+		}
 
-var add_shop_items = function(row) {
-    var tmp = [];
-    var i = 0;
-    tmp[i] = '<tr>';
-    i++;
-    for (key in row) {
-        tmp[i] = '<td>' + row[key] + '</td>';
-        i++;
-    }
-    tmp[i] = '</tr>';
-    $('.items tbody').append(tmp.join(''));
-}
+		log("get_orders", params);
 
-var order_picked = function(row) {
-    var params = {};
-    params.action = "delivery_order_picked";
-    params.order_id = cookies.getCookie("order_id");
-    log("delivery_order_picked", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("order_picked", data);
-            $('.go-picked').addClass("hidden");
-            load('order');
-        }
-    });
-}
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("get_orders", data);
+				for (var i = 0; i < data.length; i++) {
+					$this = data[i];
+					delivery.add_orders_buttons($this);
+				}
+			}
+		});
+	},
 
-var order_delivered = function(row) {
-    var params = {};
-    params.action = "delivery_order_delivered";
-    params.order_id = cookies.getCookie("order_id");
-    log("delivery_order_delivered", params);
-    $.ajax({
-        data: params,
-        success: function(data) {
-            log("delivery_order_delivered", data);
-            $('.go-delivered').addClass("hidden");
-            load('order');
-        }
-    });
+	add_orders_buttons: function(row) {
+		var button = delivery.BUTTON;
+		button = button.replace('{id}', row["id"]);
+		button = button.replace('{number}', row["number"]);
+		$('.data').append(button);
+	},
+
+	get_order: function() {
+		var params = {
+			action: "delivery_get_order",
+			order_id: cookies.getCookie("order_id")
+		}
+
+		log("get_order", params);
+
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("get_order", data);
+				delivery.add_order_data(data[0]);
+				cookies.setCookie("order_status", data[0].status);
+			}
+		});
+	},
+
+	get_address: function() {
+		var params = {
+			action: "delivery_get_address",
+			order_id: cookies.getCookie("order_id")
+		}
+
+		log("get_address", params);
+
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("get_address", data);
+				delivery.add_order_data(data[0]);
+			}
+		});
+	},
+
+	get_shops: function() {
+		var params = {
+			action: "delivery_get_shops",
+			order_id: cookies.getCookie("order_id")
+		}
+
+		log("get_shops", params);
+
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("get_shops", data);
+				for (var i = 0; i < data.length; i++) {
+					$this = data[i];
+					delivery.add_shops($this);
+				}
+			}
+		});
+	},
+
+	add_order_data: function(row) {
+		var field = [];
+		var i = 0;
+		var template = delivery.TEMPLATE;
+		for (key in row) {
+			field[i] = template.replace('{key}', key).replace('{value}', row[key]);
+			i++;
+		}
+		$('.data').html(field.join(''));
+	},
+
+	add_shops: function(row) {
+		var button = delivery.BUTTON2;
+		button = button.replace('{id}', row["id"]);
+		button = button.replace('{name}', row["name"]);
+		$('.data').append(button);
+	},
+
+	load_shop_data: function(shop_id) {
+		$('.items tbody').empty();
+		var params = {
+			action: "delivery_get_shop_items",
+			order_id: cookies.getCookie("order_id"),
+			shop_id: shop_id
+		}
+
+		log("load_shop_data", params);
+
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("load_shop_data", data);
+				var tmp = [];
+				var i = 0;
+				tmp[i] = '<tr>';
+				i++;
+				for (key in data[0]) {
+					tmp[i] = '<th>' + key + '</th>';
+					i++;
+				}
+				tmp[i] = '</tr>';
+				$('.items thead').html(tmp.join(''));
+				var total = 0;
+				for (var i = 0; i < data.length; i++) {
+					$this = data[i];
+					total += parseFloat(data[i].total.replace(',', ''));
+					delivery.add_shop_items($this);
+				}
+				$('.items tfoot').html('<tr><td colspan=3></td><td>' + total.toFixed(2) + '</td></tr>');
+				$('.table-responsive').show();
+			}
+		});
+	},
+
+	add_shop_items: function(row) {
+		var tmp = [];
+		var i = 0;
+		tmp[i] = '<tr>';
+		i++;
+		for (key in row) {
+			tmp[i] = '<td>' + row[key] + '</td>';
+			i++;
+		}
+		tmp[i] = '</tr>';
+		$('.items tbody').append(tmp.join(''));
+	},
+
+	order_picked: function(row) {
+		var params = {
+			action: "delivery_order_picked",
+			order_id: cookies.getCookie("order_id")
+		}
+
+		log("delivery_order_picked", params);
+
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("order_picked", data);
+				$('.go-picked').addClass("hidden");
+				load('order');
+			}
+		});
+	},
+
+	order_delivered: function(row) {
+		var params = {
+			action: "delivery_order_delivered",
+			order_id: cookies.getCookie("order_id")
+		}
+
+		log("delivery_order_delivered", params);
+
+		$.ajax({
+			data: params,
+			success: function(data) {
+				log("delivery_order_delivered", data);
+				$('.go-delivered').addClass("hidden");
+				load('order');
+			}
+		});
+	}
 }

@@ -16,7 +16,6 @@ $.ajaxSetup({
 log_ajax_error = function(xhr, errorThrown) {
     log("xhr", xhr);
     showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
 };
 
 $(document).ajaxStart(function() {
@@ -30,6 +29,5 @@ $(document).ajaxStop(function() {
 $(document).ajaxError(function() {
     setTimeout(function() {
         $('.fa-refresh').fadeOut('slow');
-        //        location.href = location.href;
     }, 3000);
 });

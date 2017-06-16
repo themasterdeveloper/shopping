@@ -20,7 +20,7 @@
         if(cookies.getCookie("order_status")=="2") {
             $('.go-picked').removeClass("hidden");
         }
-        get_shops();
+        delivery.get_shops();
     });
     $('.go-order').on("click", function(e) {
         e.preventDefault();
@@ -32,6 +32,6 @@
     })
     $('.go-picked').on("click", function(e) {
         e.preventDefault();
-        order_picked();
+        delivery.order_picked();
     })
 </script>

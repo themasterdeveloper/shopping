@@ -13,7 +13,7 @@
         if(cookies.getCookie("order_status")=="3") {
             $('.go-delivered').removeClass("hidden");
         }
-        get_address();
+        delivery.get_address();
     });
     $('.go-order').on("click", function(e) {
         e.preventDefault();
@@ -25,6 +25,6 @@
     })
     $('.go-delivered').on("click", function(e) {
         e.preventDefault();
-        order_delivered();
+        delivery.order_delivered();
     })
 </script>
