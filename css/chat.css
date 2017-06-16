@@ -231,3 +231,7 @@ img {
     text-transform: capitalize;
     font-weight: bold;
 }
+
+.chat-buttons-area {
+    text-align: center;
+}

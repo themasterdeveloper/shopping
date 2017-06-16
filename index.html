@@ -142,6 +142,18 @@
                 //get_areas();
                 get_config_value("Online");
                 get_config_value("Debug");
+                var show_map = cookies.getCookie("show_map");
+                if (show_map) {
+                    if (show_map == "1") {
+                        $("#content").load("/thanks");
+                        $(".intro").addClass("hidden");
+                        $("#content").removeClass("hidden");
+                        cookies.setCookie("show_map", 0);
+                    }
+                } else {
+                    $("#content").load(HOME);
+                }
+
             }
             log("listCookies", cookies.listCookies());
         });
@@ -165,13 +177,12 @@
             $("#content").load("/basket")
         });
 
-        $(".alerts-button").on("click", function(e){
+        $(".alerts-button").on("click", function(e) {
             e.preventDefault();
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
             location.href = "/chat";
         })
-
     </script>
 </body>
 
