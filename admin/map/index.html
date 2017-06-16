@@ -44,15 +44,15 @@
             }, 60000);
             */
             setInterval(function() {
-                update_markers();
+                maps.update_markers();
             }, 30000);
         });
 
         update_markers = function(){
 
-            remove_markers();
-            load_shops_locations(0);
-            load_deliverers_locations(0);
+            maps.remove_markers();
+            maps.load_shops_locations(0);
+            maps.load_deliverers_locations(0);
         }
 
         initialize = function () {
@@ -80,8 +80,8 @@
             });
             */
 
-            load_shops_locations(0);
-            load_deliverers_locations(0);
+            maps.load_shops_locations(0);
+            maps.load_deliverers_locations(0);
         }
 
 

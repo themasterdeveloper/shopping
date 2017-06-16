@@ -70,6 +70,7 @@
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
     <script src="/js/common.min.js"></script>
     <script src="/js/ajax.min.js"></script>
     <script src="/js/global.min.js"></script>
@@ -97,7 +98,7 @@
             }, 5000);
             */
             setInterval(function() {
-                update_markers();
+                maps.update_markers();
             }, 60000);
         });
 
@@ -115,21 +116,15 @@
 
         $(".save-location").on("click", function(e){
             if(area_id != ''  && shop_id != '' ){
-                save_shop_location(area_id, shop_id, lat, lng);
+                maps.save_shop_location(area_id, shop_id, lat, lng);
             } else {
                 if(area_id == ''){
                     showErr('You must select an area');
                 } else {
-                    save_area_location(area_id, lat, lng);
+                    maps.save_area_location(area_id, lat, lng);
                 }
             }
         });
-
-        update_markers = function(){
-
-            remove_markers();
-            load_shops_locations(0);
-        }
 
         remove_markers = function (){
 
@@ -170,7 +165,7 @@
                 lng = evt.latLng.lng();
             });
 
-            load_shops_locations(0);
+            maps.load_shops_locations(0);
         }
 
         relocateMap = function(){

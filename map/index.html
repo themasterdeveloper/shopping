@@ -74,7 +74,7 @@
                 $('#area_id').val(area_id);
                 initialLocation = centerMap;
                 map.panTo(initialLocation);
-                load_shops_locations(cookies.getCookie("chosen-area"));
+                maps.load_shops_locations(cookies.getCookie("chosen-area"));
             }
         });
     }
