@@ -230,7 +230,7 @@ var delivery = {
 			success: function(data) {
 				log("delivery_order_delivered", data);
 				$('.go-delivered').addClass("hidden");
-				load('order');
+				load('orders');
 			}
 		});
 	}
