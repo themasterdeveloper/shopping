@@ -192,8 +192,10 @@ updateBasket = function() {
             cookies.setCookie("grand_total", results.grand_total);
             if (parseFloat(total_basket) > 0) {
                 $(".basket").parent().removeClass("hidden");
+                $(".alerts-button").css({"right":"150px"});
             } else {
                 $(".basket").parent().addClass("hidden");
+                $(".alerts-button").css({"right":"0px"});
             }
         }
     });

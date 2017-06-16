@@ -99,7 +99,8 @@ var chat = {
 
 		var data = {
 			action: 'check_messages',
-			order_id: order_id
+			order_id: order_id,
+			lastID: chat.data.lastID
 		}
 
 		log("get_messages", data);
@@ -120,7 +121,7 @@ var chat = {
 				}
 				$('.alerts-button').removeClass("hidden");
 				setTimeout(function() {
-					check_messages();
+					chat.check_messages();
 				}, 20000);
 			}
 		});
