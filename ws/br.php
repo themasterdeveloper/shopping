@@ -46,9 +46,7 @@ switch ($action) {
 
         $action_type = $_query;
 
-        $lastID = $_GET['lastID'];
-
-        $query = "adm_get_messages('" . $lastID . "')";
+        $query = "adm_get_messages()";
 
         break;
     case "login":

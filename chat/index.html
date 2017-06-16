@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="form-group chat-buttons-area">
                                     <button type="button" class="btn btn-danger pull-left back-button">Back</button>
-                                    <button type="button" class="btn btn-info map-button">Map</button>
+                                    <button type="button" class="btn btn-info map-button hidden">Map</button>
                                     <button type="button" class="btn btn-default pull-right send-button">Send</button>
                                     <div class="clearfix"></div>
                                 </div>
@@ -82,6 +82,11 @@
     <script src="/js/chat.min.js"></script>
     <script>
         $(document).ready(function() {
+            if(cookies.getCookie("sender")=="1" || cookies.getCookie("sender")=="4") {
+                $('.map-button').addClass("hidden");
+            } else {
+                $('.map-button').removeClass("hidden");
+            }
             chat.init();
             chat.get_messages();
             log("cookies", cookies.listCookies());

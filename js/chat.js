@@ -175,8 +175,7 @@ var chat = {
 
 	get_latest_messages: function() {
 		var data = {
-			action: 'get_latest_messages',
-			lastID: chat.data.lastID
+			action: 'get_latest_messages'
 		}
 		log("send_message", data);
 		$.ajax({
