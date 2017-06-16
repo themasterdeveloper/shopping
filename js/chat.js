@@ -195,7 +195,7 @@ var chat = {
 					tmp[i] = '</ul>';
 					$(".data").empty().append(tmp.join(''));
 					setTimeout(function() {
-						get_latest_messages();
+						chat.get_latest_messages();
 					}, 30000);
 				}
 			}
