@@ -82,7 +82,7 @@
     <script src="/js/chat.min.js"></script>
     <script>
         $(document).ready(function() {
-            if(cookies.getCookie("sender")=="1" || cookies.getCookie("sender")=="4") {
+            if (cookies.getCookie("sender") == "1" || cookies.getCookie("sender") == "4") {
                 $('.map-button').addClass("hidden");
             } else {
                 $('.map-button').removeClass("hidden");
@@ -108,7 +108,9 @@
 
         $('.send-button').on("click", function(e) {
             e.preventDefault();
+            $(this).attr("disabled", "disabled");
             chat.send_message($('#chat-message').val());
+            $(this).removeAttr("disabled");
         })
 
         $('.map-button').on("click", function(e) {
@@ -116,6 +118,14 @@
             cookies.setCookie("show_map", 1);
             location.href = "/";
         })
+
+        $('textarea').on('keypress', function(e) {
+            if (e.which === 13) {
+                $(this).attr("disabled", "disabled");
+                chat.send_message($('#chat-message').val());
+                $(this).removeAttr("disabled");
+            }
+        });
     </script>
 </body>
 
