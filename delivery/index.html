@@ -54,7 +54,12 @@
     <script src="/js/maps.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.master-container').load("login");
+            delivery.init();
+            if (!cookies.getCookie("user_id")) {
+                load("login");
+            } else {
+                load("home.html");
+            }
             log(cookies.listCookies());
         });
         load = function(folder) {

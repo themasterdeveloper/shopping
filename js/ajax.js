@@ -26,8 +26,8 @@ $(document).ajaxStop(function() {
     $('.fa-refresh').fadeOut('slow');
 });
 
+/*
 $(document).ajaxError(function() {
-    setTimeout(function() {
-        $('.fa-refresh').fadeOut('slow');
-    }, 3000);
+    $('.fa-refresh').fadeOut('slow');
 });
+*/
