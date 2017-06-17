@@ -39,10 +39,6 @@ pad = function(val, len) {
     return val;
 };
 
-/**
- * Converts any form into a JSON object
- */
-
 $.fn.serializeObject = function() {
     var o = {};
     var a = this.serializeArray();
@@ -68,3 +64,43 @@ function GetParameterValues(param) {
         }
     }
 }
+
+load_dropdown = function(object, empty, disabled) {
+    empty = (typeof empty === 'undefined') ? false : empty;
+    disabled = (typeof disabled === 'undefined') ? false : disabled;
+    var data = {};
+    data.action = object + "_list";
+    log("load_" + object, data);
+    var msg = 'Nothing selected';
+    switch (object) {
+        case "areas":
+            msg = 'Select an area';
+            break;
+        case "category":
+            msg = 'Select a category';
+            break;
+    }
+    $.ajax({
+        data: data,
+        success: function(data) {
+            log("load_" + object, data);
+            var tmp = [];
+            var l = data.length;
+            if (empty == 1) {
+                var tmpEmpty = "<option></option>";
+            }
+            for (r = 0; r < l; r++) {
+                $this = data[r];
+                tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+                tmpEmpty = "";
+            }
+            $("." + object).html(tmp.join('')).selectpicker({
+                noneSelectedText: msg
+            }).selectpicker('refresh');
+            if (disabled) {
+                $("." + object).prop('disabled', true);
+                $("." + object).selectpicker('refresh');
+            }
+        }
+    });
+};

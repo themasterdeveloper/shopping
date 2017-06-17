@@ -294,7 +294,7 @@ var shop = {
             data: data,
             success: function(data) {
                 log("removeAll", data);
-                load_basket_products();
+                shop.load_basket_products();
             }
         });
     },
