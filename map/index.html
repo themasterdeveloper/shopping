@@ -65,11 +65,11 @@
         var data = {};
         data.action = "get_area_coordinates";
         data.area_id = area_id;
-        log("get_area_coordinates", data);
+        common.log("get_area_coordinates", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_area_coordinates", data);
+                common.log("get_area_coordinates", data);
                 var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
                 $('#area_id').val(area_id);
                 initialLocation = centerMap;
@@ -83,7 +83,7 @@
         e.preventDefault();
         var item_id = $('#item_id').val();
         if(!item_id) {
-            showErr("Please select a shop")
+            common.showErr("Please select a shop")
             return false;
         }
         cookies.setCookie('shop-area-id', $('#item_id').val());

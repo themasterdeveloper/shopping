@@ -118,7 +118,7 @@
                 maps.save_shop_location(area_id, shop_id, lat, lng);
             } else {
                 if(area_id == ''){
-                    showErr('You must select an area');
+                    common.showErr('You must select an area');
                 } else {
                     maps.save_area_location(area_id, lat, lng);
                 }

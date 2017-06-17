@@ -14,8 +14,8 @@ $.ajaxSetup({
 });
 
 log_ajax_error = function(xhr, errorThrown) {
-    log("xhr", xhr);
-    showErr('We are sorry, but there was an error accessing the database');
+    common.log("xhr", xhr);
+    common.showErr('We are sorry, but there was an error accessing the database');
 };
 
 $(document).ajaxStart(function() {
@@ -25,9 +25,3 @@ $(document).ajaxStart(function() {
 $(document).ajaxStop(function() {
     $('.fa-refresh').fadeOut('slow');
 });
-
-/*
-$(document).ajaxError(function() {
-    $('.fa-refresh').fadeOut('slow');
-});
-*/

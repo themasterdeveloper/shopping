@@ -15,12 +15,12 @@ var auth = {
             area_id: cookies.getCookie("chosen-area")
         }
 
-        log("get_token", data);
+        common.log("get_token", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_token", data);
+                common.log("get_token", data);
                 var token = data[0].token;
                 auth.data.token = token;
                 cookies.setCookie("token", token);

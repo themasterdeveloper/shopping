@@ -47,20 +47,21 @@
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/libs/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
     <script src="/js/common.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
     <script src="/js/cookies.min.js"></script>
     <script src="/js/chat.min.js"></script>
-    <script src="/js/ajax.min.js"></script>
     <script src="/js/delivery.min.js"></script>
     <script src="/js/maps.min.js"></script>
     <script>
         $(document).ready(function() {
+            common.init();
             delivery.init();
             if (!cookies.getCookie("user_id")) {
                 load("login");
             } else {
                 load("home.html");
             }
-            log(cookies.listCookies());
+            common.log(cookies.listCookies());
         });
         load = function(folder) {
             $('.master-container').load(folder)

@@ -132,17 +132,19 @@
 
     <script>
         $(document).ready(function() {
+            common.init();
+            chat.init();
             chat.check_messages();
             cookies.setCookie("sender", 2);
-            if (intro) {
+            if (shop.intro) {
                 $("#content").load(shop.HOME);
                 $(".intro").addClass("hidden");
                 $("#content").removeClass("hidden");
             } else {
-                load_dropdown("areas", true);
-                //get_areas();
-                get_config_value("Online");
-                get_config_value("Debug");
+                shop.load_dropdown("areas", true);
+                common.get_config_value("Online");
+                common.get_config_value("Debug");
+                /*
                 var show_map = cookies.getCookie("show_map");
                 if (show_map) {
                     if (show_map == "1") {
@@ -154,9 +156,9 @@
                 } else {
                     $("#content").load(shop.HOME);
                 }
-
+                */
             }
-            log("listCookies", cookies.listCookies());
+            common.log("listCookies", cookies.listCookies());
         });
 
         $(".areas").on("change", function(e) {

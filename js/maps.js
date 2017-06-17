@@ -10,15 +10,15 @@ var maps = {
             lng: lng
         }
 
-        log("save_area_location", data);
+        common.log("save_area_location", data);
 
         $.ajax({
             data: data,
             dataType: 'json',
             success: function(data) {
-                log("save_area_location", data);
+                common.log("save_area_location", data);
                 if (data[0].error != 0) {
-                    showErr(data[0].message);
+                    common.showErr(data[0].message);
                 } else {
                     showMsg(data[0].message);
                 }
@@ -35,15 +35,15 @@ var maps = {
             lng: lng
         }
 
-        log("save_shop_location", data);
+        common.log("save_shop_location", data);
 
         $.ajax({
             data: data,
             dataType: 'json',
             success: function(data) {
-                log("save_shop_location", data);
+                common.log("save_shop_location", data);
                 if (data[0].error != 0) {
-                    showErr(data[0].message);
+                    common.showErr(data[0].message);
                 } else {
                     showMsg(data[0].message);
                     maps.update_markers();
@@ -58,12 +58,12 @@ var maps = {
             area_id: 0
         }
 
-        log("load_shops_locations", data);
+        common.log("load_shops_locations", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("load_shops_locations", data);
+                common.log("load_shops_locations", data);
                 maps.setMarkers(data, 'shop', maps.FAST_FOOD);
             }
         });
@@ -74,12 +74,12 @@ var maps = {
             action: "deliverers_list"
         }
 
-        log("deliverers_list", data);
+        common.log("deliverers_list", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("deliverers_list", data);
+                common.log("deliverers_list", data);
                 maps.setMarkers(data, 'name', maps.DELIVERY_MAN);
             }
         });
@@ -161,15 +161,15 @@ var maps = {
             lng: pos.lng
         }
 
-        log("save_location", data);
+        common.log("save_location", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("save_location", data);
+                common.log("save_location", data);
             },
             error: function(data) {
-                log("save_location.error", data);
+                common.log("save_location.error", data);
             }
         });
     },

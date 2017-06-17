@@ -7,6 +7,9 @@
             <span class="glyphicon glyphicon-envelope"></span> Messages
         </a>
     </div>
+    <div class="row buttons">
+        <button class="btn btn-lg btn-danger go-login">Logout</button>
+    </div>
 </div>
 
 <script>
@@ -15,10 +18,15 @@
         cookies.deleteCookie("order_id");
         load('orders');
     })
+
     $('.messages').on("click", function(e) {
         e.preventDefault();
-        //cookies.deleteCookie("sender");
         cookies.setCookie("sender", 4);
         location.href = "/chat";
+    })
+
+    $('.go-login').on("click", function(e) {
+        e.preventDefault();
+        load('login');
     })
 </script>

@@ -1,42 +1,118 @@
-window.onerror = function(message, filename, linenumber) {
-    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
-};
+var common = {
 
-var log = function(name, value) {
-    if (cookies.getCookie("Debug") == "True") {
-        if (value === undefined) {
-            console.log(name);
-        } else {
-            console.debug(name, value);
+    data: {},
+
+    init: function() {
+        window.onerror = function(message, filename, linenumber) {
+            common.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
+        };
+        common.get_config_value("Online");
+        common.get_config_value("Debug");    
+    },
+
+    log: function(name, value) {
+        if (common.data.Debug) {
+            if (value === undefined) {
+                console.log(name);
+            } else {
+                console.debug(name, value);
+            }
         }
+    },
+
+    showMsg: function(text) {
+        $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
+        $(".alert #msg").html(text);
+        $(".alert").show();
+    },
+
+    showErr: function(text) {
+        $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
+        $(".alert #msg").html(text);
+        $(".alert").show();
+    },
+
+    GetParameterValues: function(param) {
+        var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < url.length; i++) {
+            var urlparam = url[i].split('=');
+            if (urlparam[0] == param) {
+                return urlparam[1];
+            }
+        }
+    },
+
+    load_dropdown: function(object, empty, disabled) {
+        empty = (typeof empty === 'undefined') ? false : empty;
+        disabled = (typeof disabled === 'undefined') ? false : disabled;
+
+        var data = {
+            action: object + "_list"
+        };
+
+        common.log("load_" + object, data);
+
+        var msg = 'Nothing selected';
+        switch (object) {
+            case "areas":
+                msg = 'Select an area';
+                break;
+            case "category":
+                msg = 'Select a category';
+                break;
+        }
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("load_" + object, data);
+                var tmp = [];
+                var l = data.length;
+                if (empty == 1) {
+                    var tmpEmpty = "<option></option>";
+                }
+                for (r = 0; r < l; r++) {
+                    $this = data[r];
+                    tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+                    tmpEmpty = "";
+                }
+                $("." + object).html(tmp.join('')).selectpicker({
+                    noneSelectedText: msg
+                }).selectpicker('refresh');
+                if (disabled) {
+                    $("." + object).prop('disabled', true);
+                    $("." + object).selectpicker('refresh');
+                }
+            }
+        });
+    },
+
+    get_config_value: function(name) {
+
+        var data = {
+            action: "get_config_value",
+            name: name
+        }
+
+        common.log("get_config_value", data);
+
+        $.ajax({
+            data: data,
+            dataType: 'json',
+            success: function(data) {
+                common.log("get_config_value", data);
+                cookies.setCookie(name, data[0].value);
+                common.data[name] = data[0].value ? "True" : "False";
+                common.log("common.data", common.data);
+            }
+        });
     }
 }
 
-jQuery.fn.center = function() {
+$.fn.center = function() {
     this.css("position", "absolute");
     this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 3) + $(window).scrollTop()) + "px");
     this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
     return this;
-};
-
-showMsg = function(text) {
-    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-pad = function(val, len) {
-    val = String(val);
-    len = len || 2;
-    while (val.length < len)
-        val = "0" + val;
-    return val;
 };
 
 $.fn.serializeObject = function() {
@@ -53,54 +129,4 @@ $.fn.serializeObject = function() {
         }
     });
     return o;
-};
-
-function GetParameterValues(param) {
-    var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-    for (var i = 0; i < url.length; i++) {
-        var urlparam = url[i].split('=');
-        if (urlparam[0] == param) {
-            return urlparam[1];
-        }
-    }
-}
-
-load_dropdown = function(object, empty, disabled) {
-    empty = (typeof empty === 'undefined') ? false : empty;
-    disabled = (typeof disabled === 'undefined') ? false : disabled;
-    var data = {};
-    data.action = object + "_list";
-    log("load_" + object, data);
-    var msg = 'Nothing selected';
-    switch (object) {
-        case "areas":
-            msg = 'Select an area';
-            break;
-        case "category":
-            msg = 'Select a category';
-            break;
-    }
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("load_" + object, data);
-            var tmp = [];
-            var l = data.length;
-            if (empty == 1) {
-                var tmpEmpty = "<option></option>";
-            }
-            for (r = 0; r < l; r++) {
-                $this = data[r];
-                tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
-                tmpEmpty = "";
-            }
-            $("." + object).html(tmp.join('')).selectpicker({
-                noneSelectedText: msg
-            }).selectpicker('refresh');
-            if (disabled) {
-                $("." + object).prop('disabled', true);
-                $("." + object).selectpicker('refresh');
-            }
-        }
-    });
 };

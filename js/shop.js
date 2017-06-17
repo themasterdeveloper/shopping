@@ -37,18 +37,18 @@ var shop = {
             shop_area_id: cookies.getCookie("shop-area-id")
         }
 
-        log("load_products", data);
+        common.log("load_products", data);
 
         $.ajax({
 
             data: data,
             success: function(data) {
 
-                log("load_products", data);
+                common.log("load_products", data);
 
                 if (data[0].error == 1) {
                     $("#dashboard-table").empty();
-                    showErr(data[0].message);
+                    common.showErr(data[0].message);
 
                     return false;
                 }
@@ -128,12 +128,12 @@ var shop = {
             quantity: $("#quantity").val()
         }
 
-        log("add_product", data);
+        common.log("add_product", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("add_product", data);
+                common.log("add_product", data);
                 var results = data[0];
                 if (results.error == 0) {
                     $(".order-form").hide();
@@ -157,12 +157,12 @@ var shop = {
             token: auth.data.token
         }
 
-        log("updateBasket", data);
+        common.log("updateBasket", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("updateBasket", data);
+                common.log("updateBasket", data);
                 var results = data[0];
                 var total_basket = results.grand_total;
                 $(".basket").html(total_basket);
@@ -193,7 +193,7 @@ var shop = {
             token: auth.data.token
         }
 
-        log("load_basket_products", data);
+        common.log("load_basket_products", data);
 
         shop.updateBasket();
 
@@ -202,7 +202,7 @@ var shop = {
             data: data,
             success: function(data) {
 
-                log("load_basket_products", data);
+                common.log("load_basket_products", data);
 
                 if (data[0].error == 1) {
                     $("#content").load(shop.HOME);
@@ -270,17 +270,16 @@ var shop = {
             item_id: item_id
         }
 
-        log("removeItem", data);
+        common.log("removeItem", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("removeItem", data);
+                common.log("removeItem", data);
                 shop.load_basket_products();
             }
         });
     },
-
 
     removeAll: function() {
         var data = {
@@ -288,12 +287,12 @@ var shop = {
             token: cookies.getCookie("token")
         }
 
-        log("removeAll", data);
+        common.log("removeAll", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("removeAll", data);
+                common.log("removeAll", data);
                 shop.load_basket_products();
             }
         });
@@ -304,17 +303,16 @@ var shop = {
             action: "get_areas"
         }
 
-        log("get_areas", data);
+        common.log("get_areas", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_areas", data);
+                common.log("get_areas", data);
                 $(".areas-list").html(data[0].areas);
             }
         });
     },
-
 
     load_dropdown: function(object, empty, disabled) {
         empty = (typeof empty === 'undefined') ? false : empty;
@@ -323,7 +321,7 @@ var shop = {
             action: object + "_list"
         }
 
-        log("load_" + object, data);
+        common.log("load_" + object, data);
 
         var msg = 'Nothing selected';
         switch (object) {
@@ -337,7 +335,7 @@ var shop = {
         $.ajax({
             data: data,
             success: function(data) {
-                log("load_" + object, data);
+                common.log("load_" + object, data);
                 var tmp = [];
                 var l = data.length;
                 if (empty == 1) {
@@ -371,7 +369,7 @@ var shop = {
             }
         }
         if (error) {
-            showErr("Some errors were found. Please correct them in the form and try again");
+            common.showErr("Some errors were found. Please correct them in the form and try again");
         } else {
             shop.submitForm($(form).attr("id").replace("-form", ""));
         }
@@ -406,14 +404,14 @@ var shop = {
                 data[$this.attr("id")] = $this.val().trim().toUpperCase();
         });
 
-        log("submitForm", data);
+        common.log("submitForm", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("submitForm", data);
+                common.log("submitForm", data);
                 if (data[0].error != 0) {
-                    showErr(data[0].message);
+                    common.showErr(data[0].message);
                 } else {
                     showMsg(data[0].message);
                     cookies.setCookie("order_id", data[0].order_id);
@@ -432,31 +430,12 @@ var shop = {
             action: "order_notify",
             order_id: order_id
         }
-        log("notify", data);
+        common.log("notify", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("notify", data);
-            }
-        });
-    },
-
-    get_config_value: function(name) {
-
-        var data = {
-            action: "get_config_value",
-            name: name
-        }
-
-        log("get_config_value", data);
-
-        $.ajax({
-            data: data,
-            dataType: 'json',
-            success: function(data) {
-                log("get_config_value", data);
-                cookies.setCookie(name, data[0].value);
+                common.log("notify", data);
             }
         });
     },
@@ -469,12 +448,12 @@ var shop = {
             item_id: item_id
         }
 
-        log("get_table_record", data);
+        common.log("get_table_record", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_table_record", data);
+                common.log("get_table_record", data);
                 $this = data[0];
                 for (var key in $this) {
                     if (key == 'image') {
@@ -504,12 +483,12 @@ var shop = {
             area_id: cookies.getCookie('chosen-area')
         }
 
-        log("get_shops_areas", data);
+        common.log("get_shops_areas", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_shops_areas", data);
+                common.log("get_shops_areas", data);
                 var l = data.length;
                 if (l == 1 && data[0].error) {
                     return;

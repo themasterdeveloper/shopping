@@ -32,12 +32,12 @@ var chat = {
             lastID: chat.data.lastID
         }
 
-        log("get_messages", data);
+        common.log("get_messages", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_messages", data);
+                common.log("get_messages", data);
                 if (data.length > 0 && !data[0].error) {
                     var tmp = [],
                         i = 0,
@@ -103,12 +103,12 @@ var chat = {
             lastID: chat.data.lastID
         }
 
-        log("get_messages", data);
+        common.log("get_messages", data);
 
         $.ajax({
             data: data,
             success: function(data) {
-                log("check_messages", data);
+                common.log("check_messages", data);
                 var unread = data[0].undread;
                 if (unread == 0) {
                     $('.unread-messsages').html('');
@@ -133,11 +133,11 @@ var chat = {
             order_id: order_id
         };
 
-        log("mark_as_read", data);
+        common.log("mark_as_read", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("mark_as_read", data);
+                common.log("mark_as_read", data);
             }
         });
     },
@@ -160,11 +160,11 @@ var chat = {
             sender_type: sender,
             message: message
         }
-        log("send_message", data);
+        common.log("send_message", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("send_message", data);
+                common.log("send_message", data);
                 $('#chat-message').val('');
                 //get_messages();
             }
@@ -175,11 +175,11 @@ var chat = {
         var data = {
             action: 'get_latest_messages'
         }
-        log("get_latest_messages", data);
+        common.log("get_latest_messages", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_latest_messages", data);
+                common.log("get_latest_messages", data);
                 if (data.length > 0 && !data[0].error) {
                     var tmp = [];
                     var i = 0;

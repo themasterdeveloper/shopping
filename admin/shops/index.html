@@ -114,19 +114,19 @@
     })
 
     var confirm_upload = function(ext) {
-        showMsg("Saved!");
+        common.showMsg("Saved!");
         var data = {};
         data.action = 'save_table_image';
         data.table = 'shops';
         data.item_id = $('#item_id').val();
         data.image_path = '/assets/images/shops/' + $("#image_file_name").val() + "." + ext;
-        log("save_table_image", data);
+        common.log("save_table_image", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("save_table_image", data);
+                common.log("save_table_image", data);
                 if (data[0].error != 0) {
-                    showErr(data[0].message);
+                    common.showErr(data[0].message);
                 } else {
                     fillForm($('#item_id').val(), "shops");
                     $(".upload-form").addClass("hidden");

@@ -28,11 +28,11 @@ var login = function() {
             data[$this.attr("id")] = $this.val().trim();
     });
 
-    log("login", data);
+    common.log("login", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("login", data);
+            common.log("login", data);
             if (data[0].user_id) {
                 document.getElementById('id01').style.display = 'none';
                 $(".navbar").removeClass("hidden");
@@ -42,7 +42,7 @@ var login = function() {
                 }
                 cookies.setCookie("login", 1);
             } else {
-                showErr("Email or password incorrect");
+                common.showErr("Email or password incorrect");
                 cookies.setCookie("login", 0);
             }
         }
@@ -59,15 +59,15 @@ var saveData = function(object) {
         if ($this.attr("id"))
             data[$this.attr("id")] = $this.val().trim();
     });
-    log("saveData", data);
+    common.log("saveData", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("saveData", data);
+            common.log("saveData", data);
             if (data[0].error != 0) {
-                showErr(data[0].message);
+                common.showErr(data[0].message);
             } else {
-                showMsg(data[0].message);
+                common.showMsg(data[0].message);
                 cookies.setCookie("record_id", data[0].record_id);
                 $("." + object + "-list").removeClass("hidden");
                 $("." + object + "-form").addClass("hidden");
@@ -100,13 +100,13 @@ var commit_details_confirmed = function() {
     data.action = 'delete_table_record';
     data.table = cookies.getCookie("table");
     data.item_id = cookies.getCookie("item_id");
-    log("get_table_data", data);
+    common.log("get_table_data", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("adm_delete_item", data);
+            common.log("adm_delete_item", data);
             if (data[0].error != 0) {
-                showErr(data[0].message);
+                common.showErr(data[0].message);
             } else {
                 $("#delete-confirmation").modal('hide');
                 setTimeout(function() {
@@ -132,16 +132,16 @@ var adm_load_table = function(table, read_only) {
     data.search = $("#search").val();
     data.limit = cur_page;
     data.rows = rows_per_page;
-    log("load_table", data);
+    common.log("load_table", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("load_table", data);
+            common.log("load_table", data);
             if (data[0].error == 1) {
                 $("#" + table + "-table tbody").empty();
                 $("#" + table + "-table tbody").empty();
                 $("#" + table + "-table tfood").empty();
-                showErr(data[0].message);
+                common.showErr(data[0].message);
                 return false;
             }
             var skip_columns = "-id-active-status_name-total_records-";
@@ -291,11 +291,11 @@ var fillForm = function(item_id, table) {
     data.action = 'get_table_record';
     data.table = table;
     data.item_id = item_id;
-    log("get_table_record", data);
+    common.log("get_table_record", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("get_table_record", data);
+            common.log("get_table_record", data);
             $this = data[0];
             for (var key in $this) {
                 if (key == 'image') {
@@ -307,7 +307,7 @@ var fillForm = function(item_id, table) {
                 } else {
                     $("#" + key).val($this[key]);
                 }
-                log(key, $this[key]);
+                common.log(key, $this[key]);
             }
             if (table == 'shop_product') {
                 $(".selectpicker").prop('disabled', true);
@@ -325,7 +325,7 @@ load_dropdown = function(object, empty, disabled) {
     disabled = (typeof disabled === 'undefined') ? false : disabled;
     var data = {};
     data.action = object + "_list";
-    log("load_" + object, data);
+    common.log("load_" + object, data);
     var msg = 'Nothing selected';
     switch (object) {
         case "areas":
@@ -338,7 +338,7 @@ load_dropdown = function(object, empty, disabled) {
     $.ajax({
         data: data,
         success: function(data) {
-            log("load_" + object, data);
+            common.log("load_" + object, data);
             var tmp = [];
             var l = data.length;
             if (empty == 1) {

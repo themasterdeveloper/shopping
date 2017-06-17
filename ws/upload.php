@@ -35,7 +35,7 @@ if($uploadOk==1){
     if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
         echo "<script>parent.confirm_upload('" . $imageFileType . "');</script>";
     } else {
-        echo "<script>parent.showErr('" . $error_message . "');</script>";
+        echo "<script>parent.common.showErr('" . $error_message . "');</script>";
     }
 }
 ?>

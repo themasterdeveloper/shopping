@@ -46,11 +46,11 @@
         var data = {};
         data.action = "get_shop_coordinates";
         data.order_id = order_id;
-        log("get_shop_coordinates", data);
+        common.log("get_shop_coordinates", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_shop_coordinates", data);
+                common.log("get_shop_coordinates", data);
                 maps.setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
                 var initialLocation = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(initialLocation);
@@ -62,11 +62,11 @@
         var data = {};
         data.action = "get_deliverer_coordinates";
         data.order_id = order_id;
-        log("get_deliverer_coordinates", data);
+        common.log("get_deliverer_coordinates", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_deliverer_coordinates", data);
+                common.log("get_deliverer_coordinates", data);
                 maps.setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
                 var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(centerMap);
