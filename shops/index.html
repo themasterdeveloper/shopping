@@ -25,7 +25,7 @@
 <script>
     $(document).ready(function() {
         $(".alert").hide();
-        load_shops_areas();
+        shop.load_shops_areas();
     });
 
     $(".btn-dismiss").on("click", function(e) {
@@ -40,7 +40,7 @@
 
     select_shop_area = function(shop_area_id) {
         cookies.setCookie('shop-area-id', shop_area_id);
-        $("#content").load(HOME);
+        $("#content").load(shop.HOME);
     }
 
 </script>

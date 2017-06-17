@@ -47,12 +47,13 @@
 <script type="text/javascript">
         $(document).ready(function() {
             $(".alert").hide();
-            load_products();
+            shop.init();
+            shop.load_products();
         });
 
         $("#search_text").on("keypress", function(a) {
             if (a.keyCode == 13)
-                load_products();
+                shop.load_products();
         });
 
         $('.alert .close').on('click', function(e) {
@@ -62,7 +63,9 @@
 
         $("#add-product").on("click", function(e) {
            e.preventDefault();
-           add_product();
+           $(this).attr("disabled", "disabled");
+           shop.add_product();
+           $(this).removeAttr("disabled");
         });
 
         $(".dismiss").on("click", function(e) {

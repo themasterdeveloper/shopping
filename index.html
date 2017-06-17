@@ -125,16 +125,20 @@
     <script src="/js/common.min.js"></script>
     <script src="/js/cookies.min.js"></script>
     <script src="/js/ajax.min.js"></script>
+    <!--
     <script src="/js/global.min.js"></script>
+    -->
     <script src="/js/maps.min.js"></script>
     <script src="/js/chat.min.js"></script>
+    <script src="/js/auth.min.js"></script>
+    <script src="/js/shop.min.js"></script>
 
     <script>
         $(document).ready(function() {
             chat.check_messages();
             cookies.setCookie("sender", 2);
             if (intro) {
-                $("#content").load(HOME);
+                $("#content").load(shop.HOME);
                 $(".intro").addClass("hidden");
                 $("#content").removeClass("hidden");
             } else {
@@ -151,7 +155,7 @@
                         cookies.setCookie("show_map", 0);
                     }
                 } else {
-                    $("#content").load(HOME);
+                    $("#content").load(shop.HOME);
                 }
 
             }
