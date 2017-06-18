@@ -1,3 +1,5 @@
+"use strict";
+
 var delivery = {
 
     data: {
@@ -42,8 +44,8 @@ var delivery = {
                 common.log("deliverer_login", data);
                 if (data[0].user_id) {
                     document.getElementById('id01').style.display = 'none';
-                    $this = data[0];
-                    for (key in $this) {
+                    var $this = data[0];
+                    for (var key in $this) {
                         cookies.setCookie(key, $this[key]);
                     }
                     delivery.data.user_id = $this["user_id"];
@@ -71,7 +73,7 @@ var delivery = {
                 common.log("get_orders", data);
                 if (!data[0].error) {
                     for (var i = 0; i < data.length; i++) {
-                        $this = data[i];
+                        var $this = data[i];
                         delivery.add_orders_buttons($this);
                     }
                 } else {
@@ -136,7 +138,7 @@ var delivery = {
             success: function(data) {
                 common.log("get_shops", data);
                 for (var i = 0; i < data.length; i++) {
-                    $this = data[i];
+                    var $this = data[i];
                     delivery.add_shops($this);
                 }
             }
@@ -147,7 +149,7 @@ var delivery = {
         var field = [];
         var i = 0;
         var template = delivery.TEMPLATE;
-        for (key in row) {
+        for (var key in row) {
             field[i] = template.replace('{key}', key).replace('{value}', row[key]);
             i++;
         }
@@ -179,7 +181,7 @@ var delivery = {
                 var i = 0;
                 tmp[i] = '<tr>';
                 i++;
-                for (key in data[0]) {
+                for (var key in data[0]) {
                     tmp[i] = '<th>' + key + '</th>';
                     i++;
                 }
@@ -187,7 +189,7 @@ var delivery = {
                 $('.items thead').html(tmp.join(''));
                 var total = 0;
                 for (var i = 0; i < data.length; i++) {
-                    $this = data[i];
+                    var $this = data[i];
                     total += parseFloat(data[i].total.replace(',', ''));
                     delivery.add_shop_items($this);
                 }
@@ -202,7 +204,7 @@ var delivery = {
         var i = 0;
         tmp[i] = '<tr>';
         i++;
-        for (key in row) {
+        for (var key in row) {
             tmp[i] = '<td>' + row[key] + '</td>';
             i++;
         }

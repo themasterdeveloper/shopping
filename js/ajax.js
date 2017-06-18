@@ -1,3 +1,5 @@
+"use strict";
+
 var webservice_path = "/ws/br.php";
 
 $.ajaxSetup({
@@ -13,7 +15,7 @@ $.ajaxSetup({
     }
 });
 
-log_ajax_error = function(xhr, errorThrown) {
+var log_ajax_error = function(xhr, errorThrown) {
     common.log("xhr", xhr);
     common.showErr('We are sorry, but there was an error accessing the database');
 };

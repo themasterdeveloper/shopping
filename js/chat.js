@@ -1,4 +1,5 @@
 // ¯\_(ツ)_/¯
+"use strict";
 var chat = {
 
     data: {
@@ -44,7 +45,7 @@ var chat = {
                         cur_date = '';
 
                     for (var r = 0; r < data.length; r++) {
-                        $this = data[r];
+                        var $this = data[r];
                         chat.data.lastID = $this['id'];
                         var date_template = chat.DATE_ROW;
                         var message_template = chat.MESSAGE_ROW;
@@ -55,7 +56,7 @@ var chat = {
                             i++;
                         }
 
-                        for (key in $this) {
+                        for (var key in $this) {
                             var msg_sender = parseInt($this["sender"]);
                             if (msg_sender == sender && key == 'name') {
                                 message_template = message_template.replace('{' + key + '}', '');
@@ -186,7 +187,7 @@ var chat = {
                     tmp[i] = '<ul class="nav nav-tabs">';
                     i++
                     for (var r = 0; r < data.length; r++) {
-                        $this = data[r];
+                        var $this = data[r];
                         tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '<br><span class="message-sent">' + $this["sent"] + '</span></a></li>';
                         i++;
                     }

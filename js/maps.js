@@ -1,3 +1,5 @@
+"use strict";
+
 var maps = {
     ICON_FAST_FOOD: '/img/rsz_fastfood-pin-2.png',
     ICON_DELIVERY_MAN: '/img/fastfood-worker-64-255355.png',
@@ -123,13 +125,13 @@ var maps = {
     },
 
     remove_markers: function() {
-        for (i = 0; i < markers.length; i++) {
+        for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
         }
     },
 
     close_infowindows: function() {
-        for (i = 0; i < infowindows.length; i++) {
+        for (var i = 0; i < infowindows.length; i++) {
             infowindows[i].close();
         }
     },

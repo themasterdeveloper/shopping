@@ -1,3 +1,5 @@
+"use strict";
+
 var shop = {
 
     data: {
@@ -60,8 +62,8 @@ var shop = {
 
                 var skip_columns = "-total_rows-";
 
-                for (r = 0; r < l; r++) {
-                    $this = data[r];
+                for (var r = 0; r < l; r++) {
+                    var $this = data[r];
 
                     tmp[i] = "<div class='list-group'>";
                     i++;
@@ -186,7 +188,7 @@ var shop = {
 
     load_basket_products: function() {
 
-        user_id = 0;
+        var user_id = 0;
         var data = {
             action: "basket_list",
             token: auth.data.token
@@ -215,7 +217,7 @@ var shop = {
                 var skip_columns = "-id-area-";
 
                 header[i] = "<tr>";
-                $this = data[0];
+                var $this = data[0];
                 for (var key in $this) {
                     if (skip_columns.indexOf("-" + key + "-") == -1) {
                         header[i] = "<th class='" + "__" + key + "'>" + key + "</th>";
@@ -226,8 +228,8 @@ var shop = {
 
                 i = 0;
                 var l = data.length;
-                for (r = 0; r < l; r++) {
-                    $this = data[r];
+                for (var r = 0; r < l; r++) {
+                    var $this = data[r];
                     tmp[i] = "<tr>";
                     i++;
                     for (var key in $this) {
@@ -340,8 +342,8 @@ var shop = {
                 if (empty == 1) {
                     var tmpEmpty = "<option></option>";
                 }
-                for (r = 0; r < l; r++) {
-                    $this = data[r];
+                for (var r = 0; r < l; r++) {
+                    var $this = data[r];
                     tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
                     tmpEmpty = "";
                 }
@@ -360,7 +362,7 @@ var shop = {
         $(".alert").hide();
         var l = form.length;
         var name = "";
-        error = false;
+        var error = false;
         for (var i = 0; i < l; i++) {
             name = form[i].name;
             if (name != '') {
@@ -453,7 +455,7 @@ var shop = {
             data: data,
             success: function(data) {
                 common.log("get_table_record", data);
-                $this = data[0];
+                var $this = data[0];
                 for (var key in $this) {
                     if (key == 'image') {
                         if ($this[key].length > 0) {
@@ -496,8 +498,8 @@ var shop = {
                     i = 0;
                 var skip_columns = "-id-";
                 i = 0;
-                for (r = 0; r < l; r++) {
-                    $this = data[r];
+                for (var r = 0; r < l; r++) {
+                    var $this = data[r];
                     i++;
                     for (var key in $this) {
                         if (skip_columns.indexOf("-" + key + "-") == -1) {

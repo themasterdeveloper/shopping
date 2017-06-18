@@ -1,3 +1,5 @@
+"use strict";
+
 var cookies = {
 
 	setCookie: function(c_description, value, exdays) {
