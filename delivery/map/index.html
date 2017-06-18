@@ -27,8 +27,11 @@
     update_deliverer_location = function() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-                maps.update_deliverer_location(currentPosition);
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                maps.update_deliverer_location(pos);
             });
         }
     }
@@ -75,7 +78,6 @@
             url: "/ws/br.php",
             data: data,
             success: function(data) {
-                common.log("get_deliverer_coordinates", data);
                 maps.setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
                 var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(centerMap);

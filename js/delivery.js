@@ -49,7 +49,6 @@ var delivery = {
                         cookies.setCookie(key, $this[key]);
                     }
                     delivery.data.user_id = $this["user_id"];
-                    cookies.setCookie("user_id", $this["user_id"]);
                     load("home.html");
                 } else {
                     common.showErr("Email or password incorrect");

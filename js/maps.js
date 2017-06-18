@@ -179,7 +179,7 @@ var maps = {
     update_deliverer_location: function(pos) {
         var data = {
             action: "update_deliverer_location",
-            token: cookies.getCookie("deliverer_id"),
+            deliverer_id: cookies.getCookie("deliverer_id"),
             lat: pos.lat,
             lng: pos.lng
         }
@@ -195,6 +195,7 @@ var maps = {
                 common.log("update_deliverer_location.error", data);
             }
         });
+        set_deliverer_coordinates(cookies.getCookie("order_id"));
         setTimeout(function() {
             update_deliverer_location();
         }, 10000);
