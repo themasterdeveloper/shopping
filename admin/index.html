@@ -100,6 +100,7 @@
                                 <li><a href="javascript:void(0)" onclick="load('deliverers')">Delivery guys</a></li>
                             </ul>
                         </li>
+                        <li><a href="javascript:void(0)" onclick="logout()">Logout</a></li>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
@@ -150,18 +151,23 @@
     <script src="/js/maps.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".alert").hide();
+            common.init();
+            common.get_config_value("Online");
+            common.get_config_value("Debug");
             if (cookies.getCookie("login") == 0) {
                 $('.master-container').load("login");
             } else {
                 $(".navbar").removeClass("hidden");
             }
-            cookies.deleteCookie("sender");
-            cookies.deleteCookie("order_id");
         });
 
         var load = function(folder) {
-            $('.master-container').load(folder)
+            $('.master-container').load(folder);
+        }
+
+        var logout = function() {
+            cookies.setCookie("login", 0);
+            location.href = "/admin";
         }
 
         $("#btnDeleteYes").on("click", function(event) {
