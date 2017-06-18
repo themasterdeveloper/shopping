@@ -17,16 +17,17 @@
         e.preventDefault();
         cookies.deleteCookie("order_id");
         load('orders');
-    })
+    });
 
     $('.messages').on("click", function(e) {
         e.preventDefault();
         cookies.setCookie("sender", 4);
         location.href = "/chat";
-    })
+    });
 
     $('.go-login').on("click", function(e) {
         e.preventDefault();
+        cookies.deleteAllCookies();
         load('login');
-    })
+    });
 </script>
