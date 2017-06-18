@@ -100,7 +100,7 @@
                                 <li><a href="javascript:void(0)" onclick="load('deliverers')">Delivery guys</a></li>
                             </ul>
                         </li>
-                        <li><a href="javascript:void(0)" onclick="logout()">Logout</a></li>
+                        <li><a href="javascript:void(0)" onclick="logout()"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
@@ -162,7 +162,7 @@
         });
 
         var load = function(folder) {
-            $('.master-container').load(folder);
+            $('.master-container').empty().load(folder);
         }
 
         var logout = function() {
