@@ -97,6 +97,25 @@ switch ($action) {
         $order_id = $_GET['order_id'];
 
         break;
+    case "update_deliverer_location":
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL " . $action . "(?,?,?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("idd", $deliverer_id, $lat, $lng);
+
+        // Assign values
+        $deliverer_id = $_GET['deliverer_id'];
+        $lat = $_GET['lat'];
+        $lng = $_GET['lng'];
+
+        break;
 }
 
 switch ($action_type) {

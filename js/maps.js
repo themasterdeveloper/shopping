@@ -175,4 +175,28 @@ var maps = {
             }
         });
     },
+
+    update_deliverer_location: function(pos) {
+        var data = {
+            action: "update_deliverer_location",
+            token: cookies.getCookie("deliverer_id"),
+            lat: pos.lat,
+            lng: pos.lng
+        }
+
+        common.log("update_deliverer_location", data);
+
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("update_deliverer_location", data);
+            },
+            error: function(data) {
+                common.log("update_deliverer_location.error", data);
+            }
+        });
+        setTimeout(function() {
+            update_deliverer_location();
+        }, 10000);
+    }
 }

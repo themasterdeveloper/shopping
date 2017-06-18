@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="main">
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <!-- The table area -->
+        <div id="map">
+
+        </div>
+        <div class="button-area">
+            <button type="button" class="btn btn-lg btn-danger pull-right btn-exit">Back</button>
+        </div>
+        <div class="marker-data align-center"></div>
+
+    </div>
+</div>
+<script>
+    var map;
+    var lat = 0;
+    var lng = 0;
+    var markers = [];
+    var infowindows = [];
+    var zoom = 15;
+
+    $(document).ready(function() {
+        common.log("cookies", cookies.listCookies());
+    });
+
+    update_deliverer_location = function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                currentPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                maps.update_deliverer_location(currentPosition);
+            });
+        }
+    }
+
+    initialize = function() {
+        var myOptions = {
+            zoom: zoom,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        map = new google.maps.Map(document.getElementById("map"), myOptions);
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            });
+        }
+        set_shop_coordinates(cookies.getCookie('order_id'));
+        update_deliverer_location();
+    }
+
+    set_shop_coordinates = function(order_id) {
+        var data = {};
+        data.action = "get_shop_coordinates";
+        data.order_id = order_id;
+        common.log("get_shop_coordinates", data);
+        $.ajax({
+            url: "/ws/br.php",
+            data: data,
+            success: function(data) {
+                common.log("get_shop_coordinates", data);
+                maps.setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
+                var initialLocation = new google.maps.LatLng(data[0].lat, data[0].lng);
+                map.panTo(initialLocation);
+            }
+        });
+    }
+
+    set_deliverer_coordinates = function(order_id) {
+        var data = {
+            action: "get_deliverer_coordinates",
+            order_id: order_id
+        }
+        common.log("get_deliverer_coordinates", data);
+        $.ajax({
+            url: "/ws/br.php",
+            data: data,
+            success: function(data) {
+                common.log("get_deliverer_coordinates", data);
+                maps.setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
+                var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
+                map.panTo(centerMap);
+            }
+        });
+    }
+
+    $(".btn-exit").on("click", function(e) {
+        e.preventDefault();
+        load("/delivery/home.html");
+    });
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">
+</script>

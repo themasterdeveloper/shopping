@@ -9,6 +9,7 @@
     </div>
     <div class="row buttons">
         <button class="btn btn-lg btn-danger go-login">Logout</button>
+        <button class="btn btn-lg btn-info go-map pull-right">Map</button>
     </div>
 </div>
 
@@ -29,5 +30,10 @@
         e.preventDefault();
         cookies.deleteAllCookies();
         load('login');
+    });
+
+    $('.go-map').on("click", function(e) {
+        e.preventDefault();
+        load('map');
     });
 </script>
