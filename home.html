@@ -45,38 +45,37 @@
     </div>
 </div>
 <script type="text/javascript">
-        $(document).ready(function() {
-            $(".alert").hide();
-            shop.init();
+    $(document).ready(function() {
+        shop.init();
+        shop.load_products();
+    });
+
+    $("#search_text").on("keypress", function(a) {
+        if (a.keyCode == 13)
             shop.load_products();
-        });
+    });
 
-        $("#search_text").on("keypress", function(a) {
-            if (a.keyCode == 13)
-                shop.load_products();
-        });
+    $('.alert .close').on('click', function(e) {
+        e.preventDefault();
+        $(this).parent().hide();
+    });
 
-        $('.alert .close').on('click', function(e) {
-            e.preventDefault();
-            $(this).parent().hide();
-        });
+    $("#add-product").on("click", function(e) {
+        e.preventDefault();
+        $(this).attr("disabled", "disabled");
+        shop.add_product();
+        $(this).removeAttr("disabled");
+    });
 
-        $("#add-product").on("click", function(e) {
-           e.preventDefault();
-           $(this).attr("disabled", "disabled");
-           shop.add_product();
-           $(this).removeAttr("disabled");
-        });
+    $(".dismiss").on("click", function(e) {
+        e.preventDefault();
+        $("#content").load("/shops")
+    });
 
-        $(".dismiss").on("click", function(e) {
-           e.preventDefault();
-           $("#content").load("/shops")
-        });
-
-        $("#close").on("click", function(e) {
-            e.preventDefault();
-           $(".error_message").html('').hide();
-           $(".order-form").hide();
-           $(".shadow").hide();
-        })
+    $("#close").on("click", function(e) {
+        e.preventDefault();
+        $(".error_message").html('').hide();
+        $(".order-form").hide();
+        $(".shadow").hide();
+    })
 </script>

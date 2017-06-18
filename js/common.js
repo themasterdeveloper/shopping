@@ -7,7 +7,7 @@ var common = {
             common.log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
         };
         common.get_config_value("Online");
-        common.get_config_value("Debug");    
+        common.get_config_value("Debug");
     },
 
     log: function(name, value) {
@@ -101,8 +101,7 @@ var common = {
             success: function(data) {
                 common.log("get_config_value", data);
                 cookies.setCookie(name, data[0].value);
-                common.data[name] = data[0].value ? "True" : "False";
-                common.log("common.data", common.data);
+                common.data[name] = data[0].value;
             }
         });
     }

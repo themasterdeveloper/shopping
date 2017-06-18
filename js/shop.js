@@ -148,7 +148,6 @@ var shop = {
                 shop.load_products();
             }
         });
-        //event.preventDefault();
     },
 
     updateBasket: function() {
@@ -413,7 +412,7 @@ var shop = {
                 if (data[0].error != 0) {
                     common.showErr(data[0].message);
                 } else {
-                    showMsg(data[0].message);
+                    common.showMsg(data[0].message);
                     cookies.setCookie("order_id", data[0].order_id);
                     shop.notify(data[0].order_id);
                     shop.updateBasket();

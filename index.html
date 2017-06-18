@@ -133,6 +133,8 @@
     <script>
         $(document).ready(function() {
             common.init();
+            common.get_config_value("Online");
+            common.get_config_value("Debug");
             chat.init();
             chat.check_messages();
             cookies.setCookie("sender", 2);
@@ -142,21 +144,17 @@
                 $("#content").removeClass("hidden");
             } else {
                 shop.load_dropdown("areas", true);
-                common.get_config_value("Online");
-                common.get_config_value("Debug");
-                /*
-                var show_map = cookies.getCookie("show_map");
-                if (show_map) {
-                    if (show_map == "1") {
-                        $("#content").load("/thanks");
-                        $(".intro").addClass("hidden");
-                        $("#content").removeClass("hidden");
-                        cookies.setCookie("show_map", 0);
-                    }
-                } else {
-                    $("#content").load(shop.HOME);
+            }
+            var show_map = cookies.getCookie("show_map");
+            if (show_map) {
+                if (show_map == "1") {
+                    $("#content").load("/thanks");
+                    $(".intro").addClass("hidden");
+                    $("#content").removeClass("hidden");
+                    cookies.setCookie("show_map", 0);
                 }
-                */
+            } else {
+                $("#content").load(shop.HOME);
             }
             common.log("listCookies", cookies.listCookies());
         });
