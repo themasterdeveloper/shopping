@@ -1,6 +1,7 @@
 "use strict";
 
 var maps = {
+
     ICON_FAST_FOOD: '/img/rsz_fastfood-pin-2.png',
     ICON_DELIVERY_MAN: '/img/fastfood-worker-64-255355.png',
 
@@ -66,7 +67,7 @@ var maps = {
             data: data,
             success: function(data) {
                 common.log("load_shops_locations", data);
-                maps.setMarkers(data, 'shop', maps.FAST_FOOD);
+                maps.setMarkers(data, 'shop', maps.ICON_FAST_FOOD);
             }
         });
     },
@@ -82,7 +83,7 @@ var maps = {
             data: data,
             success: function(data) {
                 common.log("deliverers_list", data);
-                maps.setMarkers(data, 'name', maps.DELIVERY_MAN);
+                maps.setMarkers(data, 'name', maps.ICON_DELIVERY_MAN);
             }
         });
     },
@@ -112,7 +113,7 @@ var maps = {
 
     showMarkerData: function(data) {
         var html = '';
-        $this = data[0];
+        var $this = data[0];
         var skip_columns = "-id-lat-lng-photo-available-";
         for (var key in data) {
             if (skip_columns.indexOf("-" + key + "-") == -1) {

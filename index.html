@@ -122,6 +122,7 @@
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-switch.min.js"></script>
+    <script src="/libs/push/push.min.js"></script>
     <script src="/js/common.min.js"></script>
     <script src="/js/cookies.min.js"></script>
     <script src="/js/ajax.min.js"></script>
@@ -132,6 +133,7 @@
 
     <script>
         $(document).ready(function() {
+            Push.Permission.request();
             common.init();
             common.get_config_value("Online");
             common.get_config_value("Debug");

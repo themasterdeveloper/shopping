@@ -119,6 +119,19 @@ var chat = {
                     $('.unread-messsages').html(unread);
                     $('.alerts-button').removeClass("btn-info").addClass("btn-danger");
                     $('.unread-messsages').removeClass("hidden");
+                    Push.create('Hi there!', {
+                        body: 'You\'ve got a message from iyabasira.online',
+                        icon: 'img/rsz_new_message.png',
+                        //requireInteraction: true,
+                        timeout: 8000, // Timeout before notification closes automatically.
+                        vibrate: [100, 100, 100], // An array of vibration pulses for mobile devices.
+                        onClick: function() {
+                            // Callback for when the notification is clicked.
+                            Push.clear();
+                            $(".alerts-button").click();
+                            //common.log('Push', this);
+                        }
+                    });
                 }
                 $('.alerts-button').removeClass("hidden");
                 setTimeout(function() {
