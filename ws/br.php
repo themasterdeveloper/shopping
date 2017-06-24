@@ -26,7 +26,7 @@ $conn->query("SET time_zone='+01:00';");
 
 $action = $_GET['action'];
 
-log_this($action);
+//log_this($action);
 
 switch ($action) {
     case "check_messages":
@@ -1092,8 +1092,8 @@ switch ($action_type) {
                 log_this($email . ": " . $subject);
             }
         }
-            log_this($headers);
-            log_this($body, "email");
+        //log_this($headers);
+        //log_this($body, "email");
         /*
         if($mobile != '') {
             $ch = curl_init($URL);
