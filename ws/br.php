@@ -492,6 +492,18 @@ switch ($action) {
 
         break;
 
+    case "get_order_shops":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $order_id = $_GET['order_id'];
+
+        // Fill the query parameters
+        $query = "get_order_shops('" . $order_id . "')";
+
+        break;
+
     case "mark_as_read":
         // It's gonna be a database update
 
@@ -509,6 +521,7 @@ switch ($action) {
         $order_id = $_GET['order_id'];
 
         break;
+
     case "send_message":
 
         // It's gonna be a database update
@@ -982,17 +995,24 @@ switch ($action) {
         $action_type = $_email;
 
         $order_id = $_GET['order_id'];
+        $type = $_GET['type'];
         // Set the procedure we are going to use
-        $query = 'get_order_details(' . $order_id . ')';
-        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
-        $template = file_get_contents('../assets/templates/order_confirmation.html');
+        if ($type == 1) {
+            $query = 'get_order_details(' . $order_id . ')';
+            $template = file_get_contents('../assets/templates/order_confirmation.html');
+        } else {
+            $shop_id = $_GET['shop_id'];
+            $query = 'get_shop_order_details(' . $order_id . ',' . $shop_id . ')';
+            $template = file_get_contents('../assets/templates/shop_order_confirmation.html');
+        }
         //$sms_template = file_get_contents('../assets/templates/order_confirmation.txt');
         $data = '';
+        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            if($pass == 0){
-                foreach($row as $key => $value) {
-                    $template = str_replace('{'.$key.'}',  $row[$key], $template);
+            if ($pass == 0) {
+                foreach ($row as $key => $value) {
+                    $template = str_replace('{'.$key.'}', $row[$key], $template);
                 }
                 $email = $row['email'];
                 //$mobile = $row['mobile'];
@@ -1003,13 +1023,15 @@ switch ($action) {
                 $pass=1;
             }
             $data .= "<tr>";
-            $data .= "<td>".$row["shop"]."</td>";
+            if ($type == 1) {
+                $data .= "<td>".$row["shop"]."</td>";
+            }
             $data .= "<td>".$row["item"]."</td>";
             $data .= "<td class='_qty'>".$row["qty"]."</td>";
             $data .= "<td class='_amount'>".$row["unit price"]."</td>";
             $data .= "<td class='_amount'>".$row["total price"]."</td>";
             $data .= "</tr>";
-           }
+        }
         $template = str_replace('{data}', $data, $template);
         $result->free();
 
@@ -1025,14 +1047,13 @@ switch ($action_type) {
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $rowcount=mysqli_num_rows($result);
         $rows = array();
-        if($rowcount==0){
+        if ($rowcount==0) {
             $rows[] = array("error"=>1,
                             "message"=>"Sorry, there are no products available");
-        }else{
-            while ($row = $result->fetch_array(MYSQLI_ASSOC))
-                {
+        } else {
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                 $rows[] = $row;
-                }
+            }
         }
         $result->free();
 
@@ -1043,10 +1064,9 @@ switch ($action_type) {
         $stmt->execute();
         $rows = array();
         stmt_bind_assoc($stmt, $row);
-        while ($stmt->fetch())
-            {
+        while ($stmt->fetch()) {
             $rows[] = array_copy($row);
-            }
+        }
 
         break;
 
@@ -1065,11 +1085,13 @@ switch ($action_type) {
 
         $body = $template;
 
-        if($php_server != "localhost")
-            if($email!="")
+        if ($php_server != "localhost") {
+            if ($email!="") {
                 mail($email, $subject, $body, $headers);
-        else
-            log_this($email . ": " . $subject);
+            } else {
+                log_this($email . ": " . $subject);
+            }
+        }
             log_this($headers);
             log_this($body, "email");
         /*
@@ -1092,10 +1114,10 @@ $conn->close();
 
 // Send data in JSON format back to the user interface
 
-if ($action_type != '') echo (json_encode($rows));
+if ($action_type != '') {
+    echo(json_encode($rows));
+}
 
 //if ($action_type != "") echo (json_encode(array("data"=>array_values($rows), "records"=>$rowcount)) );
 
 session_write_close();
-
-?>

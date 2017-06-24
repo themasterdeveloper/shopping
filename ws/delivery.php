@@ -124,14 +124,13 @@ switch ($action_type) {
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $rowcount=mysqli_num_rows($result);
         $rows = array();
-        if($rowcount==0){
+        if ($rowcount==0) {
             $rows[] = array("error"=>1,
                             "message"=>"No records available");
-        }else{
-            while ($row = $result->fetch_array(MYSQLI_ASSOC))
-                {
+        } else {
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                 $rows[] = $row;
-                }
+            }
         }
         $result->free();
 
@@ -142,10 +141,9 @@ switch ($action_type) {
         $stmt->execute();
         $rows = array();
         stmt_bind_assoc($stmt, $row);
-        while ($stmt->fetch())
-            {
+        while ($stmt->fetch()) {
             $rows[] = array_copy($row);
-            }
+        }
 
         break;
 
@@ -154,10 +152,10 @@ $conn->close();
 
 // Send data in JSON format back to the user interface
 
-if ($action_type != '') echo (json_encode($rows));
+if ($action_type != '') {
+    echo(json_encode($rows));
+}
 
 //if ($action_type != "") echo (json_encode(array("data"=>array_values($rows), "records"=>$rowcount)) );
 
 session_write_close();
-
-?>

@@ -415,8 +415,22 @@ var shop = {
                     common.showErr(data[0].message);
                 } else {
                     common.showMsg(data[0].message);
-                    cookies.setCookie("order_id", data[0].order_id);
-                    shop.notify(data[0].order_id);
+                    var order_id = data[0].order_id;
+                    cookies.setCookie("order_id", order_id);
+                    var data = {
+                        action: "get_order_shops",
+                        order_id: order_id
+                    }
+                    $.ajax({
+                        data: data,
+                        success: function(data) {
+                            if (data.length > 0) {
+                                for (var i = 0; i < data.length; i++) {
+                                    shop.notify(order_id, data[i].shop_id);
+                                }
+                            }
+                        }
+                    });
                     shop.updateBasket();
                     $("#content").load("/thanks");
                 }
@@ -424,13 +438,17 @@ var shop = {
         });
     },
 
-    notify: function(order_id) {
+    notify: function(order_id, shop_id) {
 
+        var type = (typeof shop_id === 'undefined') ? 1 : 2;
         // Email & SMS notification
         var data = {
             action: "order_notify",
-            order_id: order_id
+            order_id: order_id,
+            type: type,
+            shop_id: shop_id
         }
+
         common.log("notify", data);
 
         $.ajax({

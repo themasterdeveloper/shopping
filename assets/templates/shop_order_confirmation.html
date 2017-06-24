@@ -94,19 +94,13 @@
     <div class="container-fluid">
         <div class="page-header">
             <h2 class="_light-blue">iyabasira.online</h2>
-            <p class="lead">Here is your order confirmation</p>
+            <p class="lead">Here is a new order confirmation</p>
         </div>
-        <p>Dear <strong>{customer-name}</strong>,</p>
-        <p>We are pleased to confirm your order number <strong>{order-number}</strong>, processed on <strong>{date}</strong></p>
+        <p>Dear <strong>{shop-contact}</strong>,</p>
+        <p><strong>{shop-area}</strong>,</p>
+        <p>We are pleased to confirm a new order number <strong>{order-number}</strong>, processed on <strong>{date}</strong>, has been launched.</p>
         <hr class='_divider'>
-        <p>The order will be delivered at the following location:</p>
-        <p><strong>{address}</strong>, <strong>{customer-area}</strong>, <strong>{customer-city}</strong></p>
-        <p>Mobile: <strong>{customer-mobile}</strong></p>
-        <hr class='_divider'>
-        <p>The order will be received by:</p>
-        <p><strong>{receiver-name}</strong>, Mobile: <strong>{receiver-mobile}</strong></p>
-        <hr class='_divider'>
-        Your order will be delivered by:
+        <p>The order will be picked by:</p>
         <div class="_delivery_gruy">
             <div class="_photo_frame">
                 <img class="_photo" src="https://iyabasira.online/assets/images/deliverers/{photo-file}">
@@ -115,12 +109,11 @@
             <span>{delivery_guy_mobile}</span>
         </div>
         <hr class="_divider">
-        <p>Below are the details of your purchase:</p>
+        <p>Below are the order details:</p>
         <div class="table-responsive">
             <table class="table table-borderless table-condensed">
                 <thead>
                     <tr>
-                        <th class="_normal">Shop</th>
                         <th class="_normal">Item</th>
                         <th class="_qty">Qty</th>
                         <th class="_amount">Unit price</th>
@@ -132,27 +125,13 @@
                 </tbody>
                 <tfoot>
                     <tr class="_grand-total">
-                        <td class="_amount" colspan="4">Total</td>
+                        <td class="_amount" colspan="3">Total</td>
                         <td class="_amount">{order-total}</td>
-                    </tr>
-                    <!--
-                    <tr class="_grand-total">
-                        <td class="_amount" colspan="4">Service charge</td>
-                        <td class="_amount">{service-charge}</td>
-                    </tr>
-                    -->
-                    <tr class="_grand-total">
-                        <td class="_amount" colspan="4">Service charge</td>
-                        <td class="_amount">{delivery-fee}</td>
-                    </tr>
-                    <tr class="_grand-total">
-                        <td class="_amount" colspan="4">Grand total</td>
-                        <td class="_amount">{grand-total}</td>
                     </tr>
                 </tfoot>
             </table>
         </div>
-        <p>We thank you for your patronage.</p>
+        <p>We thank you for your support.</p>
         <hr class='_divider'>
         <a href="https://iyabasira.online" target="_blank">iyabasira.online</a> (&copy;) 2017 - All rights reserved.
     </div>
