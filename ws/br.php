@@ -26,7 +26,7 @@ $conn->query("SET time_zone='+01:00';");
 
 $action = $_GET['action'];
 
-//log_this($action);
+log_this($action);
 
 switch ($action) {
     case "check_messages":
@@ -987,7 +987,12 @@ switch ($action) {
         $type_id = $_GET['shop_type_id'];
 
         break;
-
+    case "test-email":
+        $action_type = $_email;
+        $template = "test of email";
+        $email = "omar.melendrez@gmail.com";
+        $subject = "test";
+        break;
     case "order_notify":
 
         // It's gonna be an email
@@ -1014,7 +1019,7 @@ switch ($action) {
                 foreach ($row as $key => $value) {
                     $template = str_replace('{'.$key.'}', $row[$key], $template);
                 }
-                $email = $row['email'];
+                $email = strtolower($row['email']);
                 //$mobile = $row['mobile'];
                 $subject = 'iyabasira - Order Confirmation # ' . $row['order-number'];
                 //$sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
@@ -1034,6 +1039,7 @@ switch ($action) {
         }
         $template = str_replace('{data}', $data, $template);
         $result->free();
+        $conn->close();
 
         //$URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
 
@@ -1049,13 +1055,14 @@ switch ($action_type) {
         $rows = array();
         if ($rowcount==0) {
             $rows[] = array("error"=>1,
-                            "message"=>"Sorry, there are no products available");
+                            "message"=>"Sorry, there are no records available");
         } else {
             while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                 $rows[] = $row;
             }
         }
         $result->free();
+        $conn->close();
 
         break;
 
@@ -1067,6 +1074,7 @@ switch ($action_type) {
         while ($stmt->fetch()) {
             $rows[] = array_copy($row);
         }
+        $conn->close();
 
         break;
 
@@ -1075,7 +1083,6 @@ switch ($action_type) {
         $headers = "MIME-Version: 1.0";
         $headers.= "\r\nContent-type:text/html;charset=iso-8859-1";
         // More headers and the BCC to me
-
         $headers .= "\r\nFrom: <noreply@iyabasira.online>";
         $headers .= "\r\nCc: <admin@iyabasira.online>";
         $headers .= "\r\nBcc: <omar.melendrez@gmail.com>";
@@ -1083,17 +1090,20 @@ switch ($action_type) {
 
         // Create the message with html style
 
-        $body = $template;
+        $body = str_replace("\n.", "\n..", $template);
 
         if ($php_server != "localhost") {
             if ($email!="") {
-                mail($email, $subject, $body, $headers);
-            } else {
-                log_this($email . ": " . $subject);
+                $_SESSION['email'] = $email;
+                $_SESSION['subject'] = $subject;
+                $_SESSION['body'] = $body;
+                $_SESSION['headers'] = $headers;
+                include "send_email.php";
             }
         }
-        //log_this($headers);
-        //log_this($body, "email");
+        log_this($headers, "email");
+        log_this($email . ": " . $subject, "email");
+        log_this($body, "email");
         /*
         if($mobile != '') {
             $ch = curl_init($URL);
@@ -1110,7 +1120,6 @@ switch ($action_type) {
         break;
 }
 
-$conn->close();
 
 // Send data in JSON format back to the user interface
 

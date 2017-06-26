@@ -416,6 +416,7 @@ var shop = {
                 } else {
                     common.showMsg(data[0].message);
                     var order_id = data[0].order_id;
+                    shop.notify(order_id);
                     cookies.setCookie("order_id", order_id);
                     var data = {
                         action: "get_order_shops",
