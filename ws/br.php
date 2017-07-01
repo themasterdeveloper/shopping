@@ -49,6 +49,14 @@ switch ($action) {
         $query = "adm_get_messages()";
 
         break;
+    case "get_shops_logos":
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $query = "get_shops_logos()";
+
+        break;
     case "login":
 
         // It's gonna be a query
