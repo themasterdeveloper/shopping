@@ -1,5 +1,17 @@
 /** Fonts **/
 
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
 @font-face {
     font-family: 'Roboto';
     src: url('/fonts/Roboto-Regular.ttf') format('truetype');
@@ -207,6 +219,7 @@ body {
 #shops-table {
     margin-top: 10px;
 }
+
 .shops-container {
     text-align: center;
 }
@@ -216,15 +229,14 @@ body {
     bottom: 18px;
     left: 3px;
     right: 3px;
-    background-color: rgba(255,255,255,0.6);
-
+    background-color: rgba(255, 255, 255, 0.6);
 }
 
 .slider div img {
     background-color: #f8f8f8;
 }
 
-.shop-logo-slider{
+.shop-logo-slider {
     height: 60px;
     margin: 10px;
 }
@@ -487,6 +499,7 @@ input[type=range]:focus::-ms-fill-upper {
     bottom: 0;
     padding: 3px;
 }
+
 .copyright span.iyabasira {
     color: #44BBEE;
 }
@@ -572,7 +585,6 @@ div[class*="-form"] {
     top: 0;
     right: 0;
     z-index: 99999;
-
 }
 
 @media (min-width: 762px) {

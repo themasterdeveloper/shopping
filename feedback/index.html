@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
+    <meta name="description" content="iyabasira - a new way to shop for Naija">
+    <meta name="author" content="www.escng.com">
+    <link rel="icon" href="/img/favicon.ico">
+    <title>iyabasira - delivery services</title>
+    <!-- Bootstrap core CSS -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
+    <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/libs/rating/css/rating.min.css" rel="stylesheet">
+    <link href="/libs/rating/css/style.min.css" rel="stylesheet">
+    <link href="/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Full screen for Safari under iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Custom styles for this template -->
+    <link href="/css/global.min.css" rel="stylesheet">
+    <style>
+        textarea {
+            margin-top: 18px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Loading spin image --><i class="fa fa-refresh fa-5x fa-spin"></i>
+    <div class="container">
+        <div id="content" class="content rating">
+            <div class="row">
+                <div class="app-title">iyabasira <span class="grey">delivery</span></div>
+                <!-- The table area -->
+                <form id="profile-form" role="form" class="form-horizontal">
+                    <div class="form-group">
+                        <div id="feedback"></div>
+                    </div>
+                </form>
+                <div class="button-area">
+                    <div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
+        </span></button><span id="msg"></span></div>
+                    <div class="col offset-md-8 col-md-12"><button type="button" class="btn btn-primary btn-lg pull-right save-rating">Send feedback</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/libs/jquery/js/jquery.min.js"></script>
+    <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/libs/rating/js/rating.min.js"></script>
+    <script>
+        (function() {
+
+                // FEEDBACK ELEMENT
+                var shop = document.querySelector('#feedback'); // DUMMY DATA
+                var data = [{
+                    title: "Your feedback in important to us",
+                    description: "Rate here <strong>iyabasira.online</strong> and tell us below your say.",
+                    image: '/img/fastfood-worker-114-255355.png',
+                    rating: 0
+                }]; // INITIALIZE
+                (function init() {
+                    for (var i = 0; i < data.length; i++) {
+                        addRatingWidget(buildShopItem(data[i]), data[i]);
+                    }
+                })();
+
+                // BUILD FEEDBACK ITEM
+                function buildShopItem(data) {
+                    var shopItem = document.createElement('div');
+
+                    var html = '<div class="c-shop-item__img"><img src="' + data.image + '"></div>' +
+                    '<div class="c-shop-item__details">' +
+                        '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
+                        '<p class="c-shop-item__description">' + data.description + '</p>' +
+                        '<ul class="c-rating"></ul>' +
+                        '<textarea class="form-control" autocorrect="off" rows="5" id="comment" name="comment" placeholder="How can we improve to server you better?"></textarea>' +
+                    '</div>';
+
+                    shopItem.classList.add('c-shop-item');
+                    shopItem.innerHTML = html;
+                    shop.appendChild(shopItem);
+
+                    return shopItem;
+                }
+
+                // ADD RATING WIDGET
+                function addRatingWidget(shopItem, data) {
+                    var ratingElement = shopItem.querySelector('.c-rating');
+                    var currentRating = data.rating;
+                    var maxRating = 5;
+                    var callback = function(rating) {
+                        alert(rating);
+                    };
+                    var r = rating(ratingElement, currentRating, maxRating, callback);
+                }
+            }
+
+        )();
+    </script>
+</body>
+
+</html>

@@ -210,6 +210,8 @@
 
         $("#basket_button").on("click", function(e) {
             e.preventDefault();
+            $(".banner").addClass("hidden");;
+            $(".slider").addClass("hidden");;
             $(".intro").addClass("hidden");
             $("#content").removeClass("hidden");
             $("#content").load("/basket")
@@ -222,7 +224,7 @@
             location.href = "/chat";
         })
 
-        $(".banner").on("touchstart click", function(e) {
+        $(".banner").bind("touchstart click", function(e) {
             e.preventDefault();
             $(".areas").parent().removeClass("hidden");
             $(".banner").css("opacity", ".2");
