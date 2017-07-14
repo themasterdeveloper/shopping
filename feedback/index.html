@@ -36,14 +36,12 @@
             <div class="row">
                 <div class="app-title">iyabasira <span class="grey">delivery</span></div>
                 <!-- The table area -->
-                <form id="profile-form" role="form" class="form-horizontal">
-                    <div class="form-group">
-                        <div id="feedback"></div>
-                    </div>
-                </form>
+                <div id="feedback"></div>
                 <div class="button-area">
-                    <div class="alert alert-danger alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
-        </span></button><span id="msg"></span></div>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
+                            </span></button>
+                        <span id="msg"></span></div>
                     <div class="col offset-md-8 col-md-12"><button type="button" class="btn btn-primary btn-lg pull-right save-rating">Send feedback</button></div>
                 </div>
             </div>
@@ -59,10 +57,12 @@
                 var shop = document.querySelector('#feedback'); // DUMMY DATA
                 var data = [{
                     title: "Your feedback in important to us",
-                    description: "Rate here <strong>iyabasira.online</strong> and tell us below your say.",
+                    description: "Rate <strong>iyabasira.online</strong> here and tell us below about your experience.",
                     image: '/img/fastfood-worker-114-255355.png',
                     rating: 0
-                }]; // INITIALIZE
+                }];
+
+                // INITIALIZE
                 (function init() {
                     for (var i = 0; i < data.length; i++) {
                         addRatingWidget(buildShopItem(data[i]), data[i]);
@@ -74,12 +74,12 @@
                     var shopItem = document.createElement('div');
 
                     var html = '<div class="c-shop-item__img"><img src="' + data.image + '"></div>' +
-                    '<div class="c-shop-item__details">' +
+                        '<div class="c-shop-item__details">' +
                         '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
                         '<p class="c-shop-item__description">' + data.description + '</p>' +
                         '<ul class="c-rating"></ul>' +
-                        '<textarea class="form-control" autocorrect="off" rows="5" id="comment" name="comment" placeholder="How can we improve to server you better?"></textarea>' +
-                    '</div>';
+                        '<textarea class="form-control" rows="5" id="comment" name="comment" placeholder="How can we improve to serve you better?"></textarea>' +
+                        '</div>';
 
                     shopItem.classList.add('c-shop-item');
                     shopItem.innerHTML = html;

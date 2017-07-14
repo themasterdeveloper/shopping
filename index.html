@@ -15,46 +15,12 @@
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/libs/bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="/libs/bootstrap/css/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="/libs/slick/css/slick.min.css" rel="stylesheet">
-    <!--
-    <link href="/libs/slick/css/slick-theme.min.css" rel="stylesheet">
--->
     <link href="/css/font-awesome.min.css" rel="stylesheet">
     <!-- Full screen for Safari under iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- Custom styles for this template -->
     <link href="/css/global.min.css" rel="stylesheet">
     <style>
-        .intro {
-            padding: 2px;
-        }
-
-        .banner {
-            position: absolute;
-            background: url('/img/banner.png') 50% no-repeat;
-            background-size: contain;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .banner div.message {
-            margin: 50% auto;
-            font-size: 18pt;
-            font-weight: bold;
-            padding: 10px;
-            background-color: rgba(255,255,255,0.6);
-            margin-left: 18px;
-            margin-right: 18px;
-            color: black;
-            text-align: center;
-            border-radius: 6px;
-            z-index: 1;
-        }
-
         .alert,
         .error_message,
         .shadow,
@@ -109,14 +75,6 @@
 
     <!-- Loading spin image -->
     <i class="fa fa-refresh fa-5x fa-spin"></i>
-    <div class="shadow"></div>
-    <div class="alert-area hidden">
-    </div>
-    <div class="banner">
-        <div class="message">
-            Touch the screen to start
-        </div>
-    </div>
     <div class="container">
         <div class="pull-right dashboard">
             <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket"></span>
@@ -126,18 +84,9 @@
           <i class="glyphicon glyphicon-envelope"></i> <span class="badge unread-messsages"></span>
         </button>
 
-        <div id="content" class="content hidden">
-        </div>
-        <div class="intro" id="intro">
-            <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
-            <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
-            <div class="slider hidden">
-                <div><img src ""></div>
-            </div>
-            <div class="form-group areas-group hidden">
-                <select class="form-control areas">
-                </select>
-            </div>
+        <div id="content" class="content">
+
+
         </div>
         <!--
         <p class="copyright">
@@ -153,8 +102,6 @@
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
-    <script src="/libs/bootstrap/js/bootstrap-switch.min.js"></script>
-    <script src="/libs/slick/js/slick.min.js"></script>
     <script src="/libs/push/push.min.js"></script>
     <script src="/js/common.min.js"></script>
     <script src="/js/cookies.min.js"></script>
@@ -165,70 +112,32 @@
     <script src="/js/shop.min.js"></script>
 
     <script>
+    
         $(document).ready(function() {
             Push.Permission.request();
-            shop.load_shops_logos();
             common.init();
             common.get_config_value("Online");
             common.get_config_value("Debug");
             chat.init();
             chat.check_messages();
             cookies.setCookie("sender", 2);
-            if (shop.intro) {
-                $("#content").load(shop.HOME);
-                $(".intro").addClass("hidden");
-                $("#content").removeClass("hidden");
-            } else {
-                shop.load_dropdown("areas");
-            }
-            var show_map = cookies.getCookie("show_map");
-            if (show_map) {
-                if (show_map == "1") {
-                    $("#content").load("/thanks");
-                    $(".intro").addClass("hidden");
-                    $("#content").removeClass("hidden");
-                    cookies.setCookie("show_map", 0);
-                }
-            } else {
-                $("#content").load(shop.HOME);
-            }
             common.log("listCookies", cookies.listCookies());
-        });
-
-        $(".areas").on("change", function(e) {
-            e.preventDefault();
-            intro = true;
-            cookies.setCookie("chosen-area", $(this).val());
-            $(".banner").css("opacity", 0);
-            //$("#content").load(HOME);
-            $("#content").load('/shops');
-            //$("#content").load("/thanks")
-            $(".intro").addClass("hidden");
-            $("#content").removeClass("hidden");
-            $(".copyright").addClass("hidden");
+            $("#content").load("/splash.html")
         });
 
         $("#basket_button").on("click", function(e) {
             e.preventDefault();
-            $(".banner").addClass("hidden");;
-            $(".slider").addClass("hidden");;
-            $(".intro").addClass("hidden");
-            $("#content").removeClass("hidden");
             $("#content").load("/basket")
         });
 
         $(".alerts-button").on("click", function(e) {
             e.preventDefault();
-            $(".intro").addClass("hidden");
-            $("#content").removeClass("hidden");
             location.href = "/chat";
         })
 
-        $(".banner").bind("touchstart click", function(e) {
+        $(".content").on("click", function(e) {
             e.preventDefault();
             $(".areas").parent().removeClass("hidden");
-            $(".banner").css("opacity", ".2");
-            $(".slider").css("opacity", ".2");
         })
     </script>
 </body>

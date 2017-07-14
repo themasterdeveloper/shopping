@@ -278,8 +278,8 @@ body {
 }
 
 .main, #profile-form {
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-right: 18px;
+    padding-left: 18px;
     margin-bottom: 60px;
 }
 
@@ -630,4 +630,12 @@ div[class*="-form"] {
 .white-background {
     background-color: #fff;
     color: #000;
+}
+
+.splash img {
+    display: block;
+    margin: auto;
+    margin-top: 18px;
+    height: 100%;
+    width: 100%;
 }
