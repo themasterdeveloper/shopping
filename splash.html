@@ -1,0 +1,29 @@
+<div class="row">
+    <div class="main">
+        <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
+        <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
+        <div class="form-group areas-group hidden">
+            <select class="form-control areas">
+                </select>
+        </div>
+        <div class="splash">
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        shop.load_dropdown("areas");
+        shop.init();
+        shop.updateBasket();
+    })
+    $(".splash").bind("click", function(e) {
+        e.preventDefault();
+        $(".areas").parent().removeClass("hidden");
+    })
+    $(".areas").on("change", function(e) {
+        e.preventDefault();
+        cookies.setCookie("chosen-area", $(this).val());
+        $("#content").load('/shops');
+    });
+</script>
