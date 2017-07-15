@@ -16,11 +16,11 @@
         shop.load_dropdown("areas");
         shop.init();
         shop.updateBasket();
+        setTimeout(function(){
+            $(".areas").parent().removeClass("hidden");
+        }, 3000);
     })
-    $(".splash").bind("click", function(e) {
-        e.preventDefault();
-        $(".areas").parent().removeClass("hidden");
-    })
+
     $(".areas").on("change", function(e) {
         e.preventDefault();
         cookies.setCookie("chosen-area", $(this).val());
