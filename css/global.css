@@ -632,10 +632,14 @@ div[class*="-form"] {
     color: #000;
 }
 
-.splash img {
-    display: block;
-    margin: auto;
-    margin-top: 18px;
+.splash {
+    background: url('/img/banner.png') 50% no-repeat;
+    background-size: contain;
+    position: absolute;
+    margin: 0;
+    top: 0;
+    left: 0;
     height: 100%;
     width: 100%;
+    z-index: -1;
 }

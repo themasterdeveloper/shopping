@@ -7,8 +7,7 @@
                 </select>
         </div>
         <div class="splash">
-            <img src="/img/banner.png">
-            <img src="/img/shops.png">
+
         </div>
     </div>
 </div>
@@ -17,6 +16,10 @@
         shop.load_dropdown("areas");
         shop.init();
         shop.updateBasket();
+    })
+    $(".splash").bind("click", function(e) {
+        e.preventDefault();
+        $(".areas").parent().removeClass("hidden");
     })
     $(".areas").on("change", function(e) {
         e.preventDefault();
