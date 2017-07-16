@@ -1,3 +1,23 @@
+<style>
+    .bootstrap-select .btn {
+        background-color: #f9f9f9;
+        border-style: solid;
+        border-left-width: 5px;
+        border-left-color: #5bc0de;
+        border-top: none;
+        border-bottom: none;
+        border-right: none;
+        color: #000;
+        font-weight: 200;
+        padding: 12px 12px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+</style>
 <div class="row">
     <div class="main">
         <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
@@ -16,7 +36,7 @@
         shop.load_dropdown("areas");
         shop.init();
         shop.updateBasket();
-        setTimeout(function(){
+        setTimeout(function() {
             $(".areas").parent().removeClass("hidden");
         }, 3000);
     })
