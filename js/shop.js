@@ -242,7 +242,7 @@ var shop = {
                             i++;
                         }
                     }
-                    tmp[i] = "<td><a href='#' onclick=removeItem(" + $this["id"] + ")><span class='glyphicon glyphicon-remove'></span></td></a></tr>";
+                    tmp[i] = "<td><a href='#' onclick=shop.removeItem(" + $this["id"] + ")><span class='glyphicon glyphicon-remove'></span></td></a></tr>";
                     i++;
                 }
                 $("#basket-table thead").empty().append(header.join(''));

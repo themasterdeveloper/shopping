@@ -1,3 +1,19 @@
+<style>
+    .bootstrap-select .btn {
+        background-color: #f9f9f9;
+        border-style: solid;
+        border-color: #5bc0de;
+        border-left-width: 8px;
+        color: #000;
+        padding: 12px 12px;
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+</style>
 <div class="row">
     <div class="main">
         <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
@@ -16,11 +32,11 @@
         shop.load_dropdown("areas");
         shop.init();
         shop.updateBasket();
+        setTimeout(function() {
+            $(".areas").parent().removeClass("hidden");
+        }, 2000);
     })
-    $(".splash").bind("click", function(e) {
-        e.preventDefault();
-        $(".areas").parent().removeClass("hidden");
-    })
+
     $(".areas").on("change", function(e) {
         e.preventDefault();
         cookies.setCookie("chosen-area", $(this).val());

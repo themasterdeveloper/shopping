@@ -1,5 +1,13 @@
-/** Fonts **/
 
+/** Colors **/
+/*
+    #f9f9f9 - Default
+    #428bca - Primary
+    #5cb85c - Success
+    #5bc0de - Info
+    #f0ad4e - Warning
+    #d9534f - Danger
+*/
 html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -11,6 +19,8 @@ html {
     -moz-box-sizing: inherit;
     box-sizing: inherit;
 }
+
+/** Fonts **/
 
 @font-face {
     font-family: 'Roboto';
@@ -208,12 +218,8 @@ body {
 .main, body, .intro, #dashboard-table {
     background-color: #f8f8f8;
 }
-
-.areas-group {
-    position: absolute;
-    top: 200px;
-    left: 18px;
-    right: 18px;
+.main {
+    position: relative;
 }
 
 #shops-table {
@@ -632,14 +638,34 @@ div[class*="-form"] {
     color: #000;
 }
 
+.areas-group {
+    top: 200px;
+    z-index: 99999;
+    position: fixed;
+    width: 90%;
+}
+
 .splash {
-    background: url('/img/banner.png') 50% no-repeat;
+    background: url('/img/rsz_banner.jpg') 50% no-repeat;
     background-size: contain;
-    position: absolute;
-    margin: 0;
+    position: fixed;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
-    z-index: -1;
+    z-index: 1;
+}
+
+@media (min-width: 762px) {
+    .splash {
+        top: 10%;
+        left: 10%;
+        height: 80%;
+        width: 80%;
+    }
+    .areas-group {
+        left: 30%;
+        right: 30%;
+        width: 40%;
+    }
 }
