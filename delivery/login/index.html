@@ -177,6 +177,8 @@
 
 <script>
     // Get the modal
+
+    //cookies.deleteAllCookies();
     var modal = document.getElementById('id01');
     document.getElementById('id01').style.display = 'block';
     // When the user clicks anywhere outside of the modal, close it
@@ -188,6 +190,6 @@
 
     $(".modal-content").on("submit", function(e){
         e.preventDefault();
-        deliverer_login();
+        delivery.deliverer_login();
     })
 </script>

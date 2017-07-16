@@ -1,3 +1,25 @@
+
+/** Colors **/
+/*
+    #f9f9f9 - Default
+    #428bca - Primary
+    #5cb85c - Success
+    #5bc0de - Info
+    #f0ad4e - Warning
+    #d9534f - Danger
+*/
+html {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    -webkit-box-sizing: inherit;
+    -moz-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
 /** Fonts **/
 
 @font-face {
@@ -18,7 +40,6 @@
 
 .app-title {
     font-size: 24px;
-    padding-top: 18px;
     color: #44BBEE;
 }
 
@@ -197,6 +218,34 @@ body {
 .main, body, .intro, #dashboard-table {
     background-color: #f8f8f8;
 }
+.main {
+    position: relative;
+}
+
+#shops-table {
+    margin-top: 10px;
+}
+
+.shops-container {
+    text-align: center;
+}
+
+.slider {
+    position: absolute;
+    bottom: 18px;
+    left: 3px;
+    right: 3px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.slider div img {
+    background-color: #f8f8f8;
+}
+
+.shop-logo-slider {
+    height: 60px;
+    margin: 10px;
+}
 
 #dashboard-table {
     background-color: #44BBEE;
@@ -231,13 +280,12 @@ body {
 }
 
 .app-title {
-    padding: 10px;
     font-weight: bold;
 }
 
 .main, #profile-form {
-    padding-right: 20px;
-    padding-left: 20px;
+    padding-right: 18px;
+    padding-left: 18px;
     margin-bottom: 60px;
 }
 
@@ -450,6 +498,12 @@ input[type=range]:focus::-ms-fill-upper {
 .copyright {
     font-size: 12px;
     color: #888;
+    text-align: center;
+    background-color: #fff;
+    position: absolute;
+    margin-right: 12px;
+    bottom: 0;
+    padding: 3px;
 }
 
 .copyright span.iyabasira {
@@ -526,12 +580,16 @@ div[class*="-form"] {
 */
 
 .dashboard {
-    /*
     position: fixed;
-    top: 18px;
-    right: 18px;
-    */
-    margin-top: 18px;
+    top: 0;
+    right: 0;
+    z-index: 99999;
+}
+
+.alerts-button {
+    position: fixed;
+    top: 0;
+    right: 0;
     z-index: 99999;
 }
 
@@ -568,4 +626,46 @@ div[class*="-form"] {
 .form-group.required label:after {
     content: " *";
     color: red;
+}
+
+.red-background {
+    background-color: red;
+    color: #fff;
+}
+
+.white-background {
+    background-color: #fff;
+    color: #000;
+}
+
+.areas-group {
+    top: 200px;
+    z-index: 99999;
+    position: fixed;
+    width: 90%;
+}
+
+.splash {
+    background: url('/img/rsz_banner.jpg') 50% no-repeat;
+    background-size: contain;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+@media (min-width: 762px) {
+    .splash {
+        top: 10%;
+        left: 10%;
+        height: 80%;
+        width: 80%;
+    }
+    .areas-group {
+        left: 30%;
+        right: 30%;
+        width: 40%;
+    }
 }

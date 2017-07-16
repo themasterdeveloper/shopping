@@ -8,7 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>iyabasira - Admin</title>
+    <title>iyabasira - delivery services</title>
     <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
     <!-- Bootstrap core CSS -->
     <link href="/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,6 +26,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     <link href="/css/delivery.min.css" rel="stylesheet">
+    <link href="/css/maps.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -46,12 +47,22 @@
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/libs/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/common.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
+    <script src="/js/chat.min.js"></script>
     <script src="/js/delivery.min.js"></script>
     <script src="/js/maps.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".alert").hide();
-            $('.master-container').load("login");
+            common.init();
+            delivery.init();
+            if (!cookies.getCookie("user_id")) {
+                load("login");
+            } else {
+                load("home.html");
+            }
+            common.log(cookies.listCookies());
         });
         load = function(folder) {
             $('.master-container').load(folder)

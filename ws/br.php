@@ -29,14 +29,32 @@ $action = $_GET['action'];
 log_this($action);
 
 switch ($action) {
+    case "check_messages":
     case "get_messages":
         // It's gonna be a query
 
         $action_type = $_query;
 
         $order_id = $_GET['order_id'];
+        $lastID = $_GET['lastID'];
         // Fill the query parameters
-        $query = $action . "('" . $order_id . "')";
+        $query = $action . "('" . $order_id . "','" . $lastID . "')";
+
+        break;
+    case "get_latest_messages":
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $query = "adm_get_messages()";
+
+        break;
+    case "get_shops_logos":
+        // It's gonna be a query
+
+        $action_type = $_query;
+
+        $query = "get_shops_logos()";
 
         break;
     case "login":
@@ -482,6 +500,36 @@ switch ($action) {
 
         break;
 
+    case "get_order_shops":
+
+        // It's gonna be a query
+
+        $action_type = $_query;
+        $order_id = $_GET['order_id'];
+
+        // Fill the query parameters
+        $query = "get_order_shops('" . $order_id . "')";
+
+        break;
+
+    case "mark_as_read":
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL mark_as_read(?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("i", $order_id);
+
+        // Assign values
+        $order_id = $_GET['order_id'];
+
+        break;
+
     case "send_message":
 
         // It's gonna be a database update
@@ -490,14 +538,15 @@ switch ($action) {
 
         // Set the procedure we are going to use
 
-        $stmt = $conn->prepare("CALL send_message(?,?)");
+        $stmt = $conn->prepare("CALL send_message(?,?, ?)");
 
         // Bind parameters
 
-        $stmt->bind_param("is", $order_id, $message);
+        $stmt->bind_param("iis", $order_id, $sender_type, $message);
 
         // Assign values
         $order_id = $_GET['order_id'];
+        $sender_type = $_GET['sender_type'];
         $message = $_GET['message'];
 
         break;
@@ -946,7 +995,12 @@ switch ($action) {
         $type_id = $_GET['shop_type_id'];
 
         break;
-
+    case "test-email":
+        $action_type = $_email;
+        $template = "test of email";
+        $email = "omar.melendrez@gmail.com";
+        $subject = "test";
+        break;
     case "order_notify":
 
         // It's gonna be an email
@@ -954,19 +1008,26 @@ switch ($action) {
         $action_type = $_email;
 
         $order_id = $_GET['order_id'];
+        $type = $_GET['type'];
         // Set the procedure we are going to use
-        $query = 'get_order_details(' . $order_id . ')';
-        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
-        $template = file_get_contents('../assets/templates/order_confirmation.html');
+        if ($type == 1) {
+            $query = 'get_order_details(' . $order_id . ')';
+            $template = file_get_contents('../assets/templates/order_confirmation.html');
+        } else {
+            $shop_id = $_GET['shop_id'];
+            $query = 'get_shop_order_details(' . $order_id . ',' . $shop_id . ')';
+            $template = file_get_contents('../assets/templates/shop_order_confirmation.html');
+        }
         //$sms_template = file_get_contents('../assets/templates/order_confirmation.txt');
         $data = '';
+        $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $pass = 0;
         while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
-            if($pass == 0){
-                foreach($row as $key => $value) {
-                    $template = str_replace('{'.$key.'}',  $row[$key], $template);
+            if ($pass == 0) {
+                foreach ($row as $key => $value) {
+                    $template = str_replace('{'.$key.'}', $row[$key], $template);
                 }
-                $email = $row['email'];
+                $email = strtolower($row['email']);
                 //$mobile = $row['mobile'];
                 $subject = 'iyabasira - Order Confirmation # ' . $row['order-number'];
                 //$sms_template = str_replace('{customer-name}', $row['customer-name'], $sms_template);
@@ -975,15 +1036,18 @@ switch ($action) {
                 $pass=1;
             }
             $data .= "<tr>";
-            $data .= "<td>".$row["shop"]."</td>";
+            if ($type == 1) {
+                $data .= "<td>".$row["shop"]."</td>";
+            }
             $data .= "<td>".$row["item"]."</td>";
             $data .= "<td class='_qty'>".$row["qty"]."</td>";
             $data .= "<td class='_amount'>".$row["unit price"]."</td>";
             $data .= "<td class='_amount'>".$row["total price"]."</td>";
             $data .= "</tr>";
-           }
+        }
         $template = str_replace('{data}', $data, $template);
         $result->free();
+        $conn->close();
 
         //$URL = $sms_url . "?username=" . $sms_user . "&password=" . $sms_password . "&sender=" . $sms_sender . "&recipient=" . $mobile . "&message=" . urlencode($sms_template);
 
@@ -997,16 +1061,16 @@ switch ($action_type) {
         $result = $conn->query('CALL ' . $query) or trigger_error($conn->error . "[$query]");
         $rowcount=mysqli_num_rows($result);
         $rows = array();
-        if($rowcount==0){
+        if ($rowcount==0) {
             $rows[] = array("error"=>1,
-                            "message"=>"Sorry, there are no products available");
-        }else{
-            while ($row = $result->fetch_array(MYSQLI_ASSOC))
-                {
+                            "message"=>"Sorry, there are no records available");
+        } else {
+            while ($row = $result->fetch_array(MYSQLI_ASSOC)) {
                 $rows[] = $row;
-                }
+            }
         }
         $result->free();
+        $conn->close();
 
         break;
 
@@ -1015,10 +1079,10 @@ switch ($action_type) {
         $stmt->execute();
         $rows = array();
         stmt_bind_assoc($stmt, $row);
-        while ($stmt->fetch())
-            {
+        while ($stmt->fetch()) {
             $rows[] = array_copy($row);
-            }
+        }
+        $conn->close();
 
         break;
 
@@ -1027,7 +1091,6 @@ switch ($action_type) {
         $headers = "MIME-Version: 1.0";
         $headers.= "\r\nContent-type:text/html;charset=iso-8859-1";
         // More headers and the BCC to me
-
         $headers .= "\r\nFrom: <noreply@iyabasira.online>";
         $headers .= "\r\nCc: <admin@iyabasira.online>";
         $headers .= "\r\nBcc: <omar.melendrez@gmail.com>";
@@ -1035,15 +1098,20 @@ switch ($action_type) {
 
         // Create the message with html style
 
-        $body = $template;
+        $body = str_replace("\n.", "\n..", $template);
 
-        if($php_server != "localhost")
-            if($email!="")
-                mail($email, $subject, $body, $headers);
-        else
-            log_this($email . ": " . $subject);
-            log_this($headers);
-            log_this($body, "email");
+        if ($php_server != "localhost") {
+            if ($email!="") {
+                $_SESSION['email'] = $email;
+                $_SESSION['subject'] = $subject;
+                $_SESSION['body'] = $body;
+                $_SESSION['headers'] = $headers;
+                include "send_email.php";
+            }
+        }
+        log_this($headers, "email");
+        log_this($email . ": " . $subject, "email");
+        log_this($body, "email");
         /*
         if($mobile != '') {
             $ch = curl_init($URL);
@@ -1060,14 +1128,13 @@ switch ($action_type) {
         break;
 }
 
-$conn->close();
 
 // Send data in JSON format back to the user interface
 
-if ($action_type != '') echo (json_encode($rows));
+if ($action_type != '') {
+    echo(json_encode($rows));
+}
 
 //if ($action_type != "") echo (json_encode(array("data"=>array_values($rows), "records"=>$rowcount)) );
 
 session_write_close();
-
-?>

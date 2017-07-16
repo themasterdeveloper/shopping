@@ -1,0 +1,6 @@
+logs
+assets/images
+*.min.*
+.idea
+.vscode
+index_back.html

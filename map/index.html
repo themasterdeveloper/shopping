@@ -58,23 +58,23 @@
                 initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             });
         }
-        set_area_coordinates(getCookie('chosen-area'));
+        set_area_coordinates(cookies.getCookie('chosen-area'));
     }
 
     set_area_coordinates = function(area_id) {
         var data = {};
         data.action = "get_area_coordinates";
         data.area_id = area_id;
-        log("get_area_coordinates", data);
+        common.log("get_area_coordinates", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_area_coordinates", data);
+                common.log("get_area_coordinates", data);
                 var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
                 $('#area_id').val(area_id);
                 initialLocation = centerMap;
                 map.panTo(initialLocation);
-                load_shops_locations(getCookie("chosen-area"));
+                maps.load_shops_locations(cookies.getCookie("chosen-area"));
             }
         });
     }
@@ -83,11 +83,11 @@
         e.preventDefault();
         var item_id = $('#item_id').val();
         if(!item_id) {
-            showErr("Please select a shop")
+            common.showErr("Please select a shop")
             return false;
         }
-        setCookie('shop-area-id', $('#item_id').val());
-        $("#content").load(HOME);
+        cookies.setCookie('shop-area-id', $('#item_id').val());
+        $("#content").load(shop.HOME);
     })
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">

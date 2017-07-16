@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
-    <meta name="google-site-verification" content="rUQGy7uVvtoqDq5FR3OHW81IMFQl-hDLQtvD7ccokX0" />
     <meta name="description" content="iyabasira - a new way to shop for Naija">
     <meta name="author" content="www.escng.com">
     <link rel="icon" href="/img/favicon.ico">
@@ -21,6 +20,7 @@
 </head>
 
 <body>
+    <i class="fa fa-refresh fa-5x fa-spin"></i>
     <div class="container bootstrap snippet">
         <div class="row">
             <div>
@@ -59,8 +59,9 @@
                                 <div class="form-group">
                                     <textarea class="form-control" id="chat-message" placeholder="Enter message..."></textarea>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group chat-buttons-area">
                                     <button type="button" class="btn btn-danger pull-left back-button">Back</button>
+                                    <button type="button" class="btn btn-info map-button hidden">Map</button>
                                     <button type="button" class="btn btn-default pull-right send-button">Send</button>
                                     <div class="clearfix"></div>
                                 </div>
@@ -74,22 +75,57 @@
     </div>
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/js/auth.min.js"></script>
+    <script src="/js/common.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
     <script src="/js/chat.min.js"></script>
     <script>
         $(document).ready(function() {
-            get_messages();
-            log("cookies", listCookies());
+            if (cookies.getCookie("sender") == "1" || cookies.getCookie("sender") == "4") {
+                $('.map-button').addClass("hidden");
+            } else {
+                $('.map-button').removeClass("hidden");
+            }
+            chat.init();
+            chat.get_messages();
+            common.log("cookies", cookies.listCookies());
         });
 
         $('.back-button').on("click", function(e) {
             e.preventDefault();
-            location.href = "/";
+            switch (cookies.getCookie("sender")) {
+                case "1": // Admin
+                    window.close();
+                    break;
+                case "4": // Delivery guy
+                    location.href = "/delivery";
+                    break;
+                default: // Customer or Receiver
+                    location.href = "/";
+            }
         })
 
         $('.send-button').on("click", function(e) {
             e.preventDefault();
-            send_message($('#chat-message').val());
+            $(this).attr("disabled", "disabled");
+            chat.send_message($('#chat-message').val());
+            $(this).removeAttr("disabled");
         })
+
+        $('.map-button').on("click", function(e) {
+            e.preventDefault();
+            cookies.setCookie("show_map", 1);
+            location.href = "/";
+        })
+
+        $('textarea').on('keypress', function(e) {
+            if (e.which === 13) {
+                $(this).attr("disabled", "disabled");
+                chat.send_message($('#chat-message').val());
+                $(this).removeAttr("disabled");
+            }
+        });
     </script>
 </body>
 

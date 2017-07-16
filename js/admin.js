@@ -10,144 +10,12 @@
  *
  */
 
-window.onerror = function(message, filename, linenumber) {
-    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
-};
 var col_names = [];
 var d = "d=" + new Date().toJSON();
 var webservice_path = "/ws/br.php",
     record_id,
-    cur_page = 0;
-error = false,
-
-    /**
-     * Global setup for Ajax calls
-     *
-     */
-    $.ajaxSetup({
-        type: 'GET',
-        url: webservice_path,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        cache: true,
-        async: true,
-        timeout: 0, // Timeout of 60 seconds
-        error: function(xhr, errorThrown) {
-            log_ajax_error(xhr, errorThrown);
-        }
-    });
-// Close $.ajaxSetup()
-
-/**
- * Shows/hides loading gif based on
- * Ajax status
- *
- */
-
-$(document).ajaxStart(function() {
-    $('.fa').show().center();
-});
-
-$(document).ajaxStop(function() {
-    $('.fa').fadeOut('slow');
-});
-
-$(document).ajaxError(function() {
-    setTimeout(function() {
-        $('.fa').fadeOut('slow');
-        //        location.href = location.href;
-    }, 3000);
-});
-
-log_ajax_error = function(xhr, errorThrown) {
-    log(xhr);
-    showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
-};
-
-/**
- * Logs javascript trace
- */
-
-var log = function(name, value) {
-    console.debug(name, value);
-}
-
-/**
- * Save cookie on users' computer
- *
- * @param {Object} c_description
- * @param {Object} value
- * @param {Object} exdays
- */
-
-setCookie = function(c_description, value, exdays) {
-    var exdate = new Date();
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
-    document.cookie = c_description + "=" + c_value;
-};
-
-/**
- * Reads cookie from users' computer
- *
- * @param {Object} c_description
- */
-
-getCookie = function(c_description) {
-    var c_value = document.cookie;
-    //    log("getCookie.document.cookie: " + c_description);
-
-    var c_start = c_value.indexOf(" " + c_description + "=");
-    if (c_start == -1) {
-        c_start = c_value.indexOf(c_description + "=");
-    }
-    if (c_start == -1) {
-        c_value = null;
-    } else {
-        c_start = c_value.indexOf("=", c_start) + 1;
-        var c_end = c_value.indexOf(";", c_start);
-        if (c_end == -1) {
-            c_end = c_value.length;
-        }
-        c_value = unescape(c_value.substring(c_start, c_end));
-    }
-    return c_value;
-};
-
-deleteAllCookies = function() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-};
-
-/**
- * Centers divs on screen
- */
-
-jQuery.fn.center = function() {
-    this.css("position", "absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 3) + $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
-    return this;
-};
-
-showMsg = function(text) {
-    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
+    cur_page = 0,
+    error = false;
 
 var login = function() {
     var data = {};
@@ -160,20 +28,22 @@ var login = function() {
             data[$this.attr("id")] = $this.val().trim();
     });
 
-    log("login", data);
+    common.log("login", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("login", data);
+            common.log("login", data);
             if (data[0].user_id) {
                 document.getElementById('id01').style.display = 'none';
                 $(".navbar").removeClass("hidden");
                 $this = data[0];
                 for (key in $this) {
-                    setCookie(key, $this[key]);
+                    cookies.setCookie(key, $this[key]);
                 }
+                cookies.setCookie("login", 1);
             } else {
-                showErr("Email or password incorrect");
+                common.showErr("Email or password incorrect");
+                cookies.setCookie("login", 0);
             }
         }
     });
@@ -189,16 +59,16 @@ var saveData = function(object) {
         if ($this.attr("id"))
             data[$this.attr("id")] = $this.val().trim();
     });
-    log("saveData", data);
+    common.log("saveData", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("saveData", data);
+            common.log("saveData", data);
             if (data[0].error != 0) {
-                showErr(data[0].message);
+                common.showErr(data[0].message);
             } else {
-                showMsg(data[0].message);
-                setCookie("record_id", data[0].record_id);
+                common.showMsg(data[0].message);
+                cookies.setCookie("record_id", data[0].record_id);
                 $("." + object + "-list").removeClass("hidden");
                 $("." + object + "-form").addClass("hidden");
                 adm_load_table(object);
@@ -219,8 +89,8 @@ var adm_delete_item = function(item_id, table) {
                 _details += "<div class='delete-data'>" + col_names[counter] + ": <span class='data'>" + $(this).html() + "</span></div>";
         counter++;
     });
-    setCookie("item_id", item_id);
-    setCookie("table", table);
+    cookies.setCookie("item_id", item_id);
+    cookies.setCookie("table", table);
     $("#confirm-body").html(_details);
     $("#delete-confirmation").modal('show');
 }
@@ -228,19 +98,19 @@ var adm_delete_item = function(item_id, table) {
 var commit_details_confirmed = function() {
     var data = {};
     data.action = 'delete_table_record';
-    data.table = getCookie("table");
-    data.item_id = getCookie("item_id");
-    log("get_table_data", data);
+    data.table = cookies.getCookie("table");
+    data.item_id = cookies.getCookie("item_id");
+    common.log("get_table_data", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("adm_delete_item", data);
+            common.log("adm_delete_item", data);
             if (data[0].error != 0) {
-                showErr(data[0].message);
+                common.showErr(data[0].message);
             } else {
                 $("#delete-confirmation").modal('hide');
                 setTimeout(function() {
-                    adm_load_table(getCookie("table"));
+                    adm_load_table(cookies.getCookie("table"));
                 }, 1000);
             }
         }
@@ -251,27 +121,27 @@ var adm_load_table = function(table, read_only) {
     read_only = (typeof read_only === 'undefined') ? false : read_only;
     $(".table-name").html(table.replace('_', ' / '));
     $(".alert").hide();
-    if (getCookie("cur_page")) {
-        cur_page = parseInt(getCookie("cur_page"));
+    if (cookies.getCookie("cur_page")) {
+        cur_page = parseInt(cookies.getCookie("cur_page"));
     }
-    if (getCookie("rows_per_page")) {
-        rows_per_page = parseInt(getCookie("rows_per_page"));
+    if (cookies.getCookie("rows_per_page")) {
+        rows_per_page = parseInt(cookies.getCookie("rows_per_page"));
     }
     var data = {};
     data.action = 'adm_load_table_' + table;
     data.search = $("#search").val();
     data.limit = cur_page;
     data.rows = rows_per_page;
-    log("load_table", data);
+    common.log("load_table", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("load_table", data);
+            common.log("load_table", data);
             if (data[0].error == 1) {
                 $("#" + table + "-table tbody").empty();
                 $("#" + table + "-table tbody").empty();
                 $("#" + table + "-table tfood").empty();
-                showErr(data[0].message);
+                common.showErr(data[0].message);
                 return false;
             }
             var skip_columns = "-id-active-status_name-total_records-";
@@ -370,13 +240,13 @@ var adm_load_table = function(table, read_only) {
 
             $(".btn-prev").on("click", function(e) {
                 e.preventDefault();
-                setCookie("cur_page", cur_page - 1);
+                cookies.setCookie("cur_page", cur_page - 1);
                 adm_load_table(table, read_only);
             })
 
             $(".btn-next").on("click", function(e) {
                 e.preventDefault();
-                setCookie("cur_page", cur_page + 1);
+                cookies.setCookie("cur_page", cur_page + 1);
                 adm_load_table(table, read_only);
             })
 
@@ -421,11 +291,11 @@ var fillForm = function(item_id, table) {
     data.action = 'get_table_record';
     data.table = table;
     data.item_id = item_id;
-    log("get_table_record", data);
+    common.log("get_table_record", data);
     $.ajax({
         data: data,
         success: function(data) {
-            log("get_table_record", data);
+            common.log("get_table_record", data);
             $this = data[0];
             for (var key in $this) {
                 if (key == 'image') {
@@ -437,7 +307,7 @@ var fillForm = function(item_id, table) {
                 } else {
                     $("#" + key).val($this[key]);
                 }
-                log(key, $this[key]);
+                common.log(key, $this[key]);
             }
             if (table == 'shop_product') {
                 $(".selectpicker").prop('disabled', true);
@@ -455,7 +325,7 @@ load_dropdown = function(object, empty, disabled) {
     disabled = (typeof disabled === 'undefined') ? false : disabled;
     var data = {};
     data.action = object + "_list";
-    log("load_" + object, data);
+    common.log("load_" + object, data);
     var msg = 'Nothing selected';
     switch (object) {
         case "areas":
@@ -468,7 +338,7 @@ load_dropdown = function(object, empty, disabled) {
     $.ajax({
         data: data,
         success: function(data) {
-            log("load_" + object, data);
+            common.log("load_" + object, data);
             var tmp = [];
             var l = data.length;
             if (empty == 1) {

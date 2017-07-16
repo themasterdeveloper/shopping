@@ -8,6 +8,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
+    <link rel="icon" href="/img/favicon.ico">
     <title>iyabasira - Admin</title>
     <link href="https://fonts.googleapis.com/css?family=Droid+Sans+Mono" rel="stylesheet">
     <!-- Bootstrap core CSS -->
@@ -72,6 +73,7 @@
                         <li><a href="javascript:void(0)" onclick="load('customers')">Customers</a></li>
                         <li><a href="javascript:void(0)" onclick="load('receivers')">Receivers</a></li>
                         <li><a href="javascript:void(0)" onclick="load('map')">Map</a></li>
+                        <li><a href="javascript:void(0)" onclick="load('chat')">Chat</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
@@ -98,6 +100,7 @@
                                 <li><a href="javascript:void(0)" onclick="load('deliverers')">Delivery guys</a></li>
                             </ul>
                         </li>
+                        <li><a href="javascript:void(0)" onclick="logout()"><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
                     </ul>
                 </div>
                 <!--/.nav-collapse -->
@@ -140,16 +143,31 @@
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="/libs/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+    <script src="/js/cookies.min.js"></script>
+    <script src="/js/common.min.js"></script>
+    <script src="/js/chat.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
     <script src="/js/admin.min.js"></script>
     <script src="/js/maps.min.js"></script>
     <script>
         $(document).ready(function() {
-            $(".alert").hide();
-            $('.master-container').load("login");
+            common.init();
+            common.get_config_value("Online");
+            common.get_config_value("Debug");
+            if (cookies.getCookie("login") == 0) {
+                $('.master-container').load("login");
+            } else {
+                $(".navbar").removeClass("hidden");
+            }
         });
 
-        load = function(folder) {
-            $('.master-container').load(folder)
+        var load = function(folder) {
+            $('.master-container').empty().load(folder);
+        }
+
+        var logout = function() {
+            cookies.setCookie("login", 0);
+            location.href = "/admin";
         }
 
         $("#btnDeleteYes").on("click", function(event) {

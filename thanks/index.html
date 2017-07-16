@@ -24,7 +24,7 @@
     var zoom = 15;
 
     $(document).ready(function() {
-        $(".alert").hide();
+        chat.check_messages();
     });
 
     initialize = function() {
@@ -38,20 +38,20 @@
                 initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             });
         }
-        set_shop_coordinates(getCookie('order_id'));
-        set_deliverer_coordinates(getCookie('order_id'));
+        set_shop_coordinates(cookies.getCookie('order_id'));
+        set_deliverer_coordinates(cookies.getCookie('order_id'));
     }
 
     set_shop_coordinates = function(order_id) {
         var data = {};
         data.action = "get_shop_coordinates";
         data.order_id = order_id;
-        log("get_shop_coordinates", data);
+        common.log("get_shop_coordinates", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_shop_coordinates", data);
-                setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
+                common.log("get_shop_coordinates", data);
+                maps.setMarkers(data, 'name', '/img/rsz_fastfood-pin.png');
                 var initialLocation = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(initialLocation);
             }
@@ -62,12 +62,12 @@
         var data = {};
         data.action = "get_deliverer_coordinates";
         data.order_id = order_id;
-        log("get_deliverer_coordinates", data);
+        common.log("get_deliverer_coordinates", data);
         $.ajax({
             data: data,
             success: function(data) {
-                log("get_deliverer_coordinates", data);
-                setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
+                common.log("get_deliverer_coordinates", data);
+                maps.setMarkers(data, 'name', '/img/fastfood-worker-24-255355.png');
                 var centerMap = new google.maps.LatLng(data[0].lat, data[0].lng);
                 map.panTo(centerMap);
             }
@@ -76,7 +76,7 @@
 
     $(".exit").on("click", function(e) {
         e.preventDefault();
-        $("#content").load(HOME);
+        $("#content").load(shop.HOME);
     });
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAh_c5kk7g5ynpR6zwce2kEWXupyDIKL2Q&callback=initialize">

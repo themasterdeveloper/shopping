@@ -28,33 +28,6 @@
         .table-responsive {
             display: none;
         }
-
-        .bootstrap-select .btn {
-            background-color: #5cb85c;
-            border-style: solid;
-            border-left-width: 5px;
-            border-left-color: #5bc0de;
-            border-top: none;
-            border-bottom: none;
-            border-right: none;
-            color: white;
-            font-weight: 200;
-            padding: 12px 12px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            appearance: none;
-        }
-
-        .bootstrap-select .dropdown-menu {
-            margin: 15px 0 0;
-        }
-
-        select::-ms-expand {
-            /* for IE 11 */
-            display: none;
-        }
     </style>
     <script type="application/ld+json">
         {
@@ -76,43 +49,25 @@
 
     <!-- Loading spin image -->
     <i class="fa fa-refresh fa-5x fa-spin"></i>
-    <div class="shadow"></div>
-    <div class="alert-area hidden">
-    </div>
     <div class="container">
         <div class="pull-right dashboard">
             <button class="btn btn-danger hidden" id="basket_button" type="button">Basket <span class="badge basket"></span>
                 </button>
         </div>
-        <button class="btn btn-danger pull-left dashboard alerts-button" type="button">
-          <i class="glyphicon glyphicon-envelope"></i> <span class="badge unread-messsages">4</span>
+        <button class="btn btn-info pull-left alerts-button" type="button">
+          <i class="glyphicon glyphicon-envelope"></i> <span class="badge unread-messsages"></span>
         </button>
 
-        <div id="content" class="content hidden">
+        <div id="content" class="content">
+
+
         </div>
-        <div class="intro" id="intro">
-            <img src="/img/fastfood-worker-48-255355.png" class="pull-right">
-            <h3 class="app-title">iyabasira <span class="grey">delivery</span></h3>
-            <hr>
-            <p>Buy your meals from your preferred fast food and get it delivered as easy as 1-2-3:</p>
-            <ul>
-                <li>Select an item from the list and click
-                    <buton class="btn btn-xs btn-success">ORDER NOW</buton>
-                </li>
-                <li>Click on the <button class="btn btn-xs btn-danger">Basket</button> at the top of the page to checkout</li>
-                <li>Choose one of the delivery guys available in the same app</li>
-                <li>Rub your belly, the food is coming</li>
-            </ul>
-            <div class="form-group">
-                <label for="areas">Select the area you want the orders to be delivered</label>
-                <select class="form-control areas">
-                </select>
-            </div>
-            <p class="copyright">
-                The fast food brands and logos showed here are property of their respective companies.<br/>
-                <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved.
-            </p>
-        </div>
+        <!--
+        <p class="copyright">
+            The fast food brands and logos shown here are property of their respective companies.<br/>
+            <span class="iyabasira">iyabasira.online</span> (&copy;) 2017 - All rights reserved.
+        </p>
+    -->
     </div>
 
     <!-- Bootstrap core JavaScript ================================================== -->
@@ -122,52 +77,39 @@
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-switch.min.js"></script>
-    <script src="/js/global.min.js"></script>
+    <script src="/libs/push/push.min.js"></script>
+    <script src="/js/common.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
     <script src="/js/maps.min.js"></script>
     <script src="/js/chat.min.js"></script>
+    <script src="/js/auth.min.js"></script>
+    <script src="/js/shop.min.js"></script>
 
     <script>
+
         $(document).ready(function() {
-            if (intro) {
-                $("#content").load(HOME);
-                $(".intro").addClass("hidden");
-                $("#content").removeClass("hidden");
-            } else {
-                load_dropdown("areas", true);
-                //get_areas();
-                get_config_value("Online");
-                get_config_value("Debug");
-            }
-        });
-
-        $(".areas").on("change", function(e) {
-            e.preventDefault();
-            intro = true;
-            setCookie("chosen-area", $(this).val());
-            //$("#content").load(HOME);
-            $("#content").load('/shops');
-            //$("#content").load("/thanks")
-            $(".intro").addClass("hidden");
-            $("#content").removeClass("hidden");
-
+            Push.Permission.request();
+            common.init();
+            common.get_config_value("Online");
+            common.get_config_value("Debug");
+            chat.init();
+            chat.check_messages();
+            cookies.setCookie("sender", 2);
+            common.log("listCookies", cookies.listCookies());
+            $("#content").load("/splash.html")
         });
 
         $("#basket_button").on("click", function(e) {
             e.preventDefault();
-            $(".intro").addClass("hidden");
-            $("#content").removeClass("hidden");
             $("#content").load("/basket")
         });
 
-        $(".alerts-button").on("click", function(e){
+        $(".alerts-button").on("click", function(e) {
             e.preventDefault();
-            $(".intro").addClass("hidden");
-            $("#content").removeClass("hidden");
             location.href = "/chat";
         })
 
-        log("listCookies", listCookies());
-        //get_alerts();
     </script>
 </body>
 

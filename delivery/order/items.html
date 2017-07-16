@@ -11,10 +11,16 @@
             <tfoot></tfoot>
         </table>
     </div>
+    <div class="row buttons">
+        <button class="btn btn-lg btn-danger pull-right go-picked hidden">Order picked</button>
+    </div>
 </div>
 <script>
     $(document).ready(function() {
-        get_shops();
+        if(cookies.getCookie("order_status")=="2") {
+            $('.go-picked').removeClass("hidden");
+        }
+        delivery.get_shops();
     });
     $('.go-order').on("click", function(e) {
         e.preventDefault();
@@ -23,5 +29,9 @@
     $('.go-address').on("click", function(e) {
         e.preventDefault();
         load('order/address.html');
+    })
+    $('.go-picked').on("click", function(e) {
+        e.preventDefault();
+        delivery.order_picked();
     })
 </script>

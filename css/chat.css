@@ -217,6 +217,12 @@
     }
 }
 
+@media(min-width:768px) {
+    .chat-widget {
+        height: 440px;
+    }
+}
+
 img {
     height: 40px;
 }
@@ -224,4 +230,8 @@ img {
 .media-heading, .user-name {
     text-transform: capitalize;
     font-weight: bold;
+}
+
+.chat-buttons-area {
+    text-align: center;
 }

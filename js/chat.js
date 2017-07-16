@@ -1,211 +1,216 @@
-window.onerror = function(message, filename, linenumber) {
-    log("JavaScript error: " + message + " on line " + linenumber + " for " + filename);
-};
-var d = "d=" + new Date().toJSON();
-var webservice_path = "/ws/br.php"
-var DATE_ROW = '<div class="row"><div class="col-lg-12"><p class="text-center text-muted small">{sent}</p></div></div>';
-var MESSAGE_ROW = '<div class="row"><div class="col-lg-12"><div class="media-body"><h4 class="media-heading">{name}<span class="small pull-right">{time}</span></h4><div class="media"><a class="pull-{align}" href="#"><img class="media-object img-circle" src="{image}" alt=""></a><p>{message}</p></div></div></div></div>';
+// ¯\_(ツ)_/¯
+"use strict";
+var chat = {
 
-setCookie = function(c_description, value, exdays) {
-    var exdate = new Date();
-    exdays = 365;
-    exdate.setDate(exdate.getDate() + exdays);
-    var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
-    document.cookie = c_description + "=" + c_value;
-};
+    data: {
+        lastID: 0
+    },
 
-getCookie = function(c_description) {
-    //    log("getCookie.document.cookie: " + c_description);
-    var c_value = document.cookie;
+    url: "/ws/br.php",
+    DATE_ROW: '<div class="row"><div class="col-lg-12"><p class="text-center text-muted small">{sent}</p></div></div>',
+    MESSAGE_ROW: '<div class="row"><div class="col-lg-12"><div class="media-body"><h4 class="media-heading">{name}<span class="small pull-right">{time}</span></h4><div class="media"><a class="pull-{align}" href="#"><img class="media-object img-circle" src="{image}" alt=""></a><p>{message}</p></div></div></div></div>',
 
-    var c_start = c_value.indexOf(" " + c_description + "=");
-    if (c_start == -1) {
-        c_start = c_value.indexOf(c_description + "=");
-    }
-    if (c_start == -1) {
-        c_value = null;
-    } else {
-        c_start = c_value.indexOf("=", c_start) + 1;
-        var c_end = c_value.indexOf(";", c_start);
-        if (c_end == -1) {
-            c_end = c_value.length;
+    init: function() {
+        $.ajaxSetup({
+            url: chat.url
+        });
+    },
+
+    get_messages: function() {
+        var order_id = cookies.getCookie("order_id");
+        if (!order_id) {
+            return;
         }
-        c_value = unescape(c_value.substring(c_start, c_end));
-    }
-    return c_value;
-};
 
-deleteAllCookies = function() {
-    var cookies = document.cookie.split(";");
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf("=");
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-};
-
-function listCookies() {
-    var theCookies = document.cookie.split(';');
-    var o = {};
-    for (var i = 0; i < theCookies.length; i++) {
-        var name_value = theCookies[i].split("=");
-        var name = name_value[0].replace(/^ /, '');
-        var value = name_value[1];
-        if (o[name] !== undefined) {
-            if (!o[name].push) {
-                o[name] = [o[name]];
-            }
-            o[name].push(value || '');
-        } else {
-            o[name] = value || '';
+        var sender = cookies.getCookie("sender");
+        if (!sender) {
+            return;
         }
-    }
-    return o;
-}
 
-var log = function(name, value) {
-    if (getCookie("Debug") == "True") {
-        if (value === undefined) {
-            console.log(name);
-        } else {
-            console.debug(name, value);
+        var data = {
+            action: 'get_messages',
+            order_id: order_id,
+            lastID: chat.data.lastID
         }
-    }
-}
-jQuery.fn.center = function() {
-    this.css("position", "absolute");
-    this.css("top", Math.max(0, (($(window).height() - $(this).outerHeight()) / 3) + $(window).scrollTop()) + "px");
-    this.css("left", Math.max(0, (($(window).width() - $(this).outerWidth()) / 2) + $(window).scrollLeft()) + "px");
-    return this;
-};
 
-/**
- * Global setup for Ajax calls
- *
- */
-$.ajaxSetup({
-    type: 'GET',
-    url: webservice_path,
-    contentType: "application/json; charset=utf-8",
-    dataType: "json",
-    cache: true,
-    async: true,
-    timeout: 0, // Timeout of 60 seconds
-    error: function(xhr, errorThrown) {
-        log_ajax_error(xhr, errorThrown);
-    }
-});
-// Close $.ajaxSetup()
-log_ajax_error = function(xhr, errorThrown) {
-    log("xhr", xhr);
-    showErr('We are sorry, but there was an error accessing the database');
-    //showErr('An error occurred! [' + xhr.responseText + '] ' + ( errorThrown ? errorThrown : xhr.status));
-};
+        common.log("get_messages", data);
 
-/**
- * Shows/hides loading gif based on
- * Ajax status
- *
- */
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("get_messages", data);
+                if (data.length > 0 && !data[0].error) {
+                    var tmp = [],
+                        i = 0,
+                        cur_date = '';
 
-$(document).ajaxStart(function() {
-    $('.fa').show().center();
-});
+                    for (var r = 0; r < data.length; r++) {
+                        var $this = data[r];
+                        chat.data.lastID = $this['id'];
+                        var date_template = chat.DATE_ROW;
+                        var message_template = chat.MESSAGE_ROW;
 
-$(document).ajaxStop(function() {
-    $('.fa').fadeOut('slow');
-});
-
-$(document).ajaxError(function() {
-    setTimeout(function() {
-        $('.fa').fadeOut('slow');
-        //        location.href = location.href;
-    }, 3000);
-});
-
-showMsg = function(text) {
-    $(".alert").removeClass("alert-danger").removeClass("alert-info").addClass("alert-info");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-showErr = function(text) {
-    $(".alert").removeClass("alert-info").removeClass("alert-danger").addClass("alert-danger");
-    $(".alert #msg").html(text);
-    $(".alert").show();
-};
-
-
-var get_messages = function() {
-    var order_id = getCookie("order_id");
-    if (!order_id) {
-        return;
-    }
-    var data = {};
-    data.action = 'get_messages';
-    data.order_id = order_id;
-    log("get_messages", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("get_messages", data);
-            if (data.length > 0 && !data[0].error) {
-                var tmp = [];
-                var i = 0;
-                var cur_date = ''
-                for (var r = 0; r < data.length; r++) {
-                    $this = data[r];
-                    var date_template = DATE_ROW;
-                    var message_template = MESSAGE_ROW;
-                    if (cur_date != $this['sent']) {
-                        cur_date = $this['sent'];
-                        tmp[i] = date_template.replace('{sent}', cur_date);
-                        i++;
-                    }
-                    for (key in $this) {
-                        if ($this["sender"] == 2 && key == 'name') {
-                            message_template = message_template.replace('{' + key + '}', '');
+                        if (cur_date != $this['sent']) {
+                            cur_date = $this['sent'];
+                            tmp[i] = date_template.replace('{sent}', cur_date);
+                            i++;
                         }
-                        message_template = message_template.replace('{' + key + '}', $this[key]);
-                    }
-                    if (getCookie("token")) {
-                        if ($this["sender"] == 2) {
+
+                        for (var key in $this) {
+                            var msg_sender = parseInt($this["sender"]);
+                            if (msg_sender == sender && key == 'name') {
+                                message_template = message_template.replace('{' + key + '}', '');
+                            }
+                            message_template = message_template.replace('{' + key + '}', $this[key]);
+                        }
+
+                        if (msg_sender == sender) {
                             message_template = message_template.replace('{align}', 'right');
                             $('.user-name').html($this["name"]);
                         } else {
                             message_template = message_template.replace('{align}', 'left');
                         }
+                        tmp[i] = message_template;
+                        i++
                     }
-                    tmp[i] = message_template;
-                    i++
-                }
-                $('.chat-widget').empty().append(tmp.join(''));
-            }
-        }
-    });
-}
+                    $('.chat-widget').append(tmp.join(''));
 
-var send_message = function(message) {
-    var order_id = getCookie("order_id");
-    if (!order_id) {
-        return;
-    }
-    if (!message) {
-        return;
-    }
-    var data = {};
-    data.action = 'send_message';
-    data.order_id = order_id;
-    data.message = message;
-    log("send_message", data);
-    $.ajax({
-        data: data,
-        success: function(data) {
-            log("send_message", data);
-            $('#chat-message').val('');
-            get_messages();
+                    $('.chat-widget').animate({
+                        scrollTop: $('.chat-widget')[0].scrollHeight
+                    }, 800);
+
+                    if (sender == 2) {
+                        chat.mark_as_read(order_id);
+                    }
+
+                }
+                setTimeout(function() {
+                    chat.get_messages();
+                }, 5000);
+            }
+        });
+    },
+
+    check_messages: function() {
+        var order_id = cookies.getCookie("order_id");
+        if (!order_id) {
+            $('.alerts-button').addClass("hidden");
+            return;
         }
-    });
+
+        var data = {
+            action: 'check_messages',
+            order_id: order_id,
+            lastID: chat.data.lastID
+        }
+
+        common.log("get_messages", data);
+
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("check_messages", data);
+                var unread = data[0].undread;
+                if (unread == 0) {
+                    $('.unread-messsages').html('');
+                    $('.alerts-button').removeClass("btn-danger").addClass("btn-info");
+                    $('.unread-messsages').addClass("hidden");
+                } else {
+                    $('.unread-messsages').html(unread);
+                    $('.alerts-button').removeClass("btn-info").addClass("btn-danger");
+                    $('.unread-messsages').removeClass("hidden");
+                    Push.create('Hi there!', {
+                        body: 'You\'ve got a message from iyabasira.online',
+                        icon: 'img/rsz_new_message.png',
+                        //requireInteraction: true,
+                        timeout: 8000, // Timeout before notification closes automatically.
+                        vibrate: [100, 100, 100], // An array of vibration pulses for mobile devices.
+                        onClick: function() {
+                            // Callback for when the notification is clicked.
+                            Push.clear();
+                            $(".alerts-button").click();
+                            //common.log('Push', this);
+                        }
+                    });
+                }
+                $('.alerts-button').removeClass("hidden");
+                setTimeout(function() {
+                    chat.check_messages();
+                }, 20000);
+            }
+        });
+    },
+
+    mark_as_read: function(order_id) {
+        var data = {
+            action: 'mark_as_read',
+            order_id: order_id
+        };
+
+        common.log("mark_as_read", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("mark_as_read", data);
+            }
+        });
+    },
+
+    send_message: function(message) {
+        var order_id = cookies.getCookie("order_id");
+        if (!order_id) {
+            return;
+        }
+        var sender = cookies.getCookie("sender");
+        if (!sender) {
+            return;
+        }
+        if (!message) {
+            return;
+        }
+        var data = {
+            action: 'send_message',
+            order_id: order_id,
+            sender_type: sender,
+            message: message
+        }
+        common.log("send_message", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("send_message", data);
+                $('#chat-message').val('');
+                //get_messages();
+            }
+        });
+    },
+
+    get_latest_messages: function() {
+        var data = {
+            action: 'get_latest_messages'
+        }
+        common.log("get_latest_messages", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("get_latest_messages", data);
+                if (data.length > 0 && !data[0].error) {
+                    var tmp = [];
+                    var i = 0;
+                    tmp[i] = '<ul class="nav nav-tabs">';
+                    i++
+                    for (var r = 0; r < data.length; r++) {
+                        var $this = data[r];
+                        tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '<br><span class="message-sent">' + $this["sent"] + '</span></a></li>';
+                        i++;
+                    }
+                    tmp[i] = '</ul>';
+                    $(".data").empty().append(tmp.join(''));
+                    setTimeout(function() {
+                        chat.get_latest_messages();
+                    }, 30000);
+                }
+            }
+        });
+    }
 }

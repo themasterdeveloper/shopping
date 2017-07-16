@@ -7,11 +7,33 @@
             <span class="glyphicon glyphicon-envelope"></span> Messages
         </a>
     </div>
+    <div class="row buttons">
+        <button class="btn btn-lg btn-danger go-login">Logout</button>
+        <button class="btn btn-lg btn-info go-map pull-right">Map</button>
+    </div>
 </div>
 
 <script>
     $('.orders').on("click", function(e) {
         e.preventDefault();
+        cookies.deleteCookie("order_id");
         load('orders');
-    })
+    });
+
+    $('.messages').on("click", function(e) {
+        e.preventDefault();
+        cookies.setCookie("sender", 4);
+        location.href = "/chat";
+    });
+
+    $('.go-login').on("click", function(e) {
+        e.preventDefault();
+        cookies.deleteAllCookies();
+        load('login');
+    });
+
+    $('.go-map').on("click", function(e) {
+        e.preventDefault();
+        load('map');
+    });
 </script>

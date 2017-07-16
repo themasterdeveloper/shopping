@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- The above 3 meta tags *must* come first in the head;any other head content must come *after* these tags -->
-    <meta name="google-site-verification" content="rUQGy7uVvtoqDq5FR3OHW81IMFQl-hDLQtvD7ccokX0" />
     <meta name="description" content="iyabasira - a new way to shop for Naija">
     <meta name="author" content="www.escng.com">
     <link rel="icon" href="/img/favicon.ico">
@@ -70,7 +69,9 @@
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
-    <script src="/js/global.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
+    <script src="/js/common.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
     <script src="/js/maps.min.js"></script>
 
     <script>
@@ -95,7 +96,7 @@
             }, 5000);
             */
             setInterval(function() {
-                update_markers();
+                maps.update_markers();
             }, 60000);
         });
 
@@ -113,21 +114,15 @@
 
         $(".save-location").on("click", function(e){
             if(area_id != ''  && shop_id != '' ){
-                save_shop_location(area_id, shop_id, lat, lng);
+                maps.save_shop_location(area_id, shop_id, lat, lng);
             } else {
                 if(area_id == ''){
-                    showErr('You must select an area');
+                    common.showErr('You must select an area');
                 } else {
-                    save_area_location(area_id, lat, lng);
+                    maps.save_area_location(area_id, lat, lng);
                 }
             }
         });
-
-        update_markers = function(){
-
-            remove_markers();
-            load_shops_locations(0);
-        }
 
         remove_markers = function (){
 
@@ -168,7 +163,7 @@
                 lng = evt.latLng.lng();
             });
 
-            load_shops_locations(0);
+            maps.load_shops_locations(0);
         }
 
         relocateMap = function(){

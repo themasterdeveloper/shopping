@@ -10,7 +10,7 @@
                 <!-- Name -->
                 <div class="form-group required">
                     <label for="name">Name:</label>
-                    <input class="form-control" id="name" name="name" type="text" placeholder="Enter your name" isRequired="isRequired">
+                    <input class="form-control" id="name" autocorrect="off" autocapitalize="words" name="name" type="text" placeholder="Enter your name" isRequired="isRequired">
                     <span class="glyphicon form-control-feedback" id="name1"></span>
                 </div>
 
@@ -32,7 +32,7 @@
                 <!-- Address -->
                 <div class="form-group required">
                     <label for="receiver_address">Address:</label>
-                    <textarea class="form-control" rows="3" id="receiver_address" name="receiver_address" placeholder="Enter address for delivery" isRequired="isRequired"></textarea>
+                    <textarea class="form-control" autocorrect="off" autocapitalize="words" rows="3" id="receiver_address" name="receiver_address" placeholder="Enter address for delivery" isRequired="isRequired"></textarea>
                     <span class="glyphicon form-control-feedback" id="receiver_address1"></span>
                 </div>
 
@@ -47,7 +47,7 @@
                 <!-- Name 2-->
                 <div class="form-group required">
                     <label for="receiver_name">Receiver name:</label>
-                    <input class="form-control" preval="" id="receiver_name" name="receiver_name" type="text" placeholder="Enter order receiver's name" isRequired="isRequired">
+                    <input class="form-control" autocorrect="off" autocapitalize="words" preval="" id="receiver_name" name="receiver_name" type="text" placeholder="Enter order receiver's name" isRequired="isRequired">
                     <span class="glyphicon form-control-feedback" id="receiver_name1"></span>
                 </div>
 
@@ -89,7 +89,7 @@
     $(document).ready(function() {
         $("[id='copy_buyer']").bootstrapSwitch();
         $(".alert").hide();
-        restore_values();
+        shop.restore_values();
     });
 
     $(".cancel-action").on("click", function(d) {
@@ -119,7 +119,7 @@
 
     $("#profile-form").on("submit", function(d) {
         d.preventDefault();
-        store_values();
-        error = validate_form(this);
+        shop.store_values();
+        error = shop.validate_form(this);
     });
 </script>
