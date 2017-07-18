@@ -35,6 +35,7 @@
         <div id="content" class="content rating">
             <div class="row">
                 <div class="app-title">iyabasira <span class="grey">delivery</span></div>
+                <div class="order-number">ORDER # <span id='order-number'></span></div>
                 <!-- The table area -->
                 <div id="feedback"></div>
                 <div class="button-area">
@@ -42,7 +43,9 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;
                             </span></button>
                         <span id="msg"></span></div>
-                    <div class="col offset-md-8 col-md-12"><button type="button" class="btn btn-primary btn-lg pull-right save-rating">Send feedback</button></div>
+                    <div class="col offset-md-8 col-md-12">
+                        <button type="button" class="btn btn-primary btn-lg pull-right save-rating">Send feedback</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,57 +53,84 @@
     <script src="/libs/jquery/js/jquery.min.js"></script>
     <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
     <script src="/libs/rating/js/rating.min.js"></script>
+    <script src="/js/common.min.js"></script>
+    <script src="/js/shop.min.js"></script>
+    <script src="/js/ajax.min.js"></script>
+    <script src="/js/cookies.min.js"></script>
     <script>
-        (function() {
+        var value = 0;
+        $(document).ready(function() {
+            common.init();
+            common.get_config_value("Online");
+            common.get_config_value("Debug");
+            shop.update_order_number();
+            (function() {
+                    // FEEDBACK ELEMENT
+                    var shop = document.querySelector('#feedback'); // DUMMY DATA
+                    var data = [{
+                        title: "Your feedback in important to us",
+                        description: "Rate <strong>iyabasira.online</strong> here and tell us below about your experience.",
+                        image: '/img/fastfood-worker-114-255355.png',
+                        rating: 0
+                    }];
 
-                // FEEDBACK ELEMENT
-                var shop = document.querySelector('#feedback'); // DUMMY DATA
-                var data = [{
-                    title: "Your feedback in important to us",
-                    description: "Rate <strong>iyabasira.online</strong> here and tell us below about your experience.",
-                    image: '/img/fastfood-worker-114-255355.png',
-                    rating: 0
-                }];
+                    // INITIALIZE
+                    (function init() {
+                        for (var i = 0; i < data.length; i++) {
+                            addRatingWidget(buildShopItem(data[i]), data[i]);
+                        }
+                    })();
 
-                // INITIALIZE
-                (function init() {
-                    for (var i = 0; i < data.length; i++) {
-                        addRatingWidget(buildShopItem(data[i]), data[i]);
+                    // BUILD FEEDBACK ITEM
+                    function buildShopItem(data) {
+                        var shopItem = document.createElement('div');
+
+                        var html = '<div class="c-shop-item__img"><img src="' + data.image + '"></div>' +
+                            '<div class="c-shop-item__details">' +
+                            '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
+                            '<p class="c-shop-item__description">' + data.description + '</p>' +
+                            '<ul class="c-rating"></ul>' +
+                            '<textarea class="form-control" rows="5" id="comment" name="comment" placeholder="How can we improve to serve you better?"></textarea>' +
+                            '</div>';
+
+                        shopItem.classList.add('c-shop-item');
+                        shopItem.innerHTML = html;
+                        shop.appendChild(shopItem);
+
+                        return shopItem;
                     }
-                })();
 
-                // BUILD FEEDBACK ITEM
-                function buildShopItem(data) {
-                    var shopItem = document.createElement('div');
-
-                    var html = '<div class="c-shop-item__img"><img src="' + data.image + '"></div>' +
-                        '<div class="c-shop-item__details">' +
-                        '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
-                        '<p class="c-shop-item__description">' + data.description + '</p>' +
-                        '<ul class="c-rating"></ul>' +
-                        '<textarea class="form-control" rows="5" id="comment" name="comment" placeholder="How can we improve to serve you better?"></textarea>' +
-                        '</div>';
-
-                    shopItem.classList.add('c-shop-item');
-                    shopItem.innerHTML = html;
-                    shop.appendChild(shopItem);
-
-                    return shopItem;
+                    // ADD RATING WIDGET
+                    function addRatingWidget(shopItem, data) {
+                        var ratingElement = shopItem.querySelector('.c-rating');
+                        var currentRating = data.rating;
+                        var maxRating = 5;
+                        var callback = function(rating) {
+                            value = rating;
+                        };
+                        var r = rating(ratingElement, currentRating, maxRating, callback);
+                    }
                 }
 
-                // ADD RATING WIDGET
-                function addRatingWidget(shopItem, data) {
-                    var ratingElement = shopItem.querySelector('.c-rating');
-                    var currentRating = data.rating;
-                    var maxRating = 5;
-                    var callback = function(rating) {
-                        alert(rating);
-                    };
-                    var r = rating(ratingElement, currentRating, maxRating, callback);
-                }
+            )();
+        })
+        $('.save-rating').on('click', function(e) {
+            e.preventDefault();
+            $('.alert').hide();
+            if ($('#comment').val().length === 0) {
+                common.showErr('You shall input a comment');
+                return false;
             }
-
-        )();
+            if (value === 0) {
+                common.showErr('You shall click on a star');
+                return false;
+            }
+            var data = {
+                rating: value,
+                comment: $('#comment').val()
+            };
+            shop.saveRating(data);
+        })
     </script>
 </body>
 

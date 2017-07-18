@@ -669,3 +669,9 @@ div[class*="-form"] {
         width: 40%;
     }
 }
+
+.order-number {
+    font-size: 18pt;
+    color: #444;
+    font-weight: bold;
+}

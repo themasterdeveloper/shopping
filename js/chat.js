@@ -119,6 +119,7 @@ var chat = {
                     $('.unread-messsages').html(unread);
                     $('.alerts-button').removeClass("btn-info").addClass("btn-danger");
                     $('.unread-messsages').removeClass("hidden");
+                    /*
                     Push.create('Hi there!', {
                         body: 'You\'ve got a message from iyabasira.online',
                         icon: 'img/rsz_new_message.png',
@@ -132,6 +133,7 @@ var chat = {
                             //common.log('Push', this);
                         }
                     });
+                    */
                 }
                 $('.alerts-button').removeClass("hidden");
                 setTimeout(function() {

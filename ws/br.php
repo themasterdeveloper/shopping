@@ -72,6 +72,7 @@ switch ($action) {
         $query = "login('" . $email . "','" . $password . "')";
 
         break;
+    case "get_order_number":
     case "get_order_alerts":
 
         // It's gonna be a query
@@ -509,6 +510,26 @@ switch ($action) {
 
         // Fill the query parameters
         $query = "get_order_shops('" . $order_id . "')";
+
+        break;
+
+    case "save_rating":
+        // It's gonna be a database update
+
+        $action_type = $_update;
+
+        // Set the procedure we are going to use
+
+        $stmt = $conn->prepare("CALL save_rating(?, ?, ?)");
+
+        // Bind parameters
+
+        $stmt->bind_param("iis", $order_id, $rating, $comment);
+
+        // Assign values
+        $order_id = $_GET['order_id'];
+        $rating = $_GET['rating'];
+        $comment = $_GET['comment'];
 
         break;
 

@@ -548,42 +548,31 @@ var shop = {
         });
     },
 
-    load_shops_logos: function() {
-        var data = {
-            action: 'get_shops_logos',
-        }
-
-        common.log("get_shops_logos", data);
-
+    saveRating: function(data) {
+        data.action = "save_rating";
+        data.order_id = cookies.getCookie('order_id');
+        common.log("saveRating", data);
         $.ajax({
             data: data,
             success: function(data) {
-                common.log("get_shops_logos", data);
-                var l = data.length;
-                if (l == 1 && data[0].error) {
-                    return;
-                }
-                var tmp = [],
-                    i = 0;
-                var skip_columns = "-id-";
-                i = 0;
-                for (var r = 0; r < l; r++) {
-                    var $this = data[r];
-                    tmp[i] = '<div><img class="shop-logo-slider" src="' + $this["image"] + '"></div>';
-                    i++;
-                }
-                $(".slider").empty().append(tmp.join(''));
-                $('.slider').slick({
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                    autoplay: true,
-                    autoplaySpeed: 2000,
-                    variableWidth: true,
-                    arrows: false,
-                    centerMode: true
+                common.log("saveRating", data);
+                cookies.setCookie("order_status", data[0].status);
+                location.href = '/';
+            }
+        });
+    },
 
-                });
-                $(".slider").removeClass("hidden");
+    update_order_number: function() {
+        var data = {
+            action: "get_order_number",
+            order_id: cookies.getCookie('order_id')
+        }
+        common.log("update_order_number", data);
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("update_order_number", data);
+                $('#order-number').html(data[0].number);
             }
         });
     }
