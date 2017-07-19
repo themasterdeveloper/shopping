@@ -339,7 +339,7 @@ var shop = {
                 common.log("load_" + object, data);
                 var tmp = [];
                 var l = data.length;
-                if (!empty) {
+                if (empty) {
                     var tmpEmpty = "<option></option>";
                 }
                 for (var r = 0; r < l; r++) {

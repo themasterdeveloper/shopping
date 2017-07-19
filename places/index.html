@@ -71,6 +71,7 @@
     <script src="/libs/bootstrap/js/bootstrap-select.min.js"></script>
     <script src="/js/cookies.min.js"></script>
     <script src="/js/common.min.js"></script>
+    <script src="/js/shop.min.js"></script>
     <script src="/js/ajax.min.js"></script>
     <script src="/js/maps.min.js"></script>
 
@@ -87,9 +88,12 @@
         var me_marker;
 
         $(document).ready(function() {
+            common.init();
+            common.get_config_value("Online");
+            common.get_config_value("Debug");
             $(".alert").hide();
-            load_dropdown("areas", true);
-            load_dropdown("shops", true);
+            shop.load_dropdown("areas", true);
+            shop.load_dropdown("shops", true);
             /*
             setInterval(function() {
                 relocateMap();
@@ -135,7 +139,7 @@
 
             var myOptions = {
                 zoom: 16,
-                mapTypeId: google.maps.MapTypeId.HYBRID,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
                 streetViewControl: false
             }
 

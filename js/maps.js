@@ -23,7 +23,7 @@ var maps = {
                 if (data[0].error != 0) {
                     common.showErr(data[0].message);
                 } else {
-                    showMsg(data[0].message);
+                    common.showMsg(data[0].message);
                 }
             }
         });
@@ -48,7 +48,7 @@ var maps = {
                 if (data[0].error != 0) {
                     common.showErr(data[0].message);
                 } else {
-                    showMsg(data[0].message);
+                    common.showMsg(data[0].message);
                     maps.update_markers();
                 }
             }
