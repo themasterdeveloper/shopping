@@ -23,7 +23,9 @@
                 </select>
         </div>
         <div class="splash">
-
+            <div class="slider hidden">
+                <div><img src=""></div>
+            </div>
         </div>
     </div>
 </div>
@@ -31,6 +33,7 @@
     $(document).ready(function() {
         shop.load_dropdown("areas");
         shop.init();
+        shop.load_shops_logos();
         shop.updateBasket();
         setTimeout(function() {
             $(".areas").parent().removeClass("hidden");

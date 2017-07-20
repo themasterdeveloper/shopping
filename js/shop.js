@@ -575,6 +575,45 @@ var shop = {
                 $('#order-number').html(data[0].number);
             }
         });
-    }
+    },
 
+    load_shops_logos: function() {
+        var data = {
+            action: 'get_shops_logos',
+        }
+
+        common.log("get_shops_logos", data);
+
+        $.ajax({
+            data: data,
+            success: function(data) {
+                common.log("get_shops_logos", data);
+                var l = data.length;
+                if (l == 1 && data[0].error) {
+                    return;
+                }
+                var tmp = [],
+                    i = 0;
+                var skip_columns = "-id-";
+                i = 0;
+                for (var r = 0; r < l; r++) {
+                    var $this = data[r];
+                    tmp[i] = '<div><img class="shop-logo-slider" src="' + $this["image"] + '"></div>';
+                    i++;
+                }
+                $(".slider").empty().append(tmp.join(''));
+                $('.slider').slick({
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 2000,
+                    variableWidth: true,
+                    arrows: false,
+                    centerMode: true
+
+                });
+                $(".slider").removeClass("hidden");
+            }
+        });
+    }
 }

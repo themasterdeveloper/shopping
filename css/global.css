@@ -1,5 +1,6 @@
-
 /** Colors **/
+
+
 /*
     #f9f9f9 - Default
     #428bca - Primary
@@ -8,6 +9,7 @@
     #f0ad4e - Warning
     #d9534f - Danger
 */
+
 html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -19,6 +21,7 @@ html {
     -moz-box-sizing: inherit;
     box-sizing: inherit;
 }
+
 
 /** Fonts **/
 
@@ -218,6 +221,7 @@ body {
 .main, body, .intro, #dashboard-table {
     background-color: #f8f8f8;
 }
+
 .main {
     position: relative;
 }
@@ -232,9 +236,10 @@ body {
 
 .slider {
     position: absolute;
-    bottom: 18px;
+    bottom: 0;
     left: 3px;
     right: 3px;
+    height: 60px;
     background-color: rgba(255, 255, 255, 0.6);
 }
 
@@ -667,6 +672,11 @@ div[class*="-form"] {
         left: 30%;
         right: 30%;
         width: 40%;
+    }
+    .slider {
+        left: 20%;
+        right: 20%;
+        height: 60px;
     }
 }
 
