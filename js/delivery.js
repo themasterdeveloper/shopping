@@ -27,13 +27,14 @@ var delivery = {
     deliverer_login: function() {
         var data = {
             action: "deliverer_login"
-        }
+        };
 
         //Generate data items from form fields
         $('#login').find(':input:not(button):not(reset)').each(function() {
             var $this = $(this);
-            if ($this.attr("id"))
+            if ($this.attr("id")) {
                 data[$this.attr("id")] = $this.val().trim();
+            }
         });
 
         common.log("deliverer_login", data);
@@ -46,9 +47,11 @@ var delivery = {
                     document.getElementById('id01').style.display = 'none';
                     var $this = data[0];
                     for (var key in $this) {
-                        cookies.setCookie(key, $this[key]);
+                        if ($this.hasOwnProperty(key)) {
+                            cookies.setCookie(key, $this[key]);
+                        }
                     }
-                    delivery.data.user_id = $this["user_id"];
+                    delivery.data.user_id = $this.user_id;
                     load("home.html");
                 } else {
                     common.showErr("Email or password incorrect");
@@ -62,7 +65,7 @@ var delivery = {
         var params = {
             action: "delivery_get_orders",
             deliverer_id: cookies.getCookie("user_id")
-        }
+        };
 
         common.log("get_orders", params);
 
@@ -84,8 +87,8 @@ var delivery = {
 
     add_orders_buttons: function(row) {
         var button = delivery.BUTTON;
-        button = button.replace('{id}', row["id"]);
-        button = button.replace('{number}', row["number"]);
+        button = button.replace('{id}', row.id);
+        button = button.replace('{number}', row.number);
         $('.data').append(button);
     },
 
@@ -93,7 +96,7 @@ var delivery = {
         var params = {
             action: "delivery_get_order",
             order_id: cookies.getCookie("order_id")
-        }
+        };
 
         common.log("get_order", params);
 
@@ -111,7 +114,7 @@ var delivery = {
         var params = {
             action: "delivery_get_address",
             order_id: cookies.getCookie("order_id")
-        }
+        };
 
         common.log("get_address", params);
 
@@ -128,7 +131,7 @@ var delivery = {
         var params = {
             action: "delivery_get_shops",
             order_id: cookies.getCookie("order_id")
-        }
+        };
 
         common.log("get_shops", params);
 
@@ -149,16 +152,18 @@ var delivery = {
         var i = 0;
         var template = delivery.TEMPLATE;
         for (var key in row) {
-            field[i] = template.replace('{key}', key).replace('{value}', row[key]);
-            i++;
+            if (row.hasOwnProperty(key)) {
+                field[i] = template.replace('{key}', key).replace('{value}', row[key]);
+                i++;
+            }
         }
         $('.data').html(field.join(''));
     },
 
     add_shops: function(row) {
         var button = delivery.BUTTON2;
-        button = button.replace('{id}', row["id"]);
-        button = button.replace('{name}', row["name"]);
+        button = button.replace('{id}', row.id);
+        button = button.replace('{name}', row.name);
         $('.data').append(button);
     },
 
@@ -168,7 +173,7 @@ var delivery = {
             action: "delivery_get_shop_items",
             order_id: cookies.getCookie("order_id"),
             shop_id: shop_id
-        }
+        };
 
         common.log("load_shop_data", params);
 
@@ -180,15 +185,18 @@ var delivery = {
                 var i = 0;
                 tmp[i] = '<tr>';
                 i++;
-                for (var key in data[0]) {
-                    tmp[i] = '<th>' + key + '</th>';
-                    i++;
+                var $this = data[0];
+                for (var key in $this) {
+                    if ($this.hasOwnProperty(key)) {
+                        tmp[i] = '<th>' + key + '</th>';
+                        i++;
+                    }
                 }
                 tmp[i] = '</tr>';
                 $('.items thead').html(tmp.join(''));
                 var total = 0;
-                for (var i = 0; i < data.length; i++) {
-                    var $this = data[i];
+                for (i = 0; i < data.length; i++) {
+                    $this = data[i];
                     total += parseFloat(data[i].total.replace(',', ''));
                     delivery.add_shop_items($this);
                 }
@@ -204,8 +212,10 @@ var delivery = {
         tmp[i] = '<tr>';
         i++;
         for (var key in row) {
-            tmp[i] = '<td>' + row[key] + '</td>';
-            i++;
+            if (row.hasOwnProperty(key)) {
+                tmp[i] = '<td>' + row[key] + '</td>';
+                i++;
+            }
         }
         tmp[i] = '</tr>';
         $('.items tbody').append(tmp.join(''));
@@ -229,7 +239,7 @@ var delivery = {
         });
     },
 
-    order_delivered: function(row) {
+    order_delivered: function() {
         var params = {
             action: "delivery_order_delivered",
             order_id: cookies.getCookie("order_id")
@@ -246,4 +256,4 @@ var delivery = {
             }
         });
     }
-}
+};

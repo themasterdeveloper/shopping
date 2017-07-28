@@ -11,7 +11,7 @@ var maps = {
             area_id: area_id,
             lat: lat,
             lng: lng
-        }
+        };
 
         common.log("save_area_location", data);
 
@@ -20,7 +20,7 @@ var maps = {
             dataType: 'json',
             success: function(data) {
                 common.log("save_area_location", data);
-                if (data[0].error != 0) {
+                if (data[0].error !== 0) {
                     common.showErr(data[0].message);
                 } else {
                     common.showMsg(data[0].message);
@@ -36,7 +36,7 @@ var maps = {
             shop_id: shop_id,
             lat: lat,
             lng: lng
-        }
+        };
 
         common.log("save_shop_location", data);
 
@@ -45,7 +45,7 @@ var maps = {
             dataType: 'json',
             success: function(data) {
                 common.log("save_shop_location", data);
-                if (data[0].error != 0) {
+                if (data[0].error !== 0) {
                     common.showErr(data[0].message);
                 } else {
                     common.showMsg(data[0].message);
@@ -75,7 +75,7 @@ var maps = {
     load_deliverers_locations: function(area_id) {
         var data = {
             action: "deliverers_list"
-        }
+        };
 
         common.log("deliverers_list", data);
 
@@ -91,7 +91,7 @@ var maps = {
     setMarkers: function(list, field, image) {
         for (var i = 0; i < list.length; i++) {
             var item = list[i];
-            var siteLatLng = new google.maps.LatLng(item["lat"], item["lng"]);
+            var siteLatLng = new google.maps.LatLng(item.lat, item.lng);
             maps.createMarker(siteLatLng, field, image, item);
         }
     },
@@ -103,9 +103,9 @@ var maps = {
             title: data[field],
             icon: image
         });
-        marker.set('id', data['id']);
+        marker.set('id', data.id);
         marker.addListener('click', function() {
-            $('#item_id').val(data['id']);
+            $('#item_id').val(data.id);
             maps.showMarkerData(data);
         });
         markers.push(marker);
@@ -113,10 +113,9 @@ var maps = {
 
     showMarkerData: function(data) {
         var html = '';
-        var $this = data[0];
         var skip_columns = "-id-lat-lng-photo-available-";
         for (var key in data) {
-            if (skip_columns.indexOf("-" + key + "-") == -1) {
+            if (skip_columns.indexOf("-" + key + "-") === -1) {
                 html += '<span class="_data-value">';
                 html += data[key];
                 html += '</span></br>';
@@ -143,7 +142,7 @@ var maps = {
             navigator.geolocation.getCurrentPosition(function(position) {
                 lat = position.coords.latitude;
                 lng = position.coords.longitude;
-                initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
                 //map.setCenter(initialLocation);
                 me_marker.setPosition(initialLocation);
             });
@@ -162,7 +161,7 @@ var maps = {
             token: cookies.getCookie("token"),
             lat: pos.lat,
             lng: pos.lng
-        }
+        };
 
         common.log("save_location", data);
 
@@ -183,7 +182,7 @@ var maps = {
             deliverer_id: cookies.getCookie("deliverer_id"),
             lat: pos.lat,
             lng: pos.lng
-        }
+        };
 
         common.log("update_deliverer_location", data);
 
@@ -201,4 +200,4 @@ var maps = {
             update_deliverer_location();
         }, 10000);
     }
-}
+};

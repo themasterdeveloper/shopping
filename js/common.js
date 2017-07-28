@@ -38,7 +38,7 @@ var common = {
         var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
         for (var i = 0; i < url.length; i++) {
             var urlparam = url[i].split('=');
-            if (urlparam[0] == param) {
+            if (urlparam[0] === param) {
                 return urlparam[1];
             }
         }
@@ -69,12 +69,13 @@ var common = {
                 common.log("load_" + object, data);
                 var tmp = [];
                 var l = data.length;
-                if (empty == 1) {
-                    var tmpEmpty = "<option></option>";
+                var tmpEmpty = '';
+                if (empty === 1) {
+                    tmpEmpty = "<option></option>";
                 }
-                for (r = 0; r < l; r++) {
-                    $this = data[r];
-                    tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+                for (var r = 0; r < l; r++) {
+                    var $this = data[r];
+                    tmp[r] = tmpEmpty + "<option value=" + $this.id + ">" + $this.value + "</option>";
                     tmpEmpty = "";
                 }
                 $("." + object).html(tmp.join('')).selectpicker({
@@ -93,7 +94,7 @@ var common = {
         var data = {
             action: "get_config_value",
             name: name
-        }
+        };
 
         common.log("get_config_value", data);
 
@@ -107,7 +108,7 @@ var common = {
             }
         });
     }
-}
+};
 
 $.fn.center = function() {
     this.css("position", "absolute");

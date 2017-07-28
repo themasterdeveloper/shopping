@@ -24,8 +24,9 @@ var login = function() {
     //Generate data items from form fields
     $('#login').find(':input:not(button):not(reset)').each(function() {
         var $this = $(this);
-        if ($this.attr("id"))
+        if ($this.attr("id")){
             data[$this.attr("id")] = $this.val().trim();
+        }
     });
 
     common.log("login", data);
@@ -36,9 +37,11 @@ var login = function() {
             if (data[0].user_id) {
                 document.getElementById('id01').style.display = 'none';
                 $(".navbar").removeClass("hidden");
-                $this = data[0];
-                for (key in $this) {
-                    cookies.setCookie(key, $this[key]);
+                var $this = data[0];
+                for (var key in $this) {
+                    if($this.hasOwnProperty(key)) {
+                        cookies.setCookie(key, $this[key]);
+                    }
                 }
                 cookies.setCookie("login", 1);
             } else {
@@ -56,15 +59,16 @@ var saveData = function(object) {
     data.action = action;
     $('#' + form).find(':input:not(button):not(reset)').each(function() {
         var $this = $(this);
-        if ($this.attr("id"))
+        if ($this.attr("id")) {
             data[$this.attr("id")] = $this.val().trim();
+        }
     });
     common.log("saveData", data);
     $.ajax({
         data: data,
         success: function(data) {
             common.log("saveData", data);
-            if (data[0].error != 0) {
+            if (data[0].error !== 0) {
                 common.showErr(data[0].message);
             } else {
                 common.showMsg(data[0].message);
@@ -77,23 +81,26 @@ var saveData = function(object) {
     });
 };
 var adm_delete_item = function(item_id, table) {
-    if (item_id == undefined)
+    if (item_id === undefined){
         return false;
+    }
     record_id = item_id;
     var _details = "";
     var counter = 0;
     var limit = col_names.length;
     $(".tr_" + item_id).find("td").each(function() {
-        if (counter < limit)
-            if ($(this).html().length > 0)
+        if (counter < limit) {
+            if ($(this).html().length > 0) {
                 _details += "<div class='delete-data'>" + col_names[counter] + ": <span class='data'>" + $(this).html() + "</span></div>";
+            }
         counter++;
+        }
     });
     cookies.setCookie("item_id", item_id);
     cookies.setCookie("table", table);
     $("#confirm-body").html(_details);
     $("#delete-confirmation").modal('show');
-}
+};
 
 var commit_details_confirmed = function() {
     var data = {};
@@ -105,7 +112,7 @@ var commit_details_confirmed = function() {
         data: data,
         success: function(data) {
             common.log("adm_delete_item", data);
-            if (data[0].error != 0) {
+            if (data[0].error !== 0) {
                 common.showErr(data[0].message);
             } else {
                 $("#delete-confirmation").modal('hide');
@@ -115,7 +122,7 @@ var commit_details_confirmed = function() {
             }
         }
     });
-}
+};
 
 var adm_load_table = function(table, read_only) {
     read_only = (typeof read_only === 'undefined') ? false : read_only;
@@ -137,7 +144,7 @@ var adm_load_table = function(table, read_only) {
         data: data,
         success: function(data) {
             common.log("load_table", data);
-            if (data[0].error == 1) {
+            if (data[0].error === 1) {
                 $("#" + table + "-table tbody").empty();
                 $("#" + table + "-table tbody").empty();
                 $("#" + table + "-table tfood").empty();
@@ -150,14 +157,14 @@ var adm_load_table = function(table, read_only) {
             var cols = 0;
             var tmp = [],
                 i = 0;
-            $this = data[0];
-            var total_records = $this["total_records"];
+            var $this = data[0];
+            var total_records = $this.total_records;
             // thead
             tmp[i] = "<tr>";
             i++;
             col_names.length = 0;
             for (var key in $this) {
-                if (skip_columns.indexOf("-" + key + "-") == -1) {
+                if (skip_columns.indexOf("-" + key + "-") === -1) {
                     col_names[cols] = key;
                     tmp[i] = "<th class='__" + key.replace(' ', '_') + "'>" + key.replace('_', ' ') + "</th>";
                     i++;
@@ -176,19 +183,19 @@ var adm_load_table = function(table, read_only) {
             // tbody
             tmp = [];
             i = 0;
-            for (r = 0; r < l; r++) {
+            for (var r = 0; r < l; r++) {
                 $this = data[r];
-                tmp[i] = "<tr class='tr_" + $this["id"] + "'>";
+                tmp[i] = "<tr class='tr_" + $this.id + "'>";
                 i++;
-                for (var key in $this) {
-                    if (skip_columns.indexOf("-" + key + "-") == -1) {
+                for (key in $this) {
+                    if (skip_columns.indexOf("-" + key + "-") === -1) {
                         switch (key) {
                             case 'status':
                             case 'is_active':
                                 tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
                                 break;
                             case 'notify':
-                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' title='" + $this["status_name"] + "' src='" + $this[key] + "'></td>";
+                                tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' title='" + $this.status_name + "' src='" + $this[key] + "'></td>";
                                 break;
                             case 'image':
                                 tmp[i] = "<td class='__" + key.replace(' ', '_') + "'><img class='__" + key.replace(' ', '_') + "' src='" + $this[key] + "'></td>";
@@ -202,15 +209,15 @@ var adm_load_table = function(table, read_only) {
 
                 if (!read_only) {
                     tmp[i] = '<td class="button-group">';
-                    i++
-                    if ($this["active"] == 0) {
-                        tmp[i] = '<button class="btn btn-danger btn-sm delete-item" onclick="adm_delete_item(' + $this["id"] + ',\'' + table + '\')">Delete</button>';
-                        i++
+                    i++;
+                    if ($this.active === 0) {
+                        tmp[i] = '<button class="btn btn-danger btn-sm delete-item" onclick="adm_delete_item(' + $this.id + ',\'' + table + '\')">Delete</button>';
+                        i++;
                     }
-                    tmp[i] = '<button class="btn btn-primary btn-sm edit-item" onclick="adm_edit_item(' + $this["id"] + ',\'' + table + '\')">Edit</button>';
-                    i++
+                    tmp[i] = '<button class="btn btn-primary btn-sm edit-item" onclick="adm_edit_item(' + $this.id  + ',\'' + table + '\')">Edit</button>';
+                    i++;
                     tmp[i] = '</td>';
-                    i++
+                    i++;
                 }
                 tmp[i] = "</tr>";
                 i++;
@@ -225,7 +232,7 @@ var adm_load_table = function(table, read_only) {
             } else {
                 footer += '<button class= "btn btn-success btn-md pull-left disabled table-button">Prev</button>';
             }
-            var page = parseInt(cur_page) + 1
+            var page = parseInt(cur_page) + 1;
             footer += "Page " + page;
 
             if (cur_page < parseInt(total_records / rows_per_page)) {
@@ -242,35 +249,35 @@ var adm_load_table = function(table, read_only) {
                 e.preventDefault();
                 cookies.setCookie("cur_page", cur_page - 1);
                 adm_load_table(table, read_only);
-            })
+            });
 
             $(".btn-next").on("click", function(e) {
                 e.preventDefault();
                 cookies.setCookie("cur_page", cur_page + 1);
                 adm_load_table(table, read_only);
-            })
+            });
 
         }
     });
-}
+};
 
 var adm_edit_item = function(item_id, table) {
     $("#item_id").val(item_id);
     fillForm(item_id, table);
-}
+};
 
 
 var remove_markers = function() {
-    for (i = 0; i < markers.length; i++) {
+    for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
     }
-}
+};
 
 var close_infowindows = function() {
-    for (i = 0; i < infowindows.length; i++) {
+    for (var i = 0; i < infowindows.length; i++) {
         infowindows[i].close();
     }
-}
+};
 
 var relocateMap = function() {
 
@@ -278,12 +285,12 @@ var relocateMap = function() {
         navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
             lng = position.coords.longitude;
-            initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            var initialLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
             //map.setCenter(initialLocation);
             me_marker.setPosition(initialLocation);
         });
     }
-}
+};
 
 
 var fillForm = function(item_id, table) {
@@ -296,20 +303,22 @@ var fillForm = function(item_id, table) {
         data: data,
         success: function(data) {
             common.log("get_table_record", data);
-            $this = data[0];
+            var $this = data[0];
             for (var key in $this) {
-                if (key == 'image') {
-                    if ($this[key].length > 0) {
-                        $("#" + key).attr("src", $this[key]);
+                if ($this.hasOwnProperty(key)) {
+                    if (key === 'image') {
+                        if ($this[key].length > 0) {
+                            $("#" + key).attr("src", $this[key]);
+                        } else {
+                            $("#" + key).attr("src", "/img/no-image.jpg");
+                        }
                     } else {
-                        $("#" + key).attr("src", "/img/no-image.jpg");
+                        $("#" + key).val($this[key]);
                     }
-                } else {
-                    $("#" + key).val($this[key]);
+                    common.log(key, $this[key]);
                 }
-                common.log(key, $this[key]);
             }
-            if (table == 'shop_product') {
+            if (table === 'shop_product') {
                 $(".selectpicker").prop('disabled', true);
                 $("#availability").prop('disabled', false);
             }
@@ -318,9 +327,9 @@ var fillForm = function(item_id, table) {
             $("." + table + "-form").removeClass("hidden");
         }
     });
-}
+};
 
-load_dropdown = function(object, empty, disabled) {
+var load_dropdown = function(object, empty, disabled) {
     empty = (typeof empty === 'undefined') ? false : empty;
     disabled = (typeof disabled === 'undefined') ? false : disabled;
     var data = {};
@@ -341,12 +350,13 @@ load_dropdown = function(object, empty, disabled) {
             common.log("load_" + object, data);
             var tmp = [];
             var l = data.length;
-            if (empty == 1) {
-                var tmpEmpty = "<option></option>";
+            var tmpEmpty = '';
+            if (empty === 1) {
+                tmpEmpty = "<option></option>";
             }
-            for (r = 0; r < l; r++) {
-                $this = data[r];
-                tmp[r] = tmpEmpty + "<option value=" + $this["id"] + ">" + $this["value"] + "</option>";
+            for (var r = 0; r < l; r++) {
+                var $this = data[r];
+                tmp[r] = tmpEmpty + "<option value=" + $this.id + ">" + $this.value + "</option>";
                 tmpEmpty = "";
             }
             $("." + object).html(tmp.join('')).selectpicker({

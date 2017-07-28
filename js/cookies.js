@@ -6,7 +6,7 @@ var cookies = {
 		exdays = 365;
 		var exdate = new Date();
 		exdate.setDate(exdate.getDate() + exdays);
-		var c_value = escape(value) + ((exdays == null) ? "" : ";path=/;expires=" + exdate.toUTCString());
+		var c_value = escape(value) + ((exdays === null) ? "" : ";path=/;expires=" + exdate.toUTCString());
 		document.cookie = c_description + "=" + c_value;
 	},
 
@@ -59,4 +59,4 @@ var cookies = {
 		}
 		return o;
 	}
-}
+};

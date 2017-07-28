@@ -15,7 +15,7 @@ var auth = {
         var data = {
             action: "get_token",
             area_id: cookies.getCookie("chosen-area")
-        }
+        };
 
         common.log("get_token", data);
 
@@ -35,4 +35,4 @@ var auth = {
         cookies.deleteAllCookies();
         auth.get_token();
     }
-}
+};

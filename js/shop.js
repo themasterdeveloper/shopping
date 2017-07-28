@@ -1,4 +1,3 @@
-"use strict";
 
 var shop = {
 
@@ -7,11 +6,13 @@ var shop = {
     },
 
     init: function() {
+        "use strict";
+
         $.ajaxSetup({
             url: shop.url
         });
 
-        if (auth.data.token.length == 0) {
+        if (auth.data.token.length === 0) {
             auth.get_token();
         }
 
@@ -26,7 +27,7 @@ var shop = {
     sms_sender: "iyabasira",
 
     load_products: function() {
-        if (auth.data.token.length == 0) {
+        if (auth.data.token.length === 0) {
             auth.get_token();
         }
 
@@ -37,7 +38,7 @@ var shop = {
             search: $("#search_text").val(),
             token: auth.data.token,
             shop_area_id: cookies.getCookie("shop-area-id")
-        }
+        };
 
         common.log("load_products", data);
 
@@ -48,7 +49,7 @@ var shop = {
 
                 common.log("load_products", data);
 
-                if (data[0].error == 1) {
+                if (data[0].error === 1) {
                     $("#dashboard-table").empty();
                     common.showErr(data[0].message);
 
@@ -68,19 +69,19 @@ var shop = {
                     tmp[i] = "<div class='list-group'>";
                     i++;
                     for (var key in $this) {
-                        if (skip_columns.indexOf("-" + key + "-") == -1) {
-                            tmp[i] = "<div href='#' class='list-group-item it-" + $this["id"] + "'>";
-                            if ($this["logo"] != '') {
-                                tmp[i] += "<img src='" + $this["logo"] + "' class='shop-logo'>";
+                        if (skip_columns.indexOf("-" + key + "-") === -1) {
+                            tmp[i] = "<div href='#' class='list-group-item it-" + $this.id + "'>";
+                            if ($this.logo !== '') {
+                                tmp[i] += "<img src='" + $this.logo + "' class='shop-logo'>";
                             } else {
                                 tmp[i] += "<img class='shop-logo' src='/img/no-image.jpg'>";
                             }
-                            tmp[i] += "<span class='area'>" + $this["area"] + "</span>";
-                            tmp[i] += "<span class='product'>" + $this["product"] + "</span><br/>";
-                            if ($this["image"] == '') {
+                            tmp[i] += "<span class='area'>" + $this.area + "</span>";
+                            tmp[i] += "<span class='product'>" + $this.product + "</span><br/>";
+                            if ($this.image === '') {
                                 tmp[i] += "<img class='product-image' src='/img/no-image.jpg'>";
                             } else {
-                                tmp[i] += "<img class='product-image' src='" + $this["image"] + "'>";
+                                tmp[i] += "<img class='product-image' src='" + $this.image + "'>";
                             }
                             tmp[i] += "<span class='price'>" + $this["price"] + "</span>";
                             tmp[i] += "<button class='buy-product-button btn btn-success btn-lg btn-order-now' onclick=shop.buy_product(" + $this["id"] + ") >ORDER NOW</button>";

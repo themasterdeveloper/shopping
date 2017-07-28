@@ -31,7 +31,7 @@ var chat = {
             action: 'get_messages',
             order_id: order_id,
             lastID: chat.data.lastID
-        }
+        };
 
         common.log("get_messages", data);
 
@@ -46,32 +46,34 @@ var chat = {
 
                     for (var r = 0; r < data.length; r++) {
                         var $this = data[r];
-                        chat.data.lastID = $this['id'];
+                        chat.data.lastID = $this.id;
                         var date_template = chat.DATE_ROW;
                         var message_template = chat.MESSAGE_ROW;
 
-                        if (cur_date != $this['sent']) {
-                            cur_date = $this['sent'];
+                        if (cur_date !== $this.sent) {
+                            cur_date = $this.sent;
                             tmp[i] = date_template.replace('{sent}', cur_date);
                             i++;
                         }
-
+                        var msg_sender = '';
                         for (var key in $this) {
-                            var msg_sender = parseInt($this["sender"]);
-                            if (msg_sender == sender && key == 'name') {
-                                message_template = message_template.replace('{' + key + '}', '');
+                            if($this.hasOwnProperty(key)) {
+                                msg_sender = parseInt($this.sender);
+                                if (msg_sender === sender && key === 'name') {
+                                    message_template = message_template.replace('{' + key + '}', '');
+                                }
+                                message_template = message_template.replace('{' + key + '}', $this[key]);
                             }
-                            message_template = message_template.replace('{' + key + '}', $this[key]);
                         }
 
-                        if (msg_sender == sender) {
+                        if (msg_sender === sender) {
                             message_template = message_template.replace('{align}', 'right');
-                            $('.user-name').html($this["name"]);
+                            $('.user-name').html($this.name);
                         } else {
                             message_template = message_template.replace('{align}', 'left');
                         }
                         tmp[i] = message_template;
-                        i++
+                        i++;
                     }
                     $('.chat-widget').append(tmp.join(''));
 
@@ -79,7 +81,7 @@ var chat = {
                         scrollTop: $('.chat-widget')[0].scrollHeight
                     }, 800);
 
-                    if (sender == 2) {
+                    if (sender === 2) {
                         chat.mark_as_read(order_id);
                     }
 
@@ -102,7 +104,7 @@ var chat = {
             action: 'check_messages',
             order_id: order_id,
             lastID: chat.data.lastID
-        }
+        };
 
         common.log("get_messages", data);
 
@@ -111,7 +113,7 @@ var chat = {
             success: function(data) {
                 common.log("check_messages", data);
                 var unread = data[0].undread;
-                if (unread == 0) {
+                if (unread === 0) {
                     $('.unread-messsages').html('');
                     $('.alerts-button').removeClass("btn-danger").addClass("btn-info");
                     $('.unread-messsages').addClass("hidden");
@@ -175,7 +177,7 @@ var chat = {
             order_id: order_id,
             sender_type: sender,
             message: message
-        }
+        };
         common.log("send_message", data);
         $.ajax({
             data: data,
@@ -190,7 +192,7 @@ var chat = {
     get_latest_messages: function() {
         var data = {
             action: 'get_latest_messages'
-        }
+        };
         common.log("get_latest_messages", data);
         $.ajax({
             data: data,
@@ -200,10 +202,10 @@ var chat = {
                     var tmp = [];
                     var i = 0;
                     tmp[i] = '<ul class="nav nav-tabs">';
-                    i++
+                    i++;
                     for (var r = 0; r < data.length; r++) {
                         var $this = data[r];
-                        tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this["order_id"] + ')">' + $this["number"] + '<br><span class="message-sent">' + $this["sent"] + '</span></a></li>';
+                        tmp[i] = '<li class="message-option"><a href="javascript:void(0)" onclick="open_chat_room(' + $this.order_id + ')">' + $this.number + '<br><span class="message-sent">' + $this.sent + '</span></a></li>';
                         i++;
                     }
                     tmp[i] = '</ul>';
@@ -215,4 +217,4 @@ var chat = {
             }
         });
     }
-}
+};
